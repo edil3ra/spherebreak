@@ -1,0 +1,52 @@
+{
+	"name": "spherebreak",
+	"version": "1.0.0",
+	"description": "A template project for Phaser3 using Parceljs",
+	"scripts": {
+		"dev": "webpack-dev-server --config webpack.dev.config.js --https",
+		"build": "webpack --config webpack.prod.config.js",
+		"start": "npm run dev"
+	},
+	"author": "edil3ra",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ourcade/phaser3-parcel-template.git"
+	},
+	"homepage": "https://github.com/ourcade/phaser3-parcel-template",
+	"devDependencies": {
+		"@types/webpack": "^4.41.25",
+		"@typescript-eslint/eslint-plugin": "^3.10.1",
+		"@typescript-eslint/parser": "^3.10.1",
+		"css-loader": "^4.3.0",
+		"eslint": "^6.6.0",
+		"eslint-loader": "^4.0.2",
+		"eslint-plugin-import": "^2.22.1",
+		"expose-loader": "^0.7.5",
+		"html-webpack-plugin": "^4.5.0",
+		"mini-css-extract-plugin": "^1.3.3",
+		"resolve": "^1.19.0",
+		"sass-loader": "^9.0.3",
+		"style-loader": "^1.3.0",
+		"ts-loader": "^8.0.12",
+		"tsc-watch": "^4.2.9",
+		"tslint": "^6.1.3",
+		"typescript": "^3.9.7",
+		"webpack": "^4.44.2",
+		"webpack-bundle-analyzer": "^3.9.0",
+		"webpack-cli": "^3.3.12",
+		"webpack-dev-middleware": "^3.7.3",
+		"webpack-dev-server": "^3.11.0",
+		"webpack-hot-middleware": "^2.25.0"
+	},
+	"dependencies": {
+		"phaser": "^3.50.0"
+	},
+	"parcelCleanPaths": [
+		"dist"
+	],
+	"staticFiles": {
+		"staticPath": "public",
+		"watcherGlob": "**"
+	}
+}

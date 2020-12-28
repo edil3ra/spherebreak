@@ -1,0 +1,30 @@
+# System and IDE files
+Thumbs.db
+.DS_Store
+.idea
+*.suo
+*.sublime-project
+*.sublime-workspace
+
+# Vendors
+node_modules/
+
+# Build
+/npm-debug.log
+/public/dist/*
+dist/
+.env.development
+.env.production
+
+src/server/**/*.js
+src/server/**/*.map
+src/shared/**/*.js
+src/shared/**/*.js.map
+src/shared/**/*.map
+
+public/*.js
+public/*.txt
+public/css
+public/js
+public/index.html
+public/report.html
