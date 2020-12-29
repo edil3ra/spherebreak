@@ -1,3 +1,4 @@
+import { Config } from '~/config'
 import { ButtonContainer } from '~/ui/buttonContainer'
 
 
@@ -10,7 +11,7 @@ const uiConfigStyle: Phaser.Types.GameObjects.Text.TextStyle = {
 
 export class MenuScene extends Phaser.Scene {
     constructor() {
-        super({ key: 'menu' })
+        super({ key: Config.scenes.keys.menu })
     }
     public background: Phaser.GameObjects.Image
     public container: Phaser.GameObjects.Container
@@ -20,9 +21,9 @@ export class MenuScene extends Phaser.Scene {
 
     init() {
         window.addEventListener('resize', () => {
-            this.background.setDisplaySize(this.scale.width, this.scale.height)
+            this.background.setDisplaySize(window.innerWidth, window.innerHeight)
             this.background.setPosition(0, 0)
-            this.container.setPosition(100, 100)
+            this.container.setPosition(this.scale.width / 2, 100)
         }, false)
 
     }
@@ -35,17 +36,18 @@ export class MenuScene extends Phaser.Scene {
         this.container = this.add.container(
             0, 0, [this.banner, this.buttonPlay, this.buttonTutorial]
         ).setPosition(this.scale.width / 2, 100)
+        .setSize(500, 500)
     }
 
     public setBackground() {
         this.background = this.add
-            .image(0, 0, 'menuBackground')
+            .image(0, 0, 'background')
             .setOrigin(0, 0)
-            // .setDisplaySize(this.scale.width, this.scale.height)
+            .setDisplaySize(this.scale.width, this.scale.height)
     }
 
     public setBanner() {
-        const imageBanner = this.add.image(0, 0, 'b2')
+        const imageBanner = this.add.image(0, 0, 'banner')
 
         const text = this.add
             .text(0, 0, 'Spherebreak', uiConfigStyle)
@@ -91,6 +93,6 @@ export class MenuScene extends Phaser.Scene {
 
     public handlePlay(pointer: Phaser.Input.Pointer) {
         window.gdsdk.showAd()
-        this.scene.start('game', { difficulty: 'easy' })
+        this.scene.start(Config.scenes.keys.menu, { difficulty: 'easy' })
     }
 }

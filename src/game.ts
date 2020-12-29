@@ -11,7 +11,11 @@ export function initGame(): Phaser.Game {
             width: window.innerWidth * window.devicePixelRatio,
             height: window.innerHeight * window.devicePixelRatio,
             autoCenter: Phaser.Scale.NONE,
-            parent: 'nebulaleague',
+            parent: 'spherebreak',
+        },
+        parent: 'spherebreak',
+        dom: {
+            createContainer: true,
         },
         plugins: {
             global: [
@@ -24,5 +28,9 @@ export function initGame(): Phaser.Game {
         },
         scene: [BootScene, MenuScene, GameScene],
     }
-    return new Phaser.Game(config)
+    const game = new Phaser.Game(config)
+    window.addEventListener('resize', () => {
+        game.scale.resize(window.innerWidth, window.innerHeight)
+    })
+    return game
 }

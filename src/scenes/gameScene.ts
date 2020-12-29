@@ -1,3 +1,4 @@
+import { Config } from "~/config"
 import { Difficulty, GameConfig, GameInfo } from "~/models"
 
 
@@ -37,7 +38,7 @@ export class GameScene extends Phaser.Scene {
     
     
     constructor() {
-        super({ key: 'game' })
+        super({ key: Config.scenes.keys.game })
     }
 
     init(gameConfig: GameConfig) {
@@ -45,7 +46,6 @@ export class GameScene extends Phaser.Scene {
         this.maxTime = initialGameInfo.timer
         this.maxTurn = initialGameInfo.turn
         this.maxQuota = initialGameInfo.quota
-        
     }
 
     create() {

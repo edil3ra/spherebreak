@@ -1,8 +1,10 @@
+import { Config } from "~/config"
+
 export class BootScene extends Phaser.Scene {
     private loadingBar: Phaser.GameObjects.Graphics
     private progressBar: Phaser.GameObjects.Graphics
     constructor() {
-        super({ key: 'boot' })
+        super({ key: Config.scenes.keys.boot })
     }
 
 
@@ -31,17 +33,19 @@ export class BootScene extends Phaser.Scene {
             () => {
                 this.progressBar.destroy()
                 this.loadingBar.destroy()
-                this.scene.start('menu')
+                this.scene.start(Config.scenes.keys.menu)
             },
-            
         )
 
         
-        this.load.image('menuBackground', 'assets/images/background-main.jpg')
+        this.load.image('background', 'assets/images/background-main.jpg')
         this.load.image('menuButton', 'assets/images/button_rectangleWood.png')
-        this.load.image('b1', 'assets/images/bannerHanging.png')
-        this.load.image('b2', 'assets/images/bannerModern.png')
-        this.load.image('b3', 'assets/images/bannerScroll.png')
+        this.load.image('banner', 'assets/images/bannerModern.png')
+        
+        this.load.image('coinEntry', 'assets/images/coin-entry.gif')
+        this.load.image('coin', 'assets/images/coin.gif')
+        this.load.image('shpre', 'assets/images/sphere.png')
+        
         this.load.webfont('Open Sans', 'https://fonts.googleapis.com/css2?family=Open+Sans&display=swap')
         this.load.webfont('Play', 'https://fonts.googleapis.com/css2?family=Play&display=swap')
     }
