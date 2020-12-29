@@ -93,6 +93,6 @@ export class MenuScene extends Phaser.Scene {
 
     public handlePlay(pointer: Phaser.Input.Pointer) {
         window.gdsdk.showAd()
-        this.scene.start(Config.scenes.keys.menu, { difficulty: 'easy' })
+        this.scene.start(Config.scenes.keys.game, { difficulty: 'easy' })
     }
 }

@@ -33,7 +33,8 @@ export class BootScene extends Phaser.Scene {
             () => {
                 this.progressBar.destroy()
                 this.loadingBar.destroy()
-                this.scene.start(Config.scenes.keys.menu)
+                // this.scene.start(Config.scenes.keys.menu)
+                this.scene.start(Config.scenes.keys.game, {difficulty: 'easy'})
             },
         )
 
