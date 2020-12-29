@@ -1,10 +1,11 @@
 {
 	"name": "spherebreak",
 	"version": "1.0.0",
-	"description": "A template project for Phaser3 using Parceljs",
+	"description": "Spherebreak",
 	"scripts": {
-		"dev": "webpack-dev-server --config webpack.dev.config.js --https",
+		"dev": "env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --https",
 		"build": "webpack --config webpack.prod.config.js",
+		"zip": "rm -rf zzz/sphere.zip & zip -rj zzz/sphere.zip public/*",
 		"start": "npm run dev"
 	},
 	"author": "edil3ra",
@@ -15,6 +16,7 @@
 	},
 	"homepage": "https://github.com/ourcade/phaser3-parcel-template",
 	"devDependencies": {
+		"@types/webfontloader": "^1.6.32",
 		"@types/webpack": "^4.41.25",
 		"@typescript-eslint/eslint-plugin": "^3.10.1",
 		"@typescript-eslint/parser": "^3.10.1",
@@ -40,7 +42,10 @@
 		"webpack-hot-middleware": "^2.25.0"
 	},
 	"dependencies": {
-		"phaser": "^3.50.0"
+		"@gamedistribution.com/html5-sdk": "0.0.2",
+		"phaser": "^3.50.0",
+		"phaser3-webfont-loader": "^1.0.0",
+		"webfontloader": "^1.6.28"
 	},
 	"parcelCleanPaths": [
 		"dist"

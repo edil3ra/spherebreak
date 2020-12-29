@@ -1,11 +1,8 @@
-import * as _ from 'phaser'
-//@ts-ignore
-import * as Phaser from './lib/phaser-facebook-instant-games.js'
-
-import { BootScene } from '~/scenes/bootScene'
-import { GameScene } from '~/scenes/gameScene'
-import { MenuScene } from '~/scenes/menuScene'
+const isDebug = process.env.DEBUG
+import * as Phaser from 'phaser'
 import { ButtonContainer } from '~/ui/buttonContainer'
+import { initGame } from '~/game'
+import { initGameDistribution, mockGameDistribution } from '~/gameDistribution'
 
 
 Phaser.GameObjects.GameObjectFactory.register('buttonContainer', function (
@@ -18,19 +15,10 @@ Phaser.GameObjects.GameObjectFactory.register('buttonContainer', function (
 })
 
 
-//@ts-ignore
-FBInstant.initializeAsync().then(() => {
-    const config: Phaser.Types.Core.GameConfig = {
-        type: Phaser.AUTO,
-        title:'spherebreak',
-        scale: {
-            width: window.innerWidth * window.devicePixelRatio,
-            height: window.innerHeight * window.devicePixelRatio,
-            autoCenter: Phaser.Scale.NONE,
-            parent: 'nebulaleague',
-        },
-        scene: [BootScene, MenuScene, GameScene],
-    }
-    const game = new Phaser.Game(config)
-    game.scene.start('boot')
-})
+// window.game = initGame()
+window.game = initGame()
+if (isDebug ) {
+    mockGameDistribution()
+} else {
+    initGameDistribution()
+}
