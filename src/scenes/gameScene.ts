@@ -60,6 +60,10 @@ export class GameScene extends Phaser.Scene {
             () => {
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
+                this.boardContainer.setPosition(
+                    this.scale.width / 2 - Config.scenes.game.boardWidth / 2,
+                    this.scale.height / 2 - Config.scenes.game.boardHeight / 2
+                )
             },
             false
         )
@@ -109,20 +113,20 @@ export class GameScene extends Phaser.Scene {
     }
 
     setSphereGraphics() {
-        this.sphereGraphics = this.add.coin(0, 0, 'sphere', this.sphere)
-        this.sphereGraphics.background.setDisplaySize(
+        this.sphereGraphics = this.add.coin(
+            Config.scenes.game.coinPadding +
+                Config.scenes.game.coinSize +
+                Config.scenes.game.entryPadding +
+                Config.scenes.game.entrySize / 2,
+
+            Config.scenes.game.coinPadding +
+                Config.scenes.game.coinSize +
+                Config.scenes.game.entryPadding +
+                Config.scenes.game.entrySize / 2,
             Config.scenes.game.sphereSize,
-            Config.scenes.game.sphereSize
-        )
-        this.sphereGraphics.setPosition(
-            Config.scenes.game.coinPadding +
-                Config.scenes.game.coinSize +
-                Config.scenes.game.entryPadding * 0.5 +
-                Config.scenes.game.entrySize * 0.5,
-            Config.scenes.game.coinPadding +
-                Config.scenes.game.coinSize +
-                Config.scenes.game.entryPadding * 0.5 +
-                Config.scenes.game.entrySize * 0.5
+            Config.scenes.game.sphereSize,
+            'sphere',
+            this.sphere
         )
     }
 
@@ -151,8 +155,14 @@ export class GameScene extends Phaser.Scene {
             const newPositionY =
                 positionY + directionY * (Config.scenes.game.coinSize + Config.scenes.game.coinPadding)
             currentPosition = [newPositionX, newPositionY]
-            const coin = this.add.coin(newPositionX, newPositionY, 'coin', numero) as Coin
-            coin.background.setDisplaySize(Config.scenes.game.coinSize, Config.scenes.game.coinSize)
+            const coin = this.add.coin(
+                newPositionX,
+                newPositionY,
+                Config.scenes.game.coinSize,
+                Config.scenes.game.coinSize,
+                'coin',
+                numero
+            ) as Coin
             coin.background
                 .setInteractive({ cursor: 'pointer' })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.handleClickedCoin(index), this)
@@ -179,8 +189,14 @@ export class GameScene extends Phaser.Scene {
             const newPositionY =
                 positionY + directionY * (Config.scenes.game.entrySize + Config.scenes.game.entryPadding)
             currentPosition = [newPositionX, newPositionY]
-            const coin = this.add.coin(newPositionX, newPositionY, 'entry', numero) as Coin
-            coin.background.setDisplaySize(Config.scenes.game.entrySize, Config.scenes.game.entrySize)
+            const coin = this.add.coin(
+                newPositionX,
+                newPositionY,
+                Config.scenes.game.entrySize,
+                Config.scenes.game.entrySize,
+                'entry',
+                numero
+            ) as Coin
             coin.background
                 .setInteractive({ cursor: 'pointer' })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.handleClickedEntry(index), this)
@@ -203,8 +219,12 @@ export class GameScene extends Phaser.Scene {
         ])
         this.boardContainer.setPosition(
             this.scale.width / 2 - Config.scenes.game.boardWidth / 2,
-            this.scale.height / 2 - Config.scenes.game.boardWidth / 2
+            this.scale.height / 2 - Config.scenes.game.boardHeight / 2
         )
+        // Phaser.Display.Align.In.BottomLeft(
+        //     this.add.zone(0, 0, this.scale.width, this.scale.width),
+        //     this.boardContainer
+        // )
     }
 
     handleClickedCoin(index: number) {
@@ -218,10 +238,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClicked() {
-        if(this.isWinTurn()) {
+        if (this.isWinTurn()) {
             this.handleWinTurn()
         }
-        if(this.isAllSphereActive()) {
+        if (this.isAllSphereActive()) {
             this.handleLoseTurn()
         }
     }
@@ -237,18 +257,15 @@ export class GameScene extends Phaser.Scene {
     }
 
     isWinTurn() {
-        console.log(this.total)
-        console.log(this.sphere)
-        console.log(this.total % this.sphere === 0)
         return this.total % this.sphere === 0
     }
-    
+
     isAllSphereActive() {
         const hasNoCoins = this.coinsActive.every((coinActive) => coinActive)
         const hasNoEntries = this.entriesActive.every((entryActive) => entryActive)
         return hasNoCoins && hasNoEntries
     }
-    
+
     handleWinTurn() {
         console.log('win turn')
     }
@@ -256,10 +273,8 @@ export class GameScene extends Phaser.Scene {
     handleLoseTurn() {
         console.log('lose turn')
     }
-    
+
     nextTurn() {
         console.log('nex turn')
     }
-
-    
 }

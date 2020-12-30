@@ -5,7 +5,7 @@ function setCoin() {
     const EP = 12
     const CS = 88
     const ES = 92
-    const SS = 66
+    const SS = 70
     const BS = (CP + CS) * 4 
     
     return {

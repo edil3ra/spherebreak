@@ -14,10 +14,22 @@ export class Coin extends Phaser.GameObjects.Container implements Icoin {
     public numero: Phaser.GameObjects.Text
     public background: Phaser.GameObjects.Image
 
-    constructor(scene: Phaser.Scene, x: number, y: number, frame: string, numero: string) {
+    constructor(
+        scene: Phaser.Scene,
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+        frame: string,
+        numero: string
+    ) {
         super(scene, x, y)
-        this.background = scene.add.image(0, 0, frame)
-        this.numero = scene.add.text(0, 0, numero, numeroStyle).setOrigin(0.5, 0.5)
+        this.background = scene.add.image(0, 0, frame).setOrigin(0, 0)
+        this.numero = scene.add.text(0, 0, numero, numeroStyle)
+
+        this.background.setDisplaySize(width, height)
+        this.background.setSize(width, height)
+        Phaser.Display.Align.In.Center(this.numero, this.background)
 
         this.add(this.background)
         this.add(this.numero)

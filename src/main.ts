@@ -5,7 +5,6 @@ import { Coin } from './entities/Coin'
 import { initGame } from '~/game'
 import { initGameDistribution, mockGameDistribution } from '~/gameDistribution'
 
-
 Phaser.GameObjects.GameObjectFactory.register('buttonContainer', function (
     x: number,
     y: number,
@@ -15,20 +14,19 @@ Phaser.GameObjects.GameObjectFactory.register('buttonContainer', function (
     return this.displayList.add(new ButtonContainer(this.scene, x, y, key, tint))
 })
 
-
 Phaser.GameObjects.GameObjectFactory.register('coin', function (
     x: number,
     y: number,
+    width: number,
+    height: number,
     frame: string,
-    numero: string,
-
+    numero: string
 ) {
-    return this.displayList.add(new Coin(this.scene, x, y, frame, numero))
+    return this.displayList.add(new Coin(this.scene, x, y, width, height, frame, numero))
 })
 
-
 window.game = initGame()
-if (isDebug ) {
+if (isDebug) {
     mockGameDistribution()
 } else {
     initGameDistribution()
