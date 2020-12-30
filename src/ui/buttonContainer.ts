@@ -74,5 +74,3 @@ export class ButtonContainer extends Phaser.GameObjects.Container implements IBu
         return this
     }
 }
-
-

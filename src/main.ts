@@ -1,6 +1,7 @@
 const isDebug = process.env.DEBUG
 import * as Phaser from 'phaser'
 import { ButtonContainer } from '~/ui/buttonContainer'
+import { Coin } from './entities/Coin'
 import { initGame } from '~/game'
 import { initGameDistribution, mockGameDistribution } from '~/gameDistribution'
 
@@ -15,7 +16,17 @@ Phaser.GameObjects.GameObjectFactory.register('buttonContainer', function (
 })
 
 
-// window.game = initGame()
+Phaser.GameObjects.GameObjectFactory.register('coin', function (
+    x: number,
+    y: number,
+    frame: string,
+    numero: string,
+
+) {
+    return this.displayList.add(new Coin(this.scene, x, y, frame, numero))
+})
+
+
 window.game = initGame()
 if (isDebug ) {
     mockGameDistribution()
