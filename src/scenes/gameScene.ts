@@ -34,11 +34,15 @@ export class GameScene extends Phaser.Scene {
     public turn = 0
     public timer = 0
     public quota = 1
-    public background: Phaser.GameObjects.Image
-    public coins: Array<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    public entries: Array<number> = []
+
+    public coins: Array<number> = new Array(12).fill(0)
+    public coinsAlive: Array<boolean> = new Array(12).fill(true)
+    public coinsActive: Array<boolean> = new Array(12).fill(false)
+    public entries: Array<number> = new Array(4).fill(0)
+    public entriesActive: Array<boolean> = new Array(4).fill(false)
     public ratioCreateCoins = 1
     public sphere: number
+    public background: Phaser.GameObjects.Image
     public coinsContainer: Phaser.GameObjects.Container
     public entriesContainer: Phaser.GameObjects.Container
     public boardContainer: Phaser.GameObjects.Container
@@ -149,6 +153,9 @@ export class GameScene extends Phaser.Scene {
             currentPosition = [newPositionX, newPositionY]
             const coin = this.add.coin(newPositionX, newPositionY, 'coin', numero) as Coin
             coin.background.setDisplaySize(Config.scenes.game.coinSize, Config.scenes.game.coinSize)
+            coin.background
+                .setInteractive({ cursor: 'pointer' })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.handleClickedCoin(index), this)
             return coin
         })
         this.coinsContainer = this.add.container(0, 0, this.coinsGraphics)
@@ -174,6 +181,10 @@ export class GameScene extends Phaser.Scene {
             currentPosition = [newPositionX, newPositionY]
             const coin = this.add.coin(newPositionX, newPositionY, 'entry', numero) as Coin
             coin.background.setDisplaySize(Config.scenes.game.entrySize, Config.scenes.game.entrySize)
+            coin.background
+                .setInteractive({ cursor: 'pointer' })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.handleClickedEntry(index), this)
+
             return coin
         })
         this.entriesContainer = this.add
@@ -195,4 +206,60 @@ export class GameScene extends Phaser.Scene {
             this.scale.height / 2 - Config.scenes.game.boardWidth / 2
         )
     }
+
+    handleClickedCoin(index: number) {
+        this.coinsActive[index] = true
+        this.handleClicked()
+    }
+
+    handleClickedEntry(index: number) {
+        this.entriesActive[index] = true
+        this.handleClicked()
+    }
+
+    handleClicked() {
+        if(this.isWinTurn()) {
+            this.handleWinTurn()
+        }
+        if(this.isAllSphereActive()) {
+            this.handleLoseTurn()
+        }
+    }
+
+    get total(): number {
+        const activeCoins = this.coins.filter((_coin: number, index: number) => this.coinsActive[index])
+        const activeEntries = this.entries.filter((_coin: number, index: number) => this.entriesActive[index])
+
+        return (
+            activeCoins.reduce((previous: number, current: number) => previous + current, 0) +
+            activeEntries.reduce((previous: number, current: number) => previous + current, 0)
+        )
+    }
+
+    isWinTurn() {
+        console.log(this.total)
+        console.log(this.sphere)
+        console.log(this.total % this.sphere === 0)
+        return this.total % this.sphere === 0
+    }
+    
+    isAllSphereActive() {
+        const hasNoCoins = this.coinsActive.every((coinActive) => coinActive)
+        const hasNoEntries = this.entriesActive.every((entryActive) => entryActive)
+        return hasNoCoins && hasNoEntries
+    }
+    
+    handleWinTurn() {
+        console.log('win turn')
+    }
+
+    handleLoseTurn() {
+        console.log('lose turn')
+    }
+    
+    nextTurn() {
+        console.log('nex turn')
+    }
+
+    
 }
