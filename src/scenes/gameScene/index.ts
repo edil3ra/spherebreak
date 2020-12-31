@@ -1,7 +1,7 @@
 import { Config } from '~/config'
-import { Coin } from '~/entities/Coin'
 import { Difficulty, GameConfig, GameInfo } from '~/models'
-import { Board } from '~/scenes/gameScene/boardContainer'
+import { Board } from '~/scenes/gameScene/board'
+import { BoardGame } from './boardGame'
 
 function difficultyToGameInfo(difficulty: Difficulty): GameInfo {
     let gameInfo: GameInfo
@@ -45,6 +45,7 @@ export class GameScene extends Phaser.Scene {
     public sphere: number
     public background: Phaser.GameObjects.Image
     public board: Board
+    public boardGame: BoardGame
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -67,6 +68,7 @@ export class GameScene extends Phaser.Scene {
         this.maxQuota = initialGameInfo.quota
 
         this.board = new Board(this)
+        this.boardGame = new BoardGame(this)
         this.setEntries()
         this.setCoinsAfterTurn()
         this.setSphereAfterTurn()
@@ -75,6 +77,7 @@ export class GameScene extends Phaser.Scene {
     create() {
         this.setBackground()
         this.board.create()
+        this.boardGame.create()
     }
 
     setBackground() {
@@ -103,7 +106,6 @@ export class GameScene extends Phaser.Scene {
         this.sphere = Phaser.Math.RND.integerInRange(1, 9)
     }
 
-    
     handleClickedCoin(index: number) {
         this.coinsActive[index] = true
         this.handleClicked()

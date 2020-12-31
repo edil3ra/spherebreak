@@ -42,6 +42,7 @@ export class BootScene extends Phaser.Scene {
         this.load.image('background', 'assets/images/background-main.jpg')
         this.load.image('menuButton', 'assets/images/button_rectangleWood.png')
         this.load.image('banner', 'assets/images/bannerModern.png')
+        this.load.image('boardBackground', 'assets/images/gameInfoPannel.png')
         
         this.load.image('entry', 'assets/images/coin-entry.gif')
         this.load.image('coin', 'assets/images/coin.gif')
