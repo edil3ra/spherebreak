@@ -32,10 +32,8 @@ export class GameScene extends Phaser.Scene {
     public maxTurn: number
     public maxTimer: number
     public maxQuota: number
-    public turn = 0
-    public timer = 0
-    public quota = 1
-
+    public comboMultipleGoal: number | null 
+    public comboCountGoal: number | null
     public coins: Array<number> = new Array(12).fill(0)
     public coinsAlive: Array<boolean> = new Array(12).fill(true)
     public coinsActive: Array<boolean> = new Array(12).fill(false)
@@ -62,10 +60,33 @@ export class GameScene extends Phaser.Scene {
             false
         )
 
+        this.data.set('turn', 0)
+        this.data.set('timer', 0)
+        this.data.set('quota', 0)
+        this.data.set('comboMultiple', 0)
+        this.data.set('comboCount', 0)
+
+
+        this.events.on('changedata-turn', (_scene: GameScene, value: number) => {
+            this.boardGame.setTurnText(value)
+        })
+
+        this.events.on('changedata-timer', (_scene: GameScene, value: number) => {
+            this.boardGame.setTimerText(value)
+        })
+
+        this.events.on('changedata-quota', (_scene: GameScene, value: number) => {
+            this.boardGame.setQuotaText(value)
+        })
+
+        
         const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
         this.maxTimer = initialGameInfo.timer
         this.maxTurn = initialGameInfo.turn
         this.maxQuota = initialGameInfo.quota
+        this.comboMultipleGoal = null
+        this.comboCountGoal = null
+        
 
         this.board = new Board(this)
         this.boardGame = new BoardGame(this)
@@ -123,6 +144,7 @@ export class GameScene extends Phaser.Scene {
         if (this.isAllSphereActive()) {
             this.handleLoseTurn()
         }
+        console.log(this.displayCombo())
     }
 
     get total(): number {
@@ -133,6 +155,30 @@ export class GameScene extends Phaser.Scene {
             activeCoins.reduce((previous: number, current: number) => previous + current, 0) +
             activeEntries.reduce((previous: number, current: number) => previous + current, 0)
         )
+    }
+
+    get comboCountCurrent(): number {
+        const activeCoins = this.coins.filter((_coin: number, index: number) => this.coinsActive[index])
+        const activeEntries = this.entries.filter((_coin: number, index: number) => this.entriesActive[index])
+        return activeCoins.length + activeEntries.length
+    }
+
+    get comboMultipleCurrent(): number {
+        return Math.floor(this.total / this.sphere)
+    }
+
+    getCombo(comboKey: string): number {
+        const combo =  this.data.get(comboKey)
+        if(combo === 0) {
+            return 0
+        } else {
+            return Math.pow(2, combo - 1) 
+        }
+    }
+
+
+    get point(): number {
+        return 1 + this.getCombo('comboCount') + this.getCombo('comboMultiple')
     }
 
     isWinTurn() {
@@ -146,14 +192,50 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleWinTurn() {
-        console.log('win turn')
+        if(this.comboMultipleGoal === null) {
+            this.comboMultipleGoal = this.comboMultipleCurrent
+        } else {
+            if(this.comboMultipleGoal === this.comboMultipleCurrent) {
+                this.data.inc('comboMultiple')
+            }else {
+                this.comboMultipleGoal = null
+                this.data.set('comboMultiple', 0)
+            }
+        }
+
+        if(this.comboCountGoal === null) {
+            this.comboCountGoal = this.comboCountCurrent
+        } else {
+            if(this.comboCountGoal === this.comboCountCurrent) {
+                this.data.inc('comboMultiple')
+            }else {
+                this.comboCountGoal = null
+                this.data.set('comboMultiple', 0)
+            }
+        }
+        this.data.set('quota', this.data.get('quota') + this.point)
+        this.finishTurn()
     }
 
     handleLoseTurn() {
-        console.log('lose turn')
+        this.comboMultipleGoal = null
+        this.comboCountGoal = null
+        this.data.set('comboMultiple', 0);
+        this.data.set('comboCount', 0)
+        this.finishTurn()
     }
 
-    nextTurn() {
-        console.log('nex turn')
+    finishTurn() {
+        this.data.set('turn', this.data.get('turn') + 1)
+    }
+
+    displayCombo() {
+        return({
+            comboMultipleGoal: this.comboMultipleGoal,
+            comboCountGoal: this.comboCountGoal,
+            comboMultipleCurrent: this.comboMultipleCurrent,
+            comboCountCurrent: this.comboCountCurrent,
+            point: this.point,
+        })
     }
 }

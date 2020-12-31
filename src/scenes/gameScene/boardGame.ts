@@ -62,7 +62,6 @@ export class BoardGame {
     }
 
 
-
     setTurnText(turn: number) {
         this.turnText.setText(`Turn         ${turn}/${this.scene.maxTurn}`)
     }

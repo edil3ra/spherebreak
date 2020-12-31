@@ -27,7 +27,6 @@ export class BootScene extends Phaser.Scene {
             this
         )
 
-        // delete bar graphics, when loading complete
         this.load.on(
             'complete',
             () => {
@@ -63,7 +62,4 @@ export class BootScene extends Phaser.Scene {
         )
         this.progressBar = this.add.graphics()
     }
-    
-
-
 }
