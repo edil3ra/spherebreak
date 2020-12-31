@@ -14,47 +14,65 @@ const LEFT_PADDING = 40
 const OFFSET_ITEM = 20
 
 export class BoardGame {
-  public scene: GameScene
+    public scene: GameScene
     public background: Phaser.GameObjects.Image
     public boardGameContainer: Phaser.GameObjects.Container
     public turnText: Phaser.GameObjects.Text
     public timerText: Phaser.GameObjects.Text
     public quotaText: Phaser.GameObjects.Text
+    
 
     constructor(scene: GameScene) {
         this.scene = scene
     }
 
     public create() {
-        this.setBackground()
-        this.setTurnText()
-        this.setTimerText()
-        this.setQuotaText()
+        this.initBackground()
+        this.initTurnText()
+        this.initTimerText()
+        this.initQuotaText()
     }
 
-    setBackground() {
+    initBackground() {
         this.background = this.scene.add.image(0, 0, 'boardBackground' )
             .setOrigin(0, 0)
             .setSize(180, 140)
             .setDisplaySize(180, 140)
     }
 
-    setTurnText() {
-        this.turnText = this.scene.add.text(0, 0, "Turn         6/15")
+    initTurnText() {
+        this.turnText = this.scene.add.text(0, 0, '')
             .setPosition(LEFT_PADDING, TOP_PADDING)
             .setStyle(textConfigStyle)
+        this.setTurnText(0)
     }
 
-    setTimerText() {
-        this.timerText = this.scene.add.text(0, 0, "Time        0:58")
+    initTimerText() {
+        this.timerText = this.scene.add.text(0, 0, '')
             .setPosition(LEFT_PADDING, TOP_PADDING + OFFSET_ITEM)
             .setStyle(textConfigStyle)
+        this.setTimerText(this.scene.maxTimer)
     }
 
-    setQuotaText() {
-        this.quotaText = this.scene.add.text(0, 0, "Quota      6/20")
+    initQuotaText() {
+        this.quotaText = this.scene.add.text(0, 0, '')
             .setPosition(LEFT_PADDING, TOP_PADDING + OFFSET_ITEM * 2)
             .setStyle(textConfigStyle)
+        this.setQuotaText(0)
+    }
+
+
+
+    setTurnText(turn: number) {
+        this.turnText.setText(`Turn         ${turn}/${this.scene.maxTurn}`)
+    }
+
+    setTimerText(timer: number) {
+        this.timerText.setText(`Time        ${timer}`)
+    }
+
+    setQuotaText(quota: number) {
+        this.quotaText.setText(`Quota      ${quota}/${this.scene.maxQuota}`)
     }
 
     setBoardContainer() {
