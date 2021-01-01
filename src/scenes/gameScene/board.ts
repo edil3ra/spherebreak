@@ -38,7 +38,7 @@ export class Board {
             Config.scenes.game.sphereSize,
             Config.scenes.game.sphereSize,
             'sphere',
-            this.scene.sphere
+            0
         )
     }
 
@@ -76,7 +76,7 @@ export class Board {
                 numero
             ) as Coin
             coin.background
-                .setInteractive({ cursor: 'pointer' })
+                .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.scene.handleClickedCoin(index), this)
             return coin
         })

@@ -28,6 +28,66 @@ function difficultyToGameInfo(difficulty: Difficulty): GameInfo {
     return gameInfo
 }
 
+class GameDataManager extends Phaser.Data.DataManager {
+    constructor(scene: GameScene) {
+        super(scene)
+
+        this.set('turn', 0)
+        this.set('timer', 0)
+        this.set('quota', 0)
+        this.set('comboMultiple', 0)
+        this.set('comboCount', 0)
+        this.set('sphere', 0)
+    }
+    
+    public get turn(): number {
+        return this.get('turn') as number
+    }
+
+    public get timer(): number {
+        return this.get('turn') as number
+    }
+
+    public get quota(): number {
+        return this.get('turn') as number
+    }
+
+    public get comboCount(): number {
+        return this.get('turn') as number
+    }
+
+    public get sphere(): number {
+        return this.get('turn') as number
+    }
+
+    public set turn(value: number) {
+        this.set('turn', value)
+    }
+
+    public set timer(value: number) {
+        this.set('timer', value)
+    }
+
+    public set quota(value: number) {
+        this.set('quota', value)
+    }
+
+    public set comboMultiple(value: number) {
+        this.set('comboMultiple', value)
+    }
+
+    public set comboCount(value: number) {
+        this.set('comboCount', value)
+    }
+
+    public set sphere(value: number) {
+        this.set('sphere', value)
+    }
+
+    
+}
+
+
 export class GameScene extends Phaser.Scene {
     public maxTurn: number
     public maxTimer: number
@@ -39,11 +99,13 @@ export class GameScene extends Phaser.Scene {
     public coinsActive: Array<boolean> = new Array(12).fill(false)
     public entries: Array<number> = new Array(4).fill(0)
     public entriesActive: Array<boolean> = new Array(4).fill(false)
-    public ratioCreateCoins = 1
     public sphere: number
+    public ratioCreateCoins = 1
     public background: Phaser.GameObjects.Image
     public board: Board
     public boardGame: BoardGame
+    public data: GameDataManager
+
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -60,13 +122,12 @@ export class GameScene extends Phaser.Scene {
             false
         )
 
-        this.data.set('turn', 0)
-        this.data.set('timer', 0)
-        this.data.set('quota', 0)
-        this.data.set('comboMultiple', 0)
-        this.data.set('comboCount', 0)
 
-
+        this.events.on('changedata-sphere', (_scene: GameScene, value: number) => {
+            this.board.sphereGraphics.setText(value)
+            
+        })
+        
         this.events.on('changedata-turn', (_scene: GameScene, value: number) => {
             this.boardGame.setTurnText(value)
         })
@@ -78,6 +139,7 @@ export class GameScene extends Phaser.Scene {
         this.events.on('changedata-quota', (_scene: GameScene, value: number) => {
             this.boardGame.setQuotaText(value)
         })
+        
 
         
         const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
@@ -92,13 +154,15 @@ export class GameScene extends Phaser.Scene {
         this.boardGame = new BoardGame(this)
         this.setEntries()
         this.setCoinsAfterTurn()
-        this.setSphereAfterTurn()
+
     }
 
     create() {
         this.setBackground()
         this.board.create()
         this.boardGame.create()
+        this.data.set('sphere', this.pickNewRandomNumber())
+
     }
 
     setBackground() {
@@ -123,8 +187,8 @@ export class GameScene extends Phaser.Scene {
         this.ratioCreateCoins = Phaser.Math.RND.integerInRange(2, 10) / 10
     }
 
-    setSphereAfterTurn() {
-        this.sphere = Phaser.Math.RND.integerInRange(1, 9)
+    pickNewRandomNumber() {
+        return Phaser.Math.RND.integerInRange(1, 9)
     }
 
     handleClickedCoin(index: number) {
@@ -196,10 +260,10 @@ export class GameScene extends Phaser.Scene {
             this.comboMultipleGoal = this.comboMultipleCurrent
         } else {
             if(this.comboMultipleGoal === this.comboMultipleCurrent) {
-                this.data.inc('comboMultiple')
+                this.data.comboMultiple = this.data.comboMultiple + 1
             }else {
                 this.comboMultipleGoal = null
-                this.data.set('comboMultiple', 0)
+                this.data.comboMultiple = 0
             }
         }
 
@@ -207,26 +271,27 @@ export class GameScene extends Phaser.Scene {
             this.comboCountGoal = this.comboCountCurrent
         } else {
             if(this.comboCountGoal === this.comboCountCurrent) {
-                this.data.inc('comboMultiple')
+                this.data.comboMultiple = this.data.comboMultiple + 1
             }else {
                 this.comboCountGoal = null
-                this.data.set('comboMultiple', 0)
+                this.data.comboMultiple = 0
             }
         }
-        this.data.set('quota', this.data.get('quota') + this.point)
+        this.data.quota = this.data.quota + this.point
         this.finishTurn()
     }
 
     handleLoseTurn() {
         this.comboMultipleGoal = null
         this.comboCountGoal = null
-        this.data.set('comboMultiple', 0);
-        this.data.set('comboCount', 0)
+        this.data.comboMultiple = 0
+        this.data.comboCount = 0
         this.finishTurn()
     }
 
     finishTurn() {
-        this.data.set('turn', this.data.get('turn') + 1)
+        this.data.turn = this.data.turn + 1
+        this.data.sphere = this.pickNewRandomNumber()
     }
 
     displayCombo() {

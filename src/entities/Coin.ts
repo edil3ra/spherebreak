@@ -1,6 +1,6 @@
 interface Icoin {
     setFrame(frame: string): this
-    setNumero(text: string): this
+    setText(text: number): this
 }
 
 const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
@@ -11,7 +11,7 @@ const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
 }
 
 export class Coin extends Phaser.GameObjects.Container implements Icoin {
-    public numero: Phaser.GameObjects.Text
+    public text: Phaser.GameObjects.Text
     public background: Phaser.GameObjects.Image
 
     constructor(
@@ -25,14 +25,14 @@ export class Coin extends Phaser.GameObjects.Container implements Icoin {
     ) {
         super(scene, x, y)
         this.background = scene.add.image(0, 0, frame).setOrigin(0, 0)
-        this.numero = scene.add.text(0, 0, numero, numeroStyle)
+        this.text = scene.add.text(0, 0, numero, numeroStyle)
 
         this.background.setDisplaySize(width, height)
         this.background.setSize(width, height)
-        Phaser.Display.Align.In.Center(this.numero, this.background)
+        Phaser.Display.Align.In.Center(this.text, this.background)
 
         this.add(this.background)
-        this.add(this.numero)
+        this.add(this.text)
     }
 
     setFrame(frame: string) {
@@ -40,8 +40,8 @@ export class Coin extends Phaser.GameObjects.Container implements Icoin {
         return this
     }
 
-    setNumero(text: string) {
-        this.numero.setText(text)
+    setText(text: number) {
+        this.text.setText(`${text}`)
         return this
     }
 }
