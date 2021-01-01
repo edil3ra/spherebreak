@@ -51,7 +51,7 @@ export class BoardGame {
         this.timerText = this.scene.add.text(0, 0, '')
             .setPosition(LEFT_PADDING, TOP_PADDING + OFFSET_ITEM)
             .setStyle(textConfigStyle)
-        this.setTimerText(this.scene.maxTimer)
+        this.setTimerText(this.scene.data.maxTimer)
     }
 
     initQuotaText() {
@@ -63,7 +63,7 @@ export class BoardGame {
 
 
     setTurnText(turn: number) {
-        this.turnText.setText(`Turn         ${turn}/${this.scene.maxTurn}`)
+        this.turnText.setText(`Turn         ${turn}/${this.scene.data.maxTurn}`)
     }
 
     setTimerText(timer: number) {
@@ -71,7 +71,7 @@ export class BoardGame {
     }
 
     setQuotaText(quota: number) {
-        this.quotaText.setText(`Quota      ${quota}/${this.scene.maxQuota}`)
+        this.quotaText.setText(`Quota      ${quota}/${this.scene.data.maxQuota}`)
     }
 
     setBoardContainer() {

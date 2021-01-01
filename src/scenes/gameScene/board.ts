@@ -38,7 +38,7 @@ export class Board {
             Config.scenes.game.sphereSize,
             Config.scenes.game.sphereSize,
             'sphere',
-            0
+            this.scene.data.sphere,
         )
     }
 
@@ -59,7 +59,7 @@ export class Board {
         ]
 
         let currentPosition = [0, 0]
-        this.coinsGraphics = this.scene.coins.map((numero: number, index: number) => {
+        this.coinsGraphics = this.scene.data.coins.map((numero: number, index: number) => {
             const [positionX, positionY] = currentPosition
             const [directionX, directionY] = directions[index]
             const newPositionX =
@@ -94,7 +94,7 @@ export class Board {
 
         let currentPosition = [0, 0]
 
-        this.entriesGraphics = this.scene.entries.map((numero: number, index: number) => {
+        this.entriesGraphics = this.scene.data.entries.map((numero: number, index: number) => {
             const [positionX, positionY] = currentPosition
             const [directionX, directionY] = directions[index]
             const newPositionX =
