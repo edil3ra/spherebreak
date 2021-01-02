@@ -1,5 +1,6 @@
 import { Config } from '~/config'
-import { Difficulty, GameConfig, GameInfo } from '~/models'
+import { Coin } from '~/entities/Coin'
+import { CoinState, Difficulty, GameConfig, GameInfo } from '~/models'
 import { Board } from '~/scenes/gameScene/board'
 import { BoardGame } from './boardGame'
 import { GameDataManager } from './gameDataManager'
@@ -31,11 +32,14 @@ function difficultyToGameInfo(difficulty: Difficulty): GameInfo {
 
 export class GameScene extends Phaser.Scene {
     public data: GameDataManager
+    public coinClickedIndex: number
+    public entryClickedIndex: number
     public background: Phaser.GameObjects.Image
     public board: Board
     public boardGame: BoardGame
-
-
+    public timerSyncCoin: Phaser.Time.TimerEvent
+    public coinsStateChanged: Array<[CoinState, Coin]>
+    
     constructor() {
         super({ key: Config.scenes.keys.game })
     }
@@ -51,11 +55,19 @@ export class GameScene extends Phaser.Scene {
             false
         )
 
-
         this.initData(gameConfig)
         this.board = new Board(this)
         this.boardGame = new BoardGame(this)
+        this.coinsStateChanged = []
         this.registerEvents()
+
+        this.timerSyncCoin = this.time.addEvent({delay: 400, callback: () => {
+            this.coinsStateChanged.forEach((coinStateChanged: [CoinState, Coin]) => {
+                const [state, coinGraphics] = coinStateChanged
+                coinGraphics.setState(state)
+            })
+            this.coinsStateChanged = []
+        }, loop: true})
     }
 
     initData(gameConfig: GameConfig) {
@@ -68,14 +80,14 @@ export class GameScene extends Phaser.Scene {
         this.data.comboCountGoal = null
         this.data.entries = [1, 2, 3, 4]
         this.data.sphere = this.data.pickNewRandomNumber()
-        this.data.setCoinsAfterTurn()        
+        this.data.setCoinsAfterTurn()
     }
 
     registerEvents() {
         this.events.on('changedata-sphere', (_scene: GameScene, value: number) => {
             this.board.sphereGraphics.setText(value)
         })
-        
+
         this.events.on('changedata-turn', (_scene: GameScene, value: number) => {
             this.boardGame.setTurnText(value)
         })
@@ -87,8 +99,22 @@ export class GameScene extends Phaser.Scene {
         this.events.on('changedata-quota', (_scene: GameScene, value: number) => {
             this.boardGame.setQuotaText(value)
         })
+
+        this.events.on('changedata-coinsActive', (_scene: GameScene, _coins: Array<number>) => {
+            this.coinsStateChanged.push([
+                'active',
+                this.board.coinsGraphics[this.coinClickedIndex]
+            ])
+        })
+        
+        this.events.on('changedata-entriesActive', (_scene: GameScene, _coins: Array<number>) => {
+            this.coinsStateChanged.push([
+                'active',
+                this.board.entriesGraphics[this.entryClickedIndex]
+            ])
+        })
     }
-    
+
     create() {
         this.setBackground()
         this.board.create()
@@ -104,15 +130,23 @@ export class GameScene extends Phaser.Scene {
 
     handleClickedCoin(index: number) {
         this.data.coinsActive[index] = true
-        this.handleClicked()
+        this.coinClickedIndex = index
+        this.data.coinsActive = this.data.coinsActive.map((value, loopingIndex) =>
+            index === loopingIndex ? true : value
+        )
+        this.checkVictory()
     }
 
     handleClickedEntry(index: number) {
         this.data.entriesActive[index] = true
-        this.handleClicked()
+        this.entryClickedIndex = index
+        this.data.entriesActive = this.data.entriesActive.map((value, loopingIndex) =>
+            index === loopingIndex ? true : value
+        )
+        this.checkVictory()
     }
 
-    handleClicked() {
+    checkVictory() {
         if (this.data.isWinTurn()) {
             this.data.handleWinTurn()
         }
@@ -120,6 +154,4 @@ export class GameScene extends Phaser.Scene {
             this.data.handleLoseTurn()
         }
     }
-
 }
-

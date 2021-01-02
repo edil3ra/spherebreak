@@ -1,8 +1,6 @@
-import { Config } from "~/config"
-import { Coin } from "~/entities/Coin"
-import { GameScene } from "~/scenes/gameScene"
-
-
+import { Config } from '~/config'
+import { Coin } from '~/entities/Coin'
+import { GameScene } from '~/scenes/gameScene'
 
 export class Board {
     public scene: GameScene
@@ -12,7 +10,7 @@ export class Board {
     public sphereGraphics: Coin
     public coinsGraphics: Array<Coin>
     public entriesGraphics: Array<Coin>
-    
+
     constructor(scene: GameScene) {
         this.scene = scene
     }
@@ -21,24 +19,23 @@ export class Board {
         this.setSphereGraphics()
         this.setCoinGraphicsAndContainer()
         this.setEntriesGraphicsAndContainer()
-        this.setBoardContainer()        
+        this.setBoardContainer()
     }
-
 
     setSphereGraphics() {
         this.sphereGraphics = this.scene.add.coin(
             Config.scenes.game.coinPadding +
                 Config.scenes.game.coinSize +
-                Config.scenes.game.entryPadding +
-                Config.scenes.game.entrySize / 2,
+                Config.scenes.game.entrySize * 0.5 +
+                4,
             Config.scenes.game.coinPadding +
                 Config.scenes.game.coinSize +
-                Config.scenes.game.entryPadding +
-                Config.scenes.game.entrySize / 2,
+                Config.scenes.game.entrySize * 0.5 +
+                6,
             Config.scenes.game.sphereSize,
             Config.scenes.game.sphereSize,
             'sphere',
-            this.scene.data.sphere,
+            this.scene.data.sphere
         )
     }
 
@@ -77,12 +74,15 @@ export class Board {
             ) as Coin
             coin.background
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.scene.handleClickedCoin(index), this)
+                .on(
+                    Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
+                    () => this.scene.handleClickedCoin(index),
+                    this
+                )
             return coin
         })
         this.coinsContainer = this.scene.add.container(0, 0, this.coinsGraphics)
     }
-
 
     setEntriesGraphicsAndContainer() {
         const directions = [
@@ -111,8 +111,12 @@ export class Board {
                 numero
             ) as Coin
             coin.background
-                .setInteractive({ cursor: 'pointer' })
-                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.scene.handleClickedEntry(index), this)
+                .setInteractive({ cursor: 'pointer', pixelPerfect: true })
+                .on(
+                    Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
+                    () => this.scene.handleClickedEntry(index),
+                    this
+                )
 
             return coin
         })
@@ -135,9 +139,12 @@ export class Board {
 
     setBoardContainerPosition() {
         this.boardContainer.setPosition(
-            this.scene.scale.width / 2 - Config.scenes.game.boardWidth / 2,
-            this.scene.scale.height / 2 - Config.scenes.game.boardHeight / 2
+            this.scene.scale.width / 2 -
+                Config.scenes.game.boardWidth / 2 +
+                Config.scenes.game.coinSize / 2,
+            this.scene.scale.height / 2 -
+                Config.scenes.game.boardHeight / 2 +
+                Config.scenes.game.coinSize / 2
         )
     }
-    
 }

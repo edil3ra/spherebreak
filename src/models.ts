@@ -10,3 +10,6 @@ export type GameInfo = {
 export type GameConfig =  {
     difficulty: Difficulty
 }
+
+
+export type CoinState = 'alive' | 'dead' | 'active'
