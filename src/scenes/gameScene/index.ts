@@ -39,7 +39,7 @@ export class GameScene extends Phaser.Scene {
     public boardGame: BoardGame
     public timerSyncCoin: Phaser.Time.TimerEvent
     public coinsStateChanged: Array<[CoinState, Coin]>
-    
+
     constructor() {
         super({ key: Config.scenes.keys.game })
     }
@@ -61,13 +61,17 @@ export class GameScene extends Phaser.Scene {
         this.coinsStateChanged = []
         this.registerEvents()
 
-        this.timerSyncCoin = this.time.addEvent({delay: 400, callback: () => {
-            this.coinsStateChanged.forEach((coinStateChanged: [CoinState, Coin]) => {
-                const [state, coinGraphics] = coinStateChanged
-                coinGraphics.setState(state)
-            })
-            this.coinsStateChanged = []
-        }, loop: true})
+        this.timerSyncCoin = this.time.addEvent({
+            delay: 400,
+            callback: () => {
+                this.coinsStateChanged.forEach((coinStateChanged: [CoinState, Coin]) => {
+                    const [state, coinGraphics] = coinStateChanged
+                    coinGraphics.setState(state)
+                })
+                this.coinsStateChanged = []
+            },
+            loop: true,
+        })
     }
 
     initData(gameConfig: GameConfig) {
@@ -101,17 +105,17 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on('changedata-coinsActive', (_scene: GameScene, _coins: Array<number>) => {
-            this.coinsStateChanged.push([
-                'active',
-                this.board.coinsGraphics[this.coinClickedIndex]
-            ])
+            const activeChanged = this.data.coinsActiveIndexesChanged.map((index) => {
+                return ['active', this.board.coinsGraphics[index]]
+            })
+            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, Coin]>]
         })
-        
+
         this.events.on('changedata-entriesActive', (_scene: GameScene, _coins: Array<number>) => {
-            this.coinsStateChanged.push([
-                'active',
-                this.board.entriesGraphics[this.entryClickedIndex]
-            ])
+            const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
+                return ['active', this.board.entriesGraphics[index]]
+            })
+            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, Coin]>]
         })
     }
 
@@ -129,7 +133,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedCoin(index: number) {
-        this.data.coinsActive[index] = true
         this.coinClickedIndex = index
         this.data.coinsActive = this.data.coinsActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
@@ -138,7 +141,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedEntry(index: number) {
-        this.data.entriesActive[index] = true
         this.entryClickedIndex = index
         this.data.entriesActive = this.data.entriesActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value

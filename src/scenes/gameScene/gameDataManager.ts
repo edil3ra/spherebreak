@@ -1,6 +1,10 @@
 import { GameScene } from '~/scenes/gameScene'
 
 export class GameDataManager extends Phaser.Data.DataManager {
+    public coinsActiveIndexesChanged: Array<number>
+    public coinsAliveIndexesChanged: Array<number>
+    public entriesActiveIndexesChanged: Array<number>
+
     constructor(scene: GameScene) {
         super(scene)
 
@@ -17,11 +21,14 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.ratioCreateCoins = 0
         this.sphere = 0
         this.coins = new Array(12).fill(0)
-        this.coinsAlive = new Array(12).fill(false)
-        this.coinsActive = new Array(12).fill(false)
-        this.entries = new Array(12).fill(0)
-        this.entriesActive = new Array(12).fill(false)
-
+        // this.coinsAlive = new Array(12).fill(false)
+        this.set('coinsAlive', new Array(12).fill(false))
+        this.set('coinsActive', new Array(12).fill(false))
+        this.entries = new Array(4).fill(0)
+        this.set('entriesActive', new Array(4).fill(false))
+        this.coinsActiveIndexesChanged = []
+        this.coinsAliveIndexesChanged = []
+        this.entriesActiveIndexesChanged = []
     }
 
     get total(): number {
@@ -63,7 +70,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
     get point(): number {
         return 1 + this.comboCountPoint + this.comboMultiplePoint
     }
-    
+
     isWinTurn() {
         return this.total % this.sphere === 0
     }
@@ -111,6 +118,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
     finishTurn() {
         this.turn = this.turn + 1
         this.sphere = this.pickNewRandomNumber()
+        this.entriesActive = this.entriesActive.map((_) => false)
     }
 
     pickNewRandomNumber() {
@@ -126,6 +134,14 @@ export class GameDataManager extends Phaser.Data.DataManager {
                 this.coinsAlive[index] = true
             }
         }
+    }
+
+    trackIndexesChanged(previous: Array<any>, current: Array<any>) {
+        return Array.from(Array(previous.length).keys()).reduce((indexes: Array<number>, index: number) => {
+            const previousCoinAlive = previous[index]
+            const currentCoinAlive = current[index]
+            return previousCoinAlive !== currentCoinAlive ? [...indexes, index] : indexes
+        }, [])
     }
 
     get turn(): number {
@@ -248,19 +264,25 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.set('coins', value)
     }
 
-    set coinsAlive(value: Array<boolean>) {
-        this.set('coinsAlive', value)
+    set coinsAlive(currentCoinsAlive: Array<boolean>) {
+        this.coinsAliveIndexesChanged = this.trackIndexesChanged([...this.coinsAlive], currentCoinsAlive)
+        this.set('coinsAlive', currentCoinsAlive)
     }
 
-    set coinsActive(value: Array<boolean>) {
-        this.set('coinsActive', value)
+    set coinsActive(currentCoinsActive: Array<boolean>) {
+        this.coinsActiveIndexesChanged = this.trackIndexesChanged([...this.coinsActive], currentCoinsActive)
+        this.set('coinsActive', currentCoinsActive)
     }
 
     set entries(value: Array<number>) {
         this.set('entries', value)
     }
 
-    set entriesActive(value: Array<boolean>) {
-        this.set('entriesActive', value)
+    set entriesActive(curentEntriesActive: Array<boolean>) {
+        this.entriesActiveIndexesChanged = this.trackIndexesChanged(
+            [...this.entriesActive],
+            curentEntriesActive
+        )
+        this.set('entriesActive', curentEntriesActive)
     }
 }
