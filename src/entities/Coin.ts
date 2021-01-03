@@ -18,6 +18,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
     public state: CoinState
     public tweenFlipping: Phaser.Tweens.Tween
     public tweenRevive: Phaser.Tweens.Timeline
+    public tweenKill: Phaser.Tweens.Timeline
     
     constructor(
         scene: Phaser.Scene,
@@ -67,6 +68,23 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
                 duration: 300,
             }],
         })
+
+        this.tweenKill = this.scene.tweens.timeline({
+            targets: this,
+            ease: 'Sine.easeInOut',
+            paused: true,
+            tweens: [{
+                scaleX: 1.1,
+                scaleY: 1.1,
+                duration: 100,
+                alpha: 1
+            },{
+                scaleX: 0,
+                scaleY: 0,
+                alpha: 0,
+                duration: 300,
+            }],
+        })
     }
 
     setFrame(frame: string) {
@@ -107,7 +125,4 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
     displayAlive() {
         this.tweenFlipping.pause()
     }
-
-
-    
 }

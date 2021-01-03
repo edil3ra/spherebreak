@@ -95,27 +95,52 @@ export class GameScene extends Phaser.Scene {
 
         this.events.on('changedata-coinsActive', (_scene: GameScene, _coins: Array<number>) => {
             const activeChanged = this.data.coinsActiveIndexesChanged.map((index) => {
-                return ['active', this.board.coinsGraphics[index]]
+                if (this.data.coinsActive[index]) {
+                    return ['active', this.board.coinsGraphics[index]]
+                } else {
+                    return ['alive', this.board.coinsGraphics[index]]
+                }
             })
-            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, CoinGraphics]>]
+            this.coinsStateChanged = [
+                ...this.coinsStateChanged,
+                ...(activeChanged as Array<[CoinState, CoinGraphics]>),
+            ]
         })
 
         this.events.on('changedata-entriesActive', (_scene: GameScene, _coins: Array<number>) => {
             const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
-                if(this.data.entriesActive[index]) {
+                if (this.data.entriesActive[index]) {
                     return ['active', this.board.entriesGraphics[index]]
                 } else {
                     return ['alive', this.board.entriesGraphics[index]]
                 }
             })
-            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, CoinGraphics]>]
+            this.coinsStateChanged = [
+                ...this.coinsStateChanged,
+                ...(activeChanged as Array<[CoinState, CoinGraphics]>),
+            ]
         })
 
+
+        this.events.on('changedata-coinsAlive', (_scene: GameScene, _coins: Array<number>) => {
+            const activeChanged = this.data.coinsAliveIndexesChanged.map((index) => {
+                if (this.data.coinsAlive[index]) {
+                    console.log('alive')
+                    return ['alive', this.board.coinsGraphics[index]]
+                } else {
+                    console.log('dead')
+                    return ['dead', this.board.coinsGraphics[index]]
+                }
+            })
+            this.coinsStateChanged = [
+                ...this.coinsStateChanged,
+                ...(activeChanged as Array<[CoinState, CoinGraphics]>),
+            ]
+        })
 
         this.events.on('changedata-sphere', () => {
             this.board.sphereGraphics.tweenRevive.play()
         })
-        
     }
 
     initTimerSyncCoin() {
@@ -129,10 +154,9 @@ export class GameScene extends Phaser.Scene {
                 this.coinsStateChanged = []
             },
             loop: true,
-        })        
+        })
     }
 
-    
     create() {
         this.setBackground()
         this.board.create()

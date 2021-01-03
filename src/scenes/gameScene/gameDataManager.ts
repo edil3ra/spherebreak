@@ -119,6 +119,15 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.turn = this.turn + 1
         this.sphere = this.pickNewRandomNumber()
         this.entriesActive = this.entriesActive.map((_) => false)
+        this.coinsActive = this.coinsActive.map((_) => false)
+        this.coinsAlive = this.coinsAlive.map((coin: boolean, index: number) => {
+            return this.coinsActiveIndexesChanged.findIndex((indexChanged) => indexChanged === index) !== -1
+                ? false
+                : coin
+        })
+        
+        console.log(this.coinsAliveIndexesChanged)
+        // console.log(this.coinsAlive)
     }
 
     pickNewRandomNumber() {
@@ -271,6 +280,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
 
     set coinsActive(currentCoinsActive: Array<boolean>) {
         this.coinsActiveIndexesChanged = this.trackIndexesChanged([...this.coinsActive], currentCoinsActive)
+        // console.log(this.coinsActiveIndexesChanged)
         this.set('coinsActive', currentCoinsActive)
     }
 
