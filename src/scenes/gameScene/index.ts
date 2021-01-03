@@ -1,5 +1,5 @@
 import { Config } from '~/config'
-import { Coin } from '~/entities/Coin'
+import { CoinGraphics } from '~/entities/Coin'
 import { CoinState, Difficulty, GameConfig, GameInfo } from '~/models'
 import { Board } from '~/scenes/gameScene/board'
 import { BoardGame } from './boardGame'
@@ -38,7 +38,7 @@ export class GameScene extends Phaser.Scene {
     public board: Board
     public boardGame: BoardGame
     public timerSyncCoin: Phaser.Time.TimerEvent
-    public coinsStateChanged: Array<[CoinState, Coin]>
+    public coinsStateChanged: Array<[CoinState, CoinGraphics]>
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -60,18 +60,7 @@ export class GameScene extends Phaser.Scene {
         this.boardGame = new BoardGame(this)
         this.coinsStateChanged = []
         this.registerEvents()
-
-        this.timerSyncCoin = this.time.addEvent({
-            delay: 400,
-            callback: () => {
-                this.coinsStateChanged.forEach((coinStateChanged: [CoinState, Coin]) => {
-                    const [state, coinGraphics] = coinStateChanged
-                    coinGraphics.setState(state)
-                })
-                this.coinsStateChanged = []
-            },
-            loop: true,
-        })
+        this.initTimerSyncCoin()
     }
 
     initData(gameConfig: GameConfig) {
@@ -108,17 +97,42 @@ export class GameScene extends Phaser.Scene {
             const activeChanged = this.data.coinsActiveIndexesChanged.map((index) => {
                 return ['active', this.board.coinsGraphics[index]]
             })
-            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, Coin]>]
+            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, CoinGraphics]>]
         })
 
         this.events.on('changedata-entriesActive', (_scene: GameScene, _coins: Array<number>) => {
             const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
-                return ['active', this.board.entriesGraphics[index]]
+                if(this.data.entriesActive[index]) {
+                    return ['active', this.board.entriesGraphics[index]]
+                } else {
+                    return ['alive', this.board.entriesGraphics[index]]
+                }
             })
-            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, Coin]>]
+            this.coinsStateChanged = [...this.coinsStateChanged, ...activeChanged as Array<[CoinState, CoinGraphics]>]
         })
+
+
+        this.events.on('changedata-sphere', () => {
+            this.board.sphereGraphics.tweenRevive.play()
+        })
+        
     }
 
+    initTimerSyncCoin() {
+        this.timerSyncCoin = this.time.addEvent({
+            delay: 400,
+            callback: () => {
+                this.coinsStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
+                    const [state, coinGraphics] = coinStateChanged
+                    coinGraphics.setState(state)
+                })
+                this.coinsStateChanged = []
+            },
+            loop: true,
+        })        
+    }
+
+    
     create() {
         this.setBackground()
         this.board.create()

@@ -1,7 +1,7 @@
 
 
 function setCoin() {
-    const CP = 14
+    const CP = 16
     const EP = 12
     const CS = 94
     const ES = 98

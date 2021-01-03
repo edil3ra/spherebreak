@@ -1,5 +1,5 @@
 import { Config } from '~/config'
-import { Coin } from '~/entities/Coin'
+import { CoinGraphics } from '~/entities/Coin'
 import { GameScene } from '~/scenes/gameScene'
 
 export class Board {
@@ -7,9 +7,9 @@ export class Board {
     public coinsContainer: Phaser.GameObjects.Container
     public entriesContainer: Phaser.GameObjects.Container
     public boardContainer: Phaser.GameObjects.Container
-    public sphereGraphics: Coin
-    public coinsGraphics: Array<Coin>
-    public entriesGraphics: Array<Coin>
+    public sphereGraphics: CoinGraphics
+    public coinsGraphics: Array<CoinGraphics>
+    public entriesGraphics: Array<CoinGraphics>
 
     constructor(scene: GameScene) {
         this.scene = scene
@@ -71,7 +71,7 @@ export class Board {
                 Config.scenes.game.coinSize,
                 'coin',
                 numero
-            ) as Coin
+            ) as CoinGraphics
             coin.background
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(
@@ -109,7 +109,7 @@ export class Board {
                 Config.scenes.game.entrySize,
                 'entry',
                 numero
-            ) as Coin
+            ) as CoinGraphics
             coin.background
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(

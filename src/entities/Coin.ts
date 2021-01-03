@@ -12,11 +12,12 @@ const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
     fontStyle: 'bold',
 }
 
-export class Coin extends Phaser.GameObjects.Container implements Icoin {
+export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin {
     public text: Phaser.GameObjects.Text
     public background: Phaser.GameObjects.Image
     public state: CoinState
     public tweenFlipping: Phaser.Tweens.Tween
+    public tweenRevive: Phaser.Tweens.Timeline
     
     constructor(
         scene: Phaser.Scene,
@@ -40,7 +41,7 @@ export class Coin extends Phaser.GameObjects.Container implements Icoin {
         this.add(this.text)
 
         this.tweenFlipping = this.scene.tweens.add({
-            targets: this,
+            targets: this.background,
             scaleX: 0.25,
             scaleY: 0.5,
             ease: 'Sine.easeInOut',
@@ -49,7 +50,23 @@ export class Coin extends Phaser.GameObjects.Container implements Icoin {
             yoyo: true,
             paused: true
         })
-        
+
+        this.tweenRevive = this.scene.tweens.timeline({
+            targets: this,
+            ease: 'Sine.easeInOut',
+            paused: true,
+            tweens: [{
+                scaleX: 0.2,
+                scaleY: 0.2,
+                duration: 150,
+                alpha: 0.5
+            },{
+                scaleX: 1,
+                scaleY: 1,
+                alpha: 1,
+                duration: 300,
+            }],
+        })
     }
 
     setFrame(frame: string) {

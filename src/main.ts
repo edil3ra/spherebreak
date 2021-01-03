@@ -1,7 +1,7 @@
 const isDebug = process.env.DEBUG
 import * as Phaser from 'phaser'
 import { ButtonContainer } from '~/ui/buttonContainer'
-import { Coin } from './entities/Coin'
+import { CoinGraphics } from './entities/Coin'
 import { initGame } from '~/game'
 import { initGameDistribution, mockGameDistribution } from '~/gameDistribution'
 
@@ -22,7 +22,7 @@ Phaser.GameObjects.GameObjectFactory.register('coin', function (
     frame: string,
     numero: string
 ) {
-    return this.displayList.add(new Coin(this.scene, x, y, width, height, frame, numero))
+    return this.displayList.add(new CoinGraphics(this.scene, x, y, width, height, frame, numero))
 })
 
 window.game = initGame()
