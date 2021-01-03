@@ -30,7 +30,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
         numero: string
     ) {
         super(scene, x, y)
-        this.state = 'alive'
+        this.state = 'inactive'
         this.background = scene.add.image(0, 0, frame).setOrigin(0.5, 0.5)
         this.text = scene.add.text(0, 0, numero, numeroStyle)
 
@@ -54,18 +54,19 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
 
         this.tweenRevive = this.scene.tweens.timeline({
             targets: this,
-            ease: 'Sine.easeInOut',
+            ease: 'Sine.easeOutIn',
             paused: true,
+            delay: 0,
             tweens: [{
-                scaleX: 0.2,
-                scaleY: 0.2,
-                duration: 150,
-                alpha: 0.5
+                scaleX: 0,
+                scaleY: 0,
+                duration: 0,
+                alpha: 0
             },{
                 scaleX: 1,
                 scaleY: 1,
                 alpha: 1,
-                duration: 300,
+                duration: 200,
             }],
         })
 
@@ -74,15 +75,15 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
             ease: 'Sine.easeInOut',
             paused: true,
             tweens: [{
-                scaleX: 1.1,
-                scaleY: 1.1,
-                duration: 100,
+                scaleX: 1,
+                scaleY: 1,
+                duration: 0,
                 alpha: 1
             },{
                 scaleX: 0,
                 scaleY: 0,
                 alpha: 0,
-                duration: 300,
+                duration: 500,
             }],
         })
     }
@@ -100,8 +101,8 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
     setState(state: CoinState): this {
         this.state = state
         switch (this.state) {
-            case "alive":
-                this.displayAlive()
+            case "inactive":
+                this.displayInactive()
                 break
             case "dead":
                 this.displayDead()
@@ -118,11 +119,10 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
     }
 
     displayDead() {
-        this.tweenFlipping.pause()
-        this.setAlpha(0)
+        this.tweenKill.play()
     }
 
-    displayAlive() {
+    displayInactive() {
         this.tweenFlipping.pause()
     }
 }

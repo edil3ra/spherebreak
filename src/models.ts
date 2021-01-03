@@ -12,4 +12,4 @@ export type GameConfig =  {
 }
 
 
-export type CoinState = 'alive' | 'dead' | 'active'
+export type CoinState = 'inactive' | 'active' | 'dead' 

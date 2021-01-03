@@ -98,7 +98,7 @@ export class GameScene extends Phaser.Scene {
                 if (this.data.coinsActive[index]) {
                     return ['active', this.board.coinsGraphics[index]]
                 } else {
-                    return ['alive', this.board.coinsGraphics[index]]
+                    return ['inactive', this.board.coinsGraphics[index]]
                 }
             })
             this.coinsStateChanged = [
@@ -112,7 +112,7 @@ export class GameScene extends Phaser.Scene {
                 if (this.data.entriesActive[index]) {
                     return ['active', this.board.entriesGraphics[index]]
                 } else {
-                    return ['alive', this.board.entriesGraphics[index]]
+                    return ['inactive', this.board.entriesGraphics[index]]
                 }
             })
             this.coinsStateChanged = [
@@ -124,13 +124,10 @@ export class GameScene extends Phaser.Scene {
 
         this.events.on('changedata-coinsAlive', (_scene: GameScene, _coins: Array<number>) => {
             const activeChanged = this.data.coinsAliveIndexesChanged.map((index) => {
-                if (this.data.coinsAlive[index]) {
-                    console.log('alive')
-                    return ['alive', this.board.coinsGraphics[index]]
-                } else {
+                if (!this.data.coinsAlive[index]) {
                     console.log('dead')
                     return ['dead', this.board.coinsGraphics[index]]
-                }
+                } 
             })
             this.coinsStateChanged = [
                 ...this.coinsStateChanged,
