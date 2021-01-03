@@ -123,20 +123,26 @@ export class GameScene extends Phaser.Scene {
 
 
         this.events.on('changedata-coinsAlive', (_scene: GameScene, _coins: Array<number>) => {
-            const activeChanged = this.data.coinsAliveIndexesChanged.map((index) => {
-                if (!this.data.coinsAlive[index]) {
-                    console.log('dead')
-                    return ['dead', this.board.coinsGraphics[index]]
-                } 
+            const deadChanged = this.data.coinsAliveIndexesChanged.filter((index) => {
+                return !this.data.coinsAlive[index]
+            }).map((index) => {
+                return ['dead', this.board.coinsGraphics[index]]
             })
+
+            this.data.coinsAliveIndexesChanged.filter((index) => {
+                return this.data.coinsAlive[index]
+            }).forEach((index) => {
+                this.board.coinsGraphics[index].revive()
+            })
+
             this.coinsStateChanged = [
                 ...this.coinsStateChanged,
-                ...(activeChanged as Array<[CoinState, CoinGraphics]>),
+                ...(deadChanged as Array<[CoinState, CoinGraphics]>),
             ]
         })
 
         this.events.on('changedata-sphere', () => {
-            this.board.sphereGraphics.tweenRevive.play()
+            this.board.sphereGraphics.revive()
         })
     }
 

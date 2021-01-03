@@ -83,7 +83,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
                 scaleX: 0,
                 scaleY: 0,
                 alpha: 0,
-                duration: 500,
+                duration: 300,
             }],
         })
     }
@@ -112,6 +112,10 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
                 break
         }
         return this
+    }
+
+    revive() {
+        this.tweenRevive.play()
     }
 
     displayActive() {

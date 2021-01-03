@@ -3,6 +3,7 @@ import { GameScene } from '~/scenes/gameScene'
 export class GameDataManager extends Phaser.Data.DataManager {
     public coinsActiveIndexesChanged: Array<number>
     public coinsAliveIndexesChanged: Array<number>
+    public coinsDeadCount: Array<number>
     public entriesActiveIndexesChanged: Array<number>
 
     constructor(scene: GameScene) {
@@ -21,9 +22,9 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.ratioCreateCoins = 0
         this.sphere = 0
         this.coins = new Array(12).fill(0)
-        // this.coinsAlive = new Array(12).fill(false)
-        this.set('coinsAlive', new Array(12).fill(false))
         this.set('coinsActive', new Array(12).fill(false))
+        this.set('coinsAlive', new Array(12).fill(false))
+        this.coinsDeadCount = new Array(12).fill(0)
         this.entries = new Array(4).fill(0)
         this.set('entriesActive', new Array(4).fill(false))
         this.coinsActiveIndexesChanged = []
@@ -125,9 +126,21 @@ export class GameDataManager extends Phaser.Data.DataManager {
                 ? false
                 : coin
         })
-        
-        console.log(this.coinsAliveIndexesChanged)
-        // console.log(this.coinsAlive)
+
+        this.coinsDeadCount = this.coinsDeadCount.map((count: number, index: number) => {
+            return this.coinsAlive[index] ? count : count + 1
+        })
+
+        this.coinsActive = this.coinsActive.map((coinActive, index) =>
+            this.coinsDeadCount[index] >= 3 ? false : coinActive
+        )
+        this.coinsAlive = this.coinsAlive.map((coinsActive, index) => {
+            return this.coinsDeadCount[index] >= 3 ? true : coinsActive
+        })
+        // console.log(this.coinsActive)
+        console.log(this.coinsAlive)
+        console.log(this.coinsDeadCount)
+        this.coinsDeadCount = this.coinsDeadCount.map((count) => (count >= 3 ? 0 : count))
     }
 
     pickNewRandomNumber() {
