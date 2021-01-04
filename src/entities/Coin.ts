@@ -118,15 +118,17 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
         this.tweenRevive.play()
     }
 
-    displayActive() {
-        this.tweenFlipping.play()
-    }
-
     displayDead() {
         this.tweenKill.play()
     }
 
+    displayActive() {
+        this.tweenFlipping.resume()
+    }
+    
     displayInactive() {
-        this.tweenFlipping.pause()
+        this.scene.time.delayedCall(1, () => {
+            this.tweenFlipping.pause()
+        })
     }
 }
