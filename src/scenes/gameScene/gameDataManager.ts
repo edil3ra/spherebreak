@@ -1,9 +1,9 @@
 import { GameScene } from '~/scenes/gameScene'
 
 export class GameDataManager extends Phaser.Data.DataManager {
-    public coinsActiveIndexesChanged: Array<number>
-    public coinsAliveIndexesChanged: Array<number>
-    public coinsDeadCount: Array<number>
+    public bordersActiveIndexesChanged: Array<number>
+    public bordersAliveIndexesChanged: Array<number>
+    public bordersDeadCount: Array<number>
     public entriesActiveIndexesChanged: Array<number>
 
     constructor(scene: GameScene) {
@@ -19,33 +19,43 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.comboMultiple = 0
         this.comboMultipleGoal = null
         this.comboCountGoal = null
-        this.ratioCreateCoins = 0
+        this.ratioCreateBorders = 0
         this.sphere = 0
-        this.coins = new Array(12).fill(0)
-        this.set('coinsActive', new Array(12).fill(false))
-        this.set('coinsAlive', new Array(12).fill(false))
-        this.coinsDeadCount = new Array(12).fill(0)
+
         this.entries = new Array(4).fill(0)
-        this.set('entriesActive', new Array(4).fill(false))
-        this.coinsActiveIndexesChanged = []
-        this.coinsAliveIndexesChanged = []
         this.entriesActiveIndexesChanged = []
+        this.set('entriesActive', new Array(4).fill(false))
+
+        this.borders = new Array(12).fill(0)
+        this.set('bordersActive', new Array(12).fill(false))
+        this.set('bordersAlive', new Array(12).fill(true))
+        this.bordersDeadCount = new Array(12).fill(0)
+        this.bordersActiveIndexesChanged = []
+        this.bordersAliveIndexesChanged = []
     }
 
     get total(): number {
-        const activeCoins = this.coins.filter((_coin: number, index: number) => this.coinsActive[index])
-        const activeEntries = this.entries.filter((_coin: number, index: number) => this.entriesActive[index])
+        const activeBorders = this.borders.filter(
+            (_border: number, index: number) => this.bordersActive[index]
+        )
+        const activeEntries = this.entries.filter(
+            (_entry: number, index: number) => this.entriesActive[index]
+        )
 
         return (
-            activeCoins.reduce((previous: number, current: number) => previous + current, 0) +
+            activeBorders.reduce((previous: number, current: number) => previous + current, 0) +
             activeEntries.reduce((previous: number, current: number) => previous + current, 0)
         )
     }
 
     get comboCountCurrent(): number {
-        const activeCoins = this.coins.filter((_coin: number, index: number) => this.coinsActive[index])
-        const activeEntries = this.entries.filter((_coin: number, index: number) => this.entriesActive[index])
-        return activeCoins.length + activeEntries.length
+        const activeBorders = this.borders.filter(
+            (_border: number, index: number) => this.bordersActive[index]
+        )
+        const activeEntries = this.entries.filter(
+            (_entry: number, index: number) => this.entriesActive[index]
+        )
+        return activeBorders.length + activeEntries.length
     }
 
     get comboMultipleCurrent(): number {
@@ -85,9 +95,9 @@ export class GameDataManager extends Phaser.Data.DataManager {
     }
 
     isAllSphereActive() {
-        const hasNoCoins = this.coinsActive.every((coinActive) => coinActive)
+        const hasNoBorders = this.bordersActive.every((borderActive) => borderActive)
         const hasNoEntries = this.entriesActive.every((entryActive) => entryActive)
-        return hasNoCoins && hasNoEntries
+        return hasNoBorders && hasNoEntries
     }
 
     handleWinTurn() {
@@ -128,49 +138,37 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.turn = this.turn + 1
         this.sphere = this.pickNewRandomNumber()
         this.entriesActive = this.entriesActive.map((_) => false)
-        this.coinsActive = this.coinsActive.map((_) => false)
-        this.coinsAlive = this.coinsAlive.map((coin: boolean, index: number) => {
-            return this.coinsActiveIndexesChanged.findIndex((indexChanged) => indexChanged === index) !== -1
-                ? false
-                : coin
+        this.bordersActive = this.bordersActive.map((_) => false)
+
+
+        this.bordersAlive = this.bordersAlive.map((borderAlive: boolean, index: number) => {
+            const isClicked =
+                this.bordersActiveIndexesChanged.findIndex((indexChanged) => indexChanged === index) !== -1
+            const isRevived = this.bordersDeadCount [index] >= 3
+            return !(isClicked || (!borderAlive && !isRevived))
         })
 
-        this.coinsDeadCount = this.coinsDeadCount.map((count: number, index: number) => {
-            return this.coinsAlive[index] ? count : count + 1
+
+        this.borders = this.borders.map((border: number, index: number) => {
+            return this.bordersDeadCount[index] >= 3 ? this.pickNewRandomNumber() : border
         })
 
-        this.coinsActive = this.coinsActive.map((coinActive, index) =>
-            this.coinsDeadCount[index] >= 3 ? false : coinActive
-        )
-        this.coinsAlive = this.coinsAlive.map((coinsActive, index) => {
-            return this.coinsDeadCount[index] >= 3 ? true : coinsActive
+        this.bordersDeadCount = this.bordersDeadCount.map((count: number, index: number) => {
+            return this.bordersAlive[index] ? count : count === 3 ? 0 : count + 1
         })
-        this.coinsDeadCount = this.coinsDeadCount.map((count) => (count >= 3 ? 0 : count))
     }
 
     pickNewRandomNumber() {
         return Phaser.Math.RND.integerInRange(1, 9)
     }
 
-    setCoinsAfterTurn() {
-        for (let index = 0; index < 12; index++) {
-            const isAlive = this.coinsAlive[index]
-            if (!isAlive) {
-                this.coins[index] = this.pickNewRandomNumber()
-                this.coinsActive[index] = false
-                this.coinsAlive[index] = true
-            }
-        }
-    }
-
     trackIndexesChanged(previous: Array<any>, current: Array<any>) {
         return Array.from(Array(previous.length).keys()).reduce((indexes: Array<number>, index: number) => {
-            const previousCoinAlive = previous[index]
-            const currentCoinAlive = current[index]
-            return previousCoinAlive !== currentCoinAlive ? [...indexes, index] : indexes
+            const previousCoin = previous[index]
+            const currentCoin = current[index]
+            return previousCoin !== currentCoin ? [...indexes, index] : indexes
         }, [])
     }
-
 
     get turn(): number {
         return this.get('turn') as number
@@ -216,20 +214,20 @@ export class GameDataManager extends Phaser.Data.DataManager {
         return this.get('comboCountGoal') as number
     }
 
-    get ratioCreateCoins(): number {
-        return this.get('ratioCreateCoins') as number
+    get ratioCreateBorders(): number {
+        return this.get('ratioCreateBorders') as number
     }
 
-    get coins(): Array<number> {
-        return this.get('coins') as Array<number>
+    get borders(): Array<number> {
+        return this.get('borders') as Array<number>
     }
 
-    get coinsAlive(): Array<boolean> {
-        return this.get('coinsAlive') as Array<boolean>
+    get bordersAlive(): Array<boolean> {
+        return this.get('bordersAlive') as Array<boolean>
     }
 
-    get coinsActive(): Array<boolean> {
-        return this.get('coinsActive') as Array<boolean>
+    get bordersActive(): Array<boolean> {
+        return this.get('bordersActive') as Array<boolean>
     }
 
     get entries(): Array<number> {
@@ -284,23 +282,28 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.set('comboCountGoal', value)
     }
 
-    set ratioCreateCoins(value: number) {
-        this.set('ratioCreateCoins', value)
+    set ratioCreateBorders(value: number) {
+        this.set('ratioCreateBorders', value)
     }
 
-    set coins(value: Array<number>) {
-        this.set('coins', value)
+    set borders(value: Array<number>) {
+        this.set('borders', value)
     }
 
-    set coinsAlive(currentCoinsAlive: Array<boolean>) {
-        this.coinsAliveIndexesChanged = this.trackIndexesChanged([...this.coinsAlive], currentCoinsAlive)
-        this.set('coinsAlive', currentCoinsAlive)
+    set bordersAlive(currentBordersAlive: Array<boolean>) {
+        this.bordersAliveIndexesChanged = this.trackIndexesChanged(
+            [...this.bordersAlive],
+            currentBordersAlive
+        )
+        this.set('bordersAlive', currentBordersAlive)
     }
 
-    set coinsActive(currentCoinsActive: Array<boolean>) {
-        this.coinsActiveIndexesChanged = this.trackIndexesChanged([...this.coinsActive], currentCoinsActive)
-        // console.log(this.coinsActiveIndexesChanged)
-        this.set('coinsActive', currentCoinsActive)
+    set bordersActive(currentBordersActive: Array<boolean>) {
+        this.bordersActiveIndexesChanged = this.trackIndexesChanged(
+            [...this.bordersActive],
+            currentBordersActive
+        )
+        this.set('bordersActive', currentBordersActive)
     }
 
     set entries(value: Array<number>) {

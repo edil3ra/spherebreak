@@ -8,7 +8,7 @@ export class Board {
     public entriesContainer: Phaser.GameObjects.Container
     public boardContainer: Phaser.GameObjects.Container
     public sphereGraphics: CoinGraphics
-    public coinsGraphics: Array<CoinGraphics>
+    public bordersGraphics: Array<CoinGraphics>
     public entriesGraphics: Array<CoinGraphics>
 
     constructor(scene: GameScene) {
@@ -56,7 +56,7 @@ export class Board {
         ]
 
         let currentPosition = [0, 0]
-        this.coinsGraphics = this.scene.data.coins.map((numero: number, index: number) => {
+        this.bordersGraphics = this.scene.data.borders.map((numero: number, index: number) => {
             const [positionX, positionY] = currentPosition
             const [directionX, directionY] = directions[index]
             const newPositionX =
@@ -81,7 +81,7 @@ export class Board {
                 )
             return coin
         })
-        this.coinsContainer = this.scene.add.container(0, 0, this.coinsGraphics)
+        this.coinsContainer = this.scene.add.container(0, 0, this.bordersGraphics)
     }
 
     setEntriesGraphicsAndContainer() {

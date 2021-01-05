@@ -119,6 +119,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
     }
 
     displayDead() {
+        console.log('call')
         this.tweenKill.play()
     }
 

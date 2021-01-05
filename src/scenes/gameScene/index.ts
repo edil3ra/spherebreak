@@ -38,7 +38,7 @@ export class GameScene extends Phaser.Scene {
     public board: Board
     public boardGame: BoardGame
     public timerSyncCoin: Phaser.Time.TimerEvent
-    public coinsStateChanged: Array<[CoinState, CoinGraphics]>
+    public bordersStateChanged: Array<[CoinState, CoinGraphics]>
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -55,12 +55,28 @@ export class GameScene extends Phaser.Scene {
             false
         )
         this.data = new GameDataManager(this)
+        this.registerEvents()
+        this.time.delayedCall(1, () => {
+            this.initData(gameConfig)
+        })
         this.board = new Board(this)
         this.boardGame = new BoardGame(this)
-        this.coinsStateChanged = []
+        this.bordersStateChanged = []
         this.initTimerSyncCoin()
     }
 
+    initData(gameConfig: GameConfig) {
+        const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
+        this.data.maxTimer = initialGameInfo.timer
+        this.data.maxTurn = initialGameInfo.turn
+        this.data.maxQuota = initialGameInfo.quota
+        this.data.comboMultipleGoal = null
+        this.data.comboCountGoal = null
+        this.data.turn = 1
+        this.data.sphere = this.data.pickNewRandomNumber()
+        this.data.entries = [1, 2, 3, 4]
+        this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
+    }
 
     registerEvents() {
         this.events.on('changedata-sphere', (_scene: GameScene, value: number) => {
@@ -73,16 +89,14 @@ export class GameScene extends Phaser.Scene {
             })
         })
 
-
-        this.events.on('changedata-', (_scene: GameScene, entries: Array<number>) => {
-            entries.forEach((entry: number, index: number) => {
-                this.board.entriesGraphics[index].setText(entry)
+        this.events.on('changedata-borders', (_scene: GameScene, borders: Array<number>) => {
+            borders.forEach((border: number, index: number) => {
+                this.board.bordersGraphics[index].setText(border)
             })
         })
 
         this.events.on('changedata-turn', (_scene: GameScene, value: number) => {
             this.boardGame.setTurnText(value)
-            console.log('change turn')
         })
 
         this.events.on('changedata-timer', (_scene: GameScene, value: number) => {
@@ -93,21 +107,21 @@ export class GameScene extends Phaser.Scene {
             this.boardGame.setQuotaText(value)
         })
 
-        this.events.on('changedata-coinsActive', (_scene: GameScene, _coins: Array<boolean>) => {
-            const activeChanged = this.data.coinsActiveIndexesChanged.map((index) => {
-                if (this.data.coinsActive[index]) {
-                    return ['active', this.board.coinsGraphics[index]]
+        this.events.on('changedata-bordersActive', (_scene: GameScene, _borders: Array<boolean>) => {
+            const activeChanged = this.data.bordersActiveIndexesChanged.map((index) => {
+                if (this.data.bordersActive[index]) {
+                    return ['active', this.board.bordersGraphics[index]]
                 } else {
-                    return ['inactive', this.board.coinsGraphics[index]]
+                    return ['inactive', this.board.bordersGraphics[index]]
                 }
             })
-            this.coinsStateChanged = [
-                ...this.coinsStateChanged,
+            this.bordersStateChanged = [
+                ...this.bordersStateChanged,
                 ...(activeChanged as Array<[CoinState, CoinGraphics]>),
             ]
         })
 
-        this.events.on('changedata-entriesActive', (_scene: GameScene, _coins: Array<boolean>) => {
+        this.events.on('changedata-entriesActive', (_scene: GameScene, _borders: Array<boolean>) => {
             const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
                 if (this.data.entriesActive[index]) {
                     return ['active', this.board.entriesGraphics[index]]
@@ -115,28 +129,32 @@ export class GameScene extends Phaser.Scene {
                     return ['inactive', this.board.entriesGraphics[index]]
                 }
             })
-            this.coinsStateChanged = [
-                ...this.coinsStateChanged,
+            this.bordersStateChanged = [
+                ...this.bordersStateChanged,
                 ...(activeChanged as Array<[CoinState, CoinGraphics]>),
             ]
         })
 
+        this.events.on('changedata-bordersAlive', (_scene: GameScene, _borders: Array<boolean>) => {
+            // console.log(this.data.bordersAliveIndexesChanged)
+            // console.log(this.data.bordersAlive)
+            const deadChanged = this.data.bordersAliveIndexesChanged
+                .filter((index) => {
+                    return !this.data.bordersAlive[index]
+                })
+                .map((index) => {
+                    return ['dead', this.board.bordersGraphics[index]]
+                })
+            this.data.bordersAliveIndexesChanged
+                .filter((index) => {
+                    return this.data.bordersAlive[index]
+                })
+                .forEach((index) => {
+                    this.board.bordersGraphics[index].revive()
+                })
 
-        this.events.on('changedata-coinsAlive', (_scene: GameScene, _coins: Array<number>) => {
-            const deadChanged = this.data.coinsAliveIndexesChanged.filter((index) => {
-                return !this.data.coinsAlive[index]
-            }).map((index) => {
-                return ['dead', this.board.coinsGraphics[index]]
-            })
-
-            this.data.coinsAliveIndexesChanged.filter((index) => {
-                return this.data.coinsAlive[index]
-            }).forEach((index) => {
-                this.board.coinsGraphics[index].revive()
-            })
-
-            this.coinsStateChanged = [
-                ...this.coinsStateChanged,
+            this.bordersStateChanged = [
+                ...this.bordersStateChanged,
                 ...(deadChanged as Array<[CoinState, CoinGraphics]>),
             ]
         })
@@ -150,38 +168,20 @@ export class GameScene extends Phaser.Scene {
         this.timerSyncCoin = this.time.addEvent({
             delay: 400,
             callback: () => {
-                this.coinsStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
+                this.bordersStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
                     const [state, coinGraphics] = coinStateChanged
                     coinGraphics.setState(state)
                 })
-                this.coinsStateChanged = []
+                this.bordersStateChanged = []
             },
             loop: true,
         })
     }
 
     create(gameConfig: GameConfig) {
-        this.registerEvents()
-        this.time.delayedCall(1, () => {
-            this.initData(gameConfig)
-        })
-
         this.setBackground()
         this.board.create()
         this.boardGame.create()
-    }
-
-    initData(gameConfig: GameConfig) {
-        const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
-        this.data.maxTimer = initialGameInfo.timer
-        this.data.maxTurn = initialGameInfo.turn
-        this.data.maxQuota = initialGameInfo.quota
-        this.data.comboMultipleGoal = null
-        this.data.comboCountGoal = null
-        this.data.entries = [1, 2, 3, 4]
-        this.data.sphere = this.data.pickNewRandomNumber()
-        this.data.turn = 1
-        this.data.setCoinsAfterTurn()
     }
 
     setBackground() {
@@ -193,7 +193,7 @@ export class GameScene extends Phaser.Scene {
 
     handleClickedCoin(index: number) {
         this.coinClickedIndex = index
-        this.data.coinsActive = this.data.coinsActive.map((value, loopingIndex) =>
+        this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
         )
         this.checkVictory()
