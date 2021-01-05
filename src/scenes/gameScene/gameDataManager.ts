@@ -72,8 +72,16 @@ export class GameDataManager extends Phaser.Data.DataManager {
         return 1 + this.comboCountPoint + this.comboMultiplePoint
     }
 
-    isWinTurn() {
+    isTurnWin() {
         return this.total % this.sphere === 0
+    }
+
+    isGameWin() {
+        return this.quota >= this.maxQuota
+    }
+
+    isGameLost() {
+        return this.turn > this.maxTurn
     }
 
     isAllSphereActive() {
@@ -137,9 +145,6 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.coinsAlive = this.coinsAlive.map((coinsActive, index) => {
             return this.coinsDeadCount[index] >= 3 ? true : coinsActive
         })
-        // console.log(this.coinsActive)
-        console.log(this.coinsAlive)
-        console.log(this.coinsDeadCount)
         this.coinsDeadCount = this.coinsDeadCount.map((count) => (count >= 3 ? 0 : count))
     }
 
@@ -165,6 +170,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
             return previousCoinAlive !== currentCoinAlive ? [...indexes, index] : indexes
         }, [])
     }
+
 
     get turn(): number {
         return this.get('turn') as number

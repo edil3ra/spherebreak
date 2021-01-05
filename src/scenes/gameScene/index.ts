@@ -54,35 +54,35 @@ export class GameScene extends Phaser.Scene {
             },
             false
         )
-
-        this.initData(gameConfig)
+        this.data = new GameDataManager(this)
         this.board = new Board(this)
         this.boardGame = new BoardGame(this)
         this.coinsStateChanged = []
-        this.registerEvents()
         this.initTimerSyncCoin()
     }
 
-    initData(gameConfig: GameConfig) {
-        this.data = new GameDataManager(this)
-        const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
-        this.data.maxTimer = initialGameInfo.timer
-        this.data.maxTurn = initialGameInfo.turn
-        this.data.maxQuota = initialGameInfo.quota
-        this.data.comboMultipleGoal = null
-        this.data.comboCountGoal = null
-        this.data.entries = [1, 2, 3, 4]
-        this.data.sphere = this.data.pickNewRandomNumber()
-        this.data.setCoinsAfterTurn()
-    }
 
     registerEvents() {
         this.events.on('changedata-sphere', (_scene: GameScene, value: number) => {
             this.board.sphereGraphics.setText(value)
         })
 
+        this.events.on('changedata-entries', (_scene: GameScene, entries: Array<number>) => {
+            entries.forEach((entry: number, index: number) => {
+                this.board.entriesGraphics[index].setText(entry)
+            })
+        })
+
+
+        this.events.on('changedata-', (_scene: GameScene, entries: Array<number>) => {
+            entries.forEach((entry: number, index: number) => {
+                this.board.entriesGraphics[index].setText(entry)
+            })
+        })
+
         this.events.on('changedata-turn', (_scene: GameScene, value: number) => {
             this.boardGame.setTurnText(value)
+            console.log('change turn')
         })
 
         this.events.on('changedata-timer', (_scene: GameScene, value: number) => {
@@ -93,7 +93,7 @@ export class GameScene extends Phaser.Scene {
             this.boardGame.setQuotaText(value)
         })
 
-        this.events.on('changedata-coinsActive', (_scene: GameScene, _coins: Array<number>) => {
+        this.events.on('changedata-coinsActive', (_scene: GameScene, _coins: Array<boolean>) => {
             const activeChanged = this.data.coinsActiveIndexesChanged.map((index) => {
                 if (this.data.coinsActive[index]) {
                     return ['active', this.board.coinsGraphics[index]]
@@ -107,7 +107,7 @@ export class GameScene extends Phaser.Scene {
             ]
         })
 
-        this.events.on('changedata-entriesActive', (_scene: GameScene, _coins: Array<number>) => {
+        this.events.on('changedata-entriesActive', (_scene: GameScene, _coins: Array<boolean>) => {
             const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
                 if (this.data.entriesActive[index]) {
                     return ['active', this.board.entriesGraphics[index]]
@@ -160,10 +160,28 @@ export class GameScene extends Phaser.Scene {
         })
     }
 
-    create() {
+    create(gameConfig: GameConfig) {
+        this.registerEvents()
+        this.time.delayedCall(1, () => {
+            this.initData(gameConfig)
+        })
+
         this.setBackground()
         this.board.create()
         this.boardGame.create()
+    }
+
+    initData(gameConfig: GameConfig) {
+        const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
+        this.data.maxTimer = initialGameInfo.timer
+        this.data.maxTurn = initialGameInfo.turn
+        this.data.maxQuota = initialGameInfo.quota
+        this.data.comboMultipleGoal = null
+        this.data.comboCountGoal = null
+        this.data.entries = [1, 2, 3, 4]
+        this.data.sphere = this.data.pickNewRandomNumber()
+        this.data.turn = 1
+        this.data.setCoinsAfterTurn()
     }
 
     setBackground() {
@@ -190,7 +208,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     checkVictory() {
-        if (this.data.isWinTurn()) {
+        if (this.data.isTurnWin()) {
             this.data.handleWinTurn()
         }
         if (this.data.isAllSphereActive()) {

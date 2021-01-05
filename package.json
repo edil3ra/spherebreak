@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Spherebreak",
 	"scripts": {
-		"dev": "env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --https",
+		"dev": "env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
 		"zip": "rm -rf zzz/sphere.zip & zip -rj zzz/sphere.zip public/*",
 		"start": "npm run dev",
