@@ -54,11 +54,8 @@ export class GameScene extends Phaser.Scene {
             },
             false
         )
-        this.data = new GameDataManager(this)
+        this.initData(gameConfig)
         this.registerEvents()
-        this.time.delayedCall(1, () => {
-            this.initData(gameConfig)
-        })
         this.board = new Board(this)
         this.boardGame = new BoardGame(this)
         this.bordersStateChanged = []
@@ -67,15 +64,18 @@ export class GameScene extends Phaser.Scene {
 
     initData(gameConfig: GameConfig) {
         const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
+        this.data = new GameDataManager(this)
         this.data.maxTimer = initialGameInfo.timer
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
-        this.data.comboMultipleGoal = null
-        this.data.comboCountGoal = null
-        this.data.turn = 1
-        this.data.sphere = this.data.pickNewRandomNumber()
-        this.data.entries = [1, 2, 3, 4]
-        this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
+        this.time.delayedCall(1, () => {
+            this.data.comboMultipleGoal = null
+            this.data.comboCountGoal = null
+            this.data.turn = 1
+            this.data.sphere = this.data.pickNewRandomNumber()
+            this.data.entries = [1, 2, 3, 4]
+            this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
+        })
     }
 
     registerEvents() {
@@ -136,8 +136,6 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on('changedata-bordersAlive', (_scene: GameScene, _borders: Array<boolean>) => {
-            // console.log(this.data.bordersAliveIndexesChanged)
-            // console.log(this.data.bordersAlive)
             const deadChanged = this.data.bordersAliveIndexesChanged
                 .filter((index) => {
                     return !this.data.bordersAlive[index]
