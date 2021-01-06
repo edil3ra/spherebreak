@@ -8,7 +8,6 @@ export class GameDataManager extends Phaser.Data.DataManager {
 
     constructor(scene: GameScene) {
         super(scene)
-
         this.turn = 0
         this.timer = 0
         this.quota = 0

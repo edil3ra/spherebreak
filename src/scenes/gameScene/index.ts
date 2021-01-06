@@ -38,6 +38,7 @@ export class GameScene extends Phaser.Scene {
     public board: Board
     public boardGame: BoardGame
     public timerSyncCoin: Phaser.Time.TimerEvent
+    public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
 
     constructor() {
@@ -54,31 +55,37 @@ export class GameScene extends Phaser.Scene {
             },
             false
         )
-        this.initData(gameConfig)
-        this.registerEvents()
+        this.data = new GameDataManager(this)
+        this.registerDataEvents()
         this.board = new Board(this)
         this.boardGame = new BoardGame(this)
         this.bordersStateChanged = []
-        this.initTimerSyncCoin()
     }
 
+    create(gameConfig: GameConfig) {
+        this.setBackground()
+        this.board.create()
+        this.boardGame.create()
+        this.initData(gameConfig)
+        this.initTimerSyncCoin()
+        this.startTimerTurn()
+    }
+    
     initData(gameConfig: GameConfig) {
         const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
-        this.data = new GameDataManager(this)
         this.data.maxTimer = initialGameInfo.timer
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
-        this.time.delayedCall(1, () => {
-            this.data.comboMultipleGoal = null
-            this.data.comboCountGoal = null
-            this.data.turn = 1
-            this.data.sphere = this.data.pickNewRandomNumber()
-            this.data.entries = [1, 2, 3, 4]
-            this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
-        })
+        this.data.comboMultipleGoal = null
+        this.data.comboCountGoal = null
+        this.data.turn = 0
+        this.data.quota = 0
+        this.data.sphere = this.data.pickNewRandomNumber()
+        this.data.entries = [1, 2, 3, 4]
+        this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
     }
 
-    registerEvents() {
+    registerDataEvents() {
         this.events.on('changedata-sphere', (_scene: GameScene, value: number) => {
             this.board.sphereGraphics.setText(value)
         })
@@ -176,10 +183,16 @@ export class GameScene extends Phaser.Scene {
         })
     }
 
-    create(gameConfig: GameConfig) {
-        this.setBackground()
-        this.board.create()
-        this.boardGame.create()
+    startTimerTurn() {
+        this.data.timer = this.data.maxTimer
+        this.timerTurn = this.time.addEvent({
+            repeat: this.data.maxTimer - 1,
+            delay: 1000,
+        })
+        this.timerTurn.callback = () => {
+            this.data.timer = this.timerTurn.repeatCount
+        }
+        
     }
 
     setBackground() {
