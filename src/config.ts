@@ -23,6 +23,7 @@ export class Config {
     public static readonly scenes = {
         keys: {
             game: 'gameScene',
+            gamePause: 'gamePauseScene',
             menu: 'menuScene',
             boot: 'bootScene',
         },

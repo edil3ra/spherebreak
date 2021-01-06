@@ -1,5 +1,5 @@
 import { BootScene } from '~/scenes/bootScene'
-import { GameScene } from '~/scenes/gameScene'
+import { GameScene, PauseScene } from '~/scenes/gameScene'
 import { MenuScene } from '~/scenes/menuScene'
 import { WebFontLoaderPlugin } from 'phaser3-webfont-loader'
 
@@ -10,7 +10,6 @@ export function initGame(): Phaser.Game {
         scale: {
             width: window.innerWidth * window.devicePixelRatio,
             height: window.innerHeight * window.devicePixelRatio,
-            autoCenter: Phaser.Scale.NONE,
             parent: 'spherebreak',
         },
         parent: 'spherebreak',
@@ -26,7 +25,7 @@ export function initGame(): Phaser.Game {
                 },
             ],
         },
-        scene: [BootScene, MenuScene, GameScene],
+        scene: [BootScene, MenuScene, GameScene, PauseScene],
     }
     const game = new Phaser.Game(config)
     window.addEventListener('resize', () => {

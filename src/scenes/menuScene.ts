@@ -25,7 +25,7 @@ export class MenuScene extends Phaser.Scene {
             this.background.setPosition(0, 0)
             this.container.setPosition(this.scale.width / 2, 100)
         }, false)
-
+        this.handlePlay()
     }
     
     create() {
@@ -91,8 +91,11 @@ export class MenuScene extends Phaser.Scene {
         console.log('Tutorial')
     }
 
-    public handlePlay(pointer: Phaser.Input.Pointer) {
+    public handlePlay() {
         window.gdsdk.showAd()
         this.scene.start(Config.scenes.keys.game, { difficulty: 'easy' })
+        this.scene.launch(Config.scenes.keys.gamePause)
+        this.scene.sleep(Config.scenes.keys.gamePause)
+        
     }
 }

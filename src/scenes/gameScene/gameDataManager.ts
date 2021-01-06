@@ -166,7 +166,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.bordersAlive = this.bordersAlive.map((borderAlive: boolean, index: number) => {
             const isClicked =
                 this.bordersActiveIndexesChanged.findIndex((indexChanged) => indexChanged === index) !== -1
-            const isRevived = this.bordersDeadCount [index] >= 3
+            const isRevived = this.bordersDeadCount[index] >= 3
             return !(isClicked || (!borderAlive && !isRevived))
         })
 
@@ -176,9 +176,13 @@ export class GameDataManager extends Phaser.Data.DataManager {
         })
 
         this.bordersDeadCount = this.bordersDeadCount.map((count: number, index: number) => {
-            return this.bordersAlive[index] ? count : count === 3 ? 0 : count + 1
+            return count >= 3 ? 0: this.bordersAlive[index] ? count: count + 1
         })
         this.events.emit('finishTurn')
+        console.log({
+            borders: this.borders,
+            bordersDeadCount: this.bordersDeadCount,
+        })
     }
 
     pickNewRandomNumber() {

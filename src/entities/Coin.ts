@@ -51,41 +51,6 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
             yoyo: true,
             paused: true
         })
-
-        this.tweenRevive = this.scene.tweens.timeline({
-            targets: this,
-            ease: 'Sine.easeOutIn',
-            paused: true,
-            delay: 0,
-            tweens: [{
-                scaleX: 0,
-                scaleY: 0,
-                duration: 0,
-                alpha: 0
-            },{
-                scaleX: 1,
-                scaleY: 1,
-                alpha: 1,
-                duration: 200,
-            }],
-        })
-
-        this.tweenKill = this.scene.tweens.timeline({
-            targets: this,
-            ease: 'Sine.easeInOut',
-            paused: true,
-            tweens: [{
-                scaleX: 1,
-                scaleY: 1,
-                duration: 0,
-                alpha: 1
-            },{
-                scaleX: 0,
-                scaleY: 0,
-                alpha: 0,
-                duration: 300,
-            }],
-        })
     }
 
     setFrame(frame: string) {
@@ -115,12 +80,39 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
     }
 
     revive() {
-        this.tweenRevive.play()
+        this.tweenRevive = this.scene.tweens.timeline({
+            targets: this,
+            ease: 'Sine.easeOutIn',
+            tweens: [{
+                scaleX: 0.2,
+                scaleY: 0e2,
+                duration: 0,
+                alpha: 0
+            },{
+                scaleX: 1,
+                scaleY: 1,
+                alpha: 1,
+                duration: 140,
+            }],
+        })
     }
 
     displayDead() {
-        console.log('call')
-        this.tweenKill.play()
+        this.tweenKill = this.scene.tweens.timeline({
+            targets: this,
+            ease: 'Sine.easeInOut',
+            tweens: [{
+                scaleX: 1,
+                scaleY: 1,
+                duration: 0,
+                alpha: 1
+            },{
+                scaleX: 0.2,
+                scaleY: 0.2,
+                alpha: 0,
+                duration: 140,
+            }],
+        })
     }
 
     displayActive() {
