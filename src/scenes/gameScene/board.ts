@@ -76,7 +76,7 @@ export class Board {
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(
                     Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
-                    () => this.scene.handleClickedCoin(index),
+                    () => this.scene.handleClickedBorder(index),
                     this
                 )
             return coin

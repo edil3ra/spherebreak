@@ -81,22 +81,44 @@ export class GameDataManager extends Phaser.Data.DataManager {
         return 1 + this.comboCountPoint + this.comboMultiplePoint
     }
 
-    isTurnWin() {
-        return this.total % this.sphere === 0
+    isTotalMultipleOfSphere() {
+        return this.total !== 0 ? this.total % this.sphere === 0: false
     }
 
-    isGameWin() {
-        return this.quota >= this.maxQuota
-    }
-
-    isGameLost() {
-        return this.turn > this.maxTurn
+    isTimerOver() {
+        return this.timer === 0
     }
 
     isAllSphereActive() {
         const hasNoBorders = this.bordersActive.every((borderActive) => borderActive)
         const hasNoEntries = this.entriesActive.every((entryActive) => entryActive)
         return hasNoBorders && hasNoEntries
+    }
+
+    isMaxTurnReached() {
+        return this.turn >= this.maxTurn
+    }
+
+    isQuotaReached() {
+        return this.quota >= this.maxQuota
+    }
+
+    nextTurn() {
+        if (this.isTotalMultipleOfSphere()) {
+            console.log('winning turn')
+            this.handleWinTurn()
+        }
+        else if (this.isAllSphereActive() || this.isTimerOver()) {
+            this.handleLoseTurn()
+        }
+
+        if(this.isMaxTurnReached()) {
+            console.log('game lost')
+        }
+
+        else if(this.isQuotaReached()) {
+            console.log('game win')
+        }
     }
 
     handleWinTurn() {
@@ -135,6 +157,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
 
     finishTurn() {
         this.turn = this.turn + 1
+        this.timer = this.maxTimer
         this.sphere = this.pickNewRandomNumber()
         this.entriesActive = this.entriesActive.map((_) => false)
         this.bordersActive = this.bordersActive.map((_) => false)
@@ -155,6 +178,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.bordersDeadCount = this.bordersDeadCount.map((count: number, index: number) => {
             return this.bordersAlive[index] ? count : count === 3 ? 0 : count + 1
         })
+        this.events.emit('finishTurn')
     }
 
     pickNewRandomNumber() {

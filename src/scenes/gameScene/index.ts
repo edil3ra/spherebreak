@@ -32,7 +32,7 @@ function difficultyToGameInfo(difficulty: Difficulty): GameInfo {
 
 export class GameScene extends Phaser.Scene {
     public data: GameDataManager
-    public coinClickedIndex: number
+    public borderClickedIndex: number
     public entryClickedIndex: number
     public background: Phaser.GameObjects.Image
     public board: Board
@@ -73,7 +73,8 @@ export class GameScene extends Phaser.Scene {
     
     initData(gameConfig: GameConfig) {
         const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
-        this.data.maxTimer = initialGameInfo.timer
+        // this.data.maxTimer = initialGameInfo.timer
+        this.data.maxTimer = 5
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
         this.data.comboMultipleGoal = null
@@ -106,12 +107,15 @@ export class GameScene extends Phaser.Scene {
             this.boardGame.setTurnText(value)
         })
 
-        this.events.on('changedata-timer', (_scene: GameScene, value: number) => {
-            this.boardGame.setTimerText(value)
+        this.events.on('changedata-timer', (_scene: GameScene, timer: number) => {
+            this.boardGame.setTimerText(timer)
+            if(timer === 0) {
+                this.data.nextTurn()
+            }
         })
 
-        this.events.on('changedata-quota', (_scene: GameScene, value: number) => {
-            this.boardGame.setQuotaText(value)
+        this.events.on('changedata-quota', (_scene: GameScene, quota: number) => {
+            this.boardGame.setQuotaText(quota)
         })
 
         this.events.on('changedata-bordersActive', (_scene: GameScene, _borders: Array<boolean>) => {
@@ -167,6 +171,10 @@ export class GameScene extends Phaser.Scene {
         this.events.on('changedata-sphere', () => {
             this.board.sphereGraphics.revive()
         })
+
+        this.events.on('finishTurn', () => {
+            this.startTimerTurn()
+        })
     }
 
     initTimerSyncCoin() {
@@ -202,12 +210,12 @@ export class GameScene extends Phaser.Scene {
             .setDisplaySize(this.scale.width, this.scale.height)
     }
 
-    handleClickedCoin(index: number) {
-        this.coinClickedIndex = index
+    handleClickedBorder(index: number) {
+        this.borderClickedIndex = index
         this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
         )
-        this.checkVictory()
+        this.data.nextTurn()
     }
 
     handleClickedEntry(index: number) {
@@ -215,15 +223,6 @@ export class GameScene extends Phaser.Scene {
         this.data.entriesActive = this.data.entriesActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
         )
-        this.checkVictory()
-    }
-
-    checkVictory() {
-        if (this.data.isTurnWin()) {
-            this.data.handleWinTurn()
-        }
-        if (this.data.isAllSphereActive()) {
-            this.data.handleLoseTurn()
-        }
+        this.data.nextTurn()
     }
 }
