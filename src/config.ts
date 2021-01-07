@@ -1,12 +1,10 @@
-
-
 function setCoin() {
     const CP = 16
-    const EP = 12
     const CS = 94
     const ES = 98
+    const EP = 12
     const SS = 70
-    const BS = (CP + CS) * 4 
+    const BS = (CP * 3) + (CS * 4)
     
     return {
         coinPadding: CP,

@@ -2,8 +2,8 @@ import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
 import { CoinState, Difficulty, GameConfig, GameInfo } from '~/models'
 import { Board } from '~/scenes/gameScene/board'
-import { BoardGame } from './boardGame'
-import { GameDataManager } from './gameDataManager'
+import { BoardPanel } from '~/scenes/gameScene/boardPanel'
+import { GameDataManager } from '~/scenes/gameScene/gameDataManager'
 
 function difficultyToGameInfo(difficulty: Difficulty): GameInfo {
     let gameInfo: GameInfo
@@ -36,7 +36,7 @@ export class GameScene extends Phaser.Scene {
     public entryClickedIndex: number
     public background: Phaser.GameObjects.Image
     public board: Board
-    public boardGame: BoardGame
+    public boardPanel: BoardPanel
     public timerSyncCoin: Phaser.Time.TimerEvent
     public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
@@ -58,9 +58,9 @@ export class GameScene extends Phaser.Scene {
         this.data = new GameDataManager(this)
         this.registerDataEvents()
         this.board = new Board(this)
-        this.boardGame = new BoardGame(this)
+        this.boardPanel = new BoardPanel(this)
         this.bordersStateChanged = []
-        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on(('down'), () => {
+        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
             this.scene.pause(Config.scenes.keys.game)
             this.scene.wake(Config.scenes.keys.gamePause)
         })
@@ -69,15 +69,14 @@ export class GameScene extends Phaser.Scene {
     create(gameConfig: GameConfig) {
         this.setBackground()
         this.board.create()
-        this.boardGame.create()
+        this.boardPanel.create()
         this.initData(gameConfig)
         this.initTimerSyncCoin()
         this.startTimerTurn()
     }
-    
+
     initData(gameConfig: GameConfig) {
         const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
-        // this.data.maxTimer = initialGameInfo.timer
         this.data.maxTimer = 5
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
@@ -108,18 +107,18 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on('changedata-turn', (_scene: GameScene, value: number) => {
-            this.boardGame.setTurnText(value)
+            this.boardPanel.boardLeftPanel.setTurnText(value)
         })
 
         this.events.on('changedata-timer', (_scene: GameScene, timer: number) => {
-            this.boardGame.setTimerText(timer)
-            if(timer === 0) {
+            this.boardPanel.boardLeftPanel.setTimerText(timer)
+            if (timer === 0) {
                 this.data.nextTurn()
             }
         })
 
         this.events.on('changedata-quota', (_scene: GameScene, quota: number) => {
-            this.boardGame.setQuotaText(quota)
+            this.boardPanel.boardLeftPanel.setQuotaText(quota)
         })
 
         this.events.on('changedata-bordersActive', (_scene: GameScene, _borders: Array<boolean>) => {
@@ -204,7 +203,6 @@ export class GameScene extends Phaser.Scene {
         this.timerTurn.callback = () => {
             this.data.timer = this.timerTurn.repeatCount
         }
-        
     }
 
     setBackground() {
