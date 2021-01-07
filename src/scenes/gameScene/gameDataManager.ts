@@ -124,25 +124,28 @@ export class GameDataManager extends Phaser.Data.DataManager {
     handleWinTurn() {
         if (this.comboMultipleGoal === null) {
             this.comboMultipleGoal = this.comboMultipleCurrent
+            this.comboMultiple = 1
         } else {
             if (this.comboMultipleGoal === this.comboMultipleCurrent) {
                 this.comboMultiple = this.comboMultiple + 1
             } else {
-                this.comboMultipleGoal = null
-                this.comboMultiple = 0
+                this.comboMultipleGoal = this.comboMultipleCurrent
+                this.comboMultiple = 1
             }
         }
 
         if (this.comboCountGoal === null) {
             this.comboCountGoal = this.comboCountCurrent
+            this.comboCount = 1
         } else {
             if (this.comboCountGoal === this.comboCountCurrent) {
-                this.comboMultiple = this.comboMultiple + 1
+                this.comboCount = this.comboCount + 1
             } else {
-                this.comboCountGoal = null
-                this.comboMultiple = 0
+                this.comboCountGoal = this.comboCountCurrent
+                this.comboCount = 1
             }
         }
+
         this.quota = this.quota + this.point
         this.finishTurn()
     }

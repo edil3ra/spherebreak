@@ -40,14 +40,14 @@ export class BoardLeftPanel {
 
     initTimerText() {
         this.timerText = this.scene.add.text(0, 0, '')
-            .setPosition(0, OFFSET_ITEM)
+            .setPosition(0, OFFSET_ITEM * 2)
             .setStyle(textConfigStyle)
         this.setTimerText(this.scene.data.maxTimer)
     }
 
     initQuotaText() {
         this.quotaText = this.scene.add.text(0, 0, '')
-            .setPosition(0, OFFSET_ITEM * 2)
+            .setPosition(0, OFFSET_ITEM)
             .setStyle(textConfigStyle)
         this.setQuotaText(0)
     }

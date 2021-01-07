@@ -27,13 +27,29 @@ export class BoardRightPanel {
 
 
     initComboMultipleText() {
-        this.comboMultipleText = this.scene.add.text(0, 0, 'multple 10')
+        this.comboMultipleText = this.scene.add.text(0, 0, '')
             .setStyle(textConfigStyle)
     }
 
     initComboCountText() {
-        this.comboCountText = this.scene.add.text(0, 20, 'count 10')
+        this.comboCountText = this.scene.add.text(0, 20, '')
             .setStyle(textConfigStyle)
+    }
+
+    setTComboMultipleText(comboMultple: number, comboMultipleGoal: number | null) {
+        if (comboMultipleGoal === null) {
+            this.comboMultipleText.setText(`Combo Multiple     0`)
+        } else {
+            this.comboMultipleText.setText(`Combo Multiple     ${comboMultple}  ->  ${comboMultipleGoal}`)
+        }
+    }
+    
+    setTComboCountText(comboCount: number, comboCountGoal: number | null) {
+        if (comboCountGoal === null) {
+            this.comboCountText.setText(`Combo Count         0`)
+        } else {
+            this.comboCountText.setText(`Combo Count         ${comboCount}  ->  ${comboCountGoal}`)
+        }
     }
 
 

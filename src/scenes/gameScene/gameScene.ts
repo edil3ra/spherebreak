@@ -52,6 +52,7 @@ export class GameScene extends Phaser.Scene {
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
                 this.board.setBoardContainerPosition()
+                this.boardPanel.setPosition()
             },
             false
         )
@@ -77,11 +78,13 @@ export class GameScene extends Phaser.Scene {
 
     initData(gameConfig: GameConfig) {
         const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
-        this.data.maxTimer = 5
+        this.data.maxTimer = initialGameInfo.timer
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
         this.data.comboMultipleGoal = null
         this.data.comboCountGoal = null
+        this.data.comboCount = 0
+        this.data.comboMultiple = 0
         this.data.turn = 0
         this.data.quota = 0
         this.data.sphere = this.data.pickNewRandomNumber()
@@ -120,6 +123,24 @@ export class GameScene extends Phaser.Scene {
         this.events.on('changedata-quota', (_scene: GameScene, quota: number) => {
             this.boardPanel.boardLeftPanel.setQuotaText(quota)
         })
+
+        this.events.on('changedata-comboCount', (_scene: GameScene, newComboCount: number) => {
+            this.boardPanel.boardRigthPanel.setTComboCountText(newComboCount, this.data.comboCountGoal)
+        })
+
+        this.events.on('changedata-comboCountGoal', (_scene: GameScene, newComboCountGoal: number) => {
+            this.boardPanel.boardRigthPanel.setTComboCountText(this.data.comboCount, newComboCountGoal )
+        })
+        
+        this.events.on('changedata-comboMultiple', (_scene: GameScene, newComboMultiple: number) => {
+            this.boardPanel.boardRigthPanel.setTComboMultipleText(newComboMultiple, this.data.comboMultipleGoal)
+        })
+        
+        this.events.on('changedata-comboMultipleGoal', (_scene: GameScene, newComboMultipleGoal: number) => {
+            this.boardPanel.boardRigthPanel.setTComboMultipleText(this.data.comboMultiple, newComboMultipleGoal)
+        })
+        
+        
 
         this.events.on('changedata-bordersActive', (_scene: GameScene, _borders: Array<boolean>) => {
             const activeChanged = this.data.bordersActiveIndexesChanged.map((index) => {

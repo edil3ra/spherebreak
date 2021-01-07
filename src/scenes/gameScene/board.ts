@@ -24,16 +24,16 @@ export class Board {
 
     setSphereGraphics() {
         this.sphereGraphics = this.scene.add.coin(
-            Config.scenes.game.coinPadding +
-                Config.scenes.game.coinSize +
-                Config.scenes.game.entrySize * 0.5 +
+            Config.scenes.game.board.borderPadding +
+                Config.scenes.game.board.borderSize +
+                Config.scenes.game.board.entrySize * 0.5 +
                 4,
-            Config.scenes.game.coinPadding +
-                Config.scenes.game.coinSize +
-                Config.scenes.game.entrySize * 0.5 +
+            Config.scenes.game.board.borderPadding +
+                Config.scenes.game.board.borderSize +
+                Config.scenes.game.board.entrySize * 0.5 +
                 6,
-            Config.scenes.game.sphereSize,
-            Config.scenes.game.sphereSize,
+            Config.scenes.game.board.sphereSize,
+            Config.scenes.game.board.sphereSize,
             'sphere',
             this.scene.data.sphere
         )
@@ -60,16 +60,18 @@ export class Board {
             const [positionX, positionY] = currentPosition
             const [directionX, directionY] = directions[index]
             const newPositionX =
-                positionX + directionX * (Config.scenes.game.coinSize + Config.scenes.game.coinPadding)
+                positionX +
+                directionX * (Config.scenes.game.board.borderSize + Config.scenes.game.board.borderPadding)
             const newPositionY =
-                positionY + directionY * (Config.scenes.game.coinSize + Config.scenes.game.coinPadding)
+                positionY +
+                directionY * (Config.scenes.game.board.borderSize + Config.scenes.game.board.borderPadding)
             currentPosition = [newPositionX, newPositionY]
             const coin = this.scene.add.coin(
                 newPositionX,
                 newPositionY,
-                Config.scenes.game.coinSize,
-                Config.scenes.game.coinSize,
-                'coin',
+                Config.scenes.game.board.borderSize,
+                Config.scenes.game.board.borderSize,
+                'border',
                 numero
             ) as CoinGraphics
             coin.background
@@ -98,15 +100,17 @@ export class Board {
             const [positionX, positionY] = currentPosition
             const [directionX, directionY] = directions[index]
             const newPositionX =
-                positionX + directionX * (Config.scenes.game.entrySize + Config.scenes.game.entryPadding)
+                positionX +
+                directionX * (Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding)
             const newPositionY =
-                positionY + directionY * (Config.scenes.game.entrySize + Config.scenes.game.entryPadding)
+                positionY +
+                directionY * (Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding)
             currentPosition = [newPositionX, newPositionY]
             const coin = this.scene.add.coin(
                 newPositionX,
                 newPositionY,
-                Config.scenes.game.entrySize,
-                Config.scenes.game.entrySize,
+                Config.scenes.game.board.entrySize,
+                Config.scenes.game.board.entrySize,
                 'entry',
                 numero
             ) as CoinGraphics
@@ -123,8 +127,8 @@ export class Board {
         this.entriesContainer = this.scene.add
             .container(0, 0, this.entriesGraphics)
             .setPosition(
-                Config.scenes.game.entrySize + Config.scenes.game.entryPadding,
-                Config.scenes.game.entrySize + Config.scenes.game.entryPadding
+                Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding,
+                Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding
             )
     }
 
@@ -140,11 +144,11 @@ export class Board {
     setBoardContainerPosition() {
         this.boardContainer.setPosition(
             this.scene.scale.width / 2 -
-                Config.scenes.game.boardWidth / 2 +
-                Config.scenes.game.coinSize / 2,
+                Config.scenes.game.board.width / 2 +
+                Config.scenes.game.board.borderSize / 2,
             this.scene.scale.height / 2 -
-                Config.scenes.game.boardHeight / 2 +
-                Config.scenes.game.coinSize / 2
+                Config.scenes.game.board.height / 2 +
+                Config.scenes.game.board.borderSize / 2
         )
     }
 }
