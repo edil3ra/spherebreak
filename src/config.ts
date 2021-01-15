@@ -1,3 +1,5 @@
+import { Difficulty, GameInfo } from "./models"
+
 const BORDER_PADDING = 16
 const BORDER_SIZE = 94
 const ENTRY_SIZE = 98
@@ -24,11 +26,18 @@ function setBoardPanel() {
         leftPadding: 40,
         offsetItem: 20,
         rightPanelOffsetX: 180,
+        textConfig: {
+            fontFamily: 'Play',
+            fontSize: '14px',
+            color: 'white',
+            fontStyle: 'bold',
+        }
     }
 }
 
 export class Config {
     public static readonly debug = process.env.DEBUG
+
     public static readonly packer = {
         name: 'packer',
         background: 'background-main.jpg',
@@ -41,6 +50,29 @@ export class Config {
         coinSphere: 'sphere.png',
         menuButton: 'button_rectangleWood.png',
         coinBorder: 'coin.gif',
+    }
+
+    public static readonly difficulties: Record<Difficulty, GameInfo> = {
+        easy: {
+            quota: 20,
+            timer: 60,
+            turn: 15,
+        },
+        medium: {
+            quota: 50,
+            timer: 45,
+            turn: 20,
+        },
+        hard: {
+            quota: 100,
+            timer: 30,
+            turn: 20,
+        },
+        veryHard: {
+            quota: 200,
+            timer: 15,
+            turn: 30,
+        }
     }
     
     public static readonly scenes = {

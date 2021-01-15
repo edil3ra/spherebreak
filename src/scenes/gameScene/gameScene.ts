@@ -5,30 +5,6 @@ import { Board } from '~/scenes/gameScene/board'
 import { BoardPanel } from '~/scenes/gameScene/boardPanel'
 import { GameDataManager } from '~/scenes/gameScene/gameDataManager'
 
-function difficultyToGameInfo(difficulty: Difficulty): GameInfo {
-    let gameInfo: GameInfo
-    switch (difficulty) {
-        case 'easy':
-            gameInfo = {
-                quota: 20,
-                timer: 60,
-                turn: 15,
-            }
-        case 'medium':
-            gameInfo = {
-                quota: 50,
-                timer: 45,
-                turn: 20,
-            }
-        case 'hard':
-            gameInfo = {
-                quota: 100,
-                timer: 30,
-                turn: 20,
-            }
-    }
-    return gameInfo
-}
 
 export class GameScene extends Phaser.Scene {
     public data: GameDataManager
@@ -77,7 +53,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     initData(gameConfig: GameConfig) {
-        const initialGameInfo = difficultyToGameInfo(gameConfig.difficulty)
+        const initialGameInfo = Config.difficulties[gameConfig.difficulty]
         this.data.maxTimer = initialGameInfo.timer
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
@@ -129,18 +105,22 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on('changedata-comboCountGoal', (_scene: GameScene, newComboCountGoal: number) => {
-            this.boardPanel.boardRigthPanel.setTComboCountText(this.data.comboCount, newComboCountGoal )
+            this.boardPanel.boardRigthPanel.setTComboCountText(this.data.comboCount, newComboCountGoal)
         })
-        
+
         this.events.on('changedata-comboMultiple', (_scene: GameScene, newComboMultiple: number) => {
-            this.boardPanel.boardRigthPanel.setTComboMultipleText(newComboMultiple, this.data.comboMultipleGoal)
+            this.boardPanel.boardRigthPanel.setTComboMultipleText(
+                newComboMultiple,
+                this.data.comboMultipleGoal
+            )
         })
-        
+
         this.events.on('changedata-comboMultipleGoal', (_scene: GameScene, newComboMultipleGoal: number) => {
-            this.boardPanel.boardRigthPanel.setTComboMultipleText(this.data.comboMultiple, newComboMultipleGoal)
+            this.boardPanel.boardRigthPanel.setTComboMultipleText(
+                this.data.comboMultiple,
+                newComboMultipleGoal
+            )
         })
-        
-        
 
         this.events.on('changedata-bordersActive', (_scene: GameScene, _borders: Array<boolean>) => {
             const activeChanged = this.data.bordersActiveIndexesChanged.map((index) => {
@@ -228,7 +208,7 @@ export class GameScene extends Phaser.Scene {
 
     setBackground() {
         this.background = this.add
-            .image(0, 0, 'packer', 'background-main.jpg')
+            .image(0, 0, Config.packer.name, Config.packer.background)
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height)
     }

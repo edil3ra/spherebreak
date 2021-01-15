@@ -132,7 +132,7 @@
             <key>json</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../public/packer.json</filename>
+                <filename>../public/assets/packer.jsonccc</filename>
             </struct>
         </map>
         <key>multiPack</key>
