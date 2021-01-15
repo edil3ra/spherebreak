@@ -9,10 +9,17 @@ export class ButtonContainer extends Phaser.GameObjects.Container implements IBu
     public button: IButton
     public text: Phaser.GameObjects.Text
 
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, tint: number = 0xffffff) {
+    constructor(
+        scene: Phaser.Scene,
+        x: number,
+        y: number,
+        texture: string,
+        frame: string,
+        tint: number = 0xffffff
+    ) {
         super(scene, x, y)
 
-        this.button = new Button(scene, 0, 0, texture, tint)
+        this.button = new Button(scene, 0, 0, texture, frame, tint)
         this.text = scene.add.text(0, 0, 'Button', { color: 'black' }).setOrigin(0.5, 0.5)
 
         this.add(this.button)
@@ -29,8 +36,8 @@ export class ButtonContainer extends Phaser.GameObjects.Container implements IBu
         return this
     }
 
-    setUpTexture(texture: string) {
-        this.button.setUpTexture(texture)
+    setUpFrame(texture: string) {
+        this.button.setUpFrame(texture)
         return this
     }
 
@@ -39,8 +46,8 @@ export class ButtonContainer extends Phaser.GameObjects.Container implements IBu
         return this
     }
 
-    setDownTexture(texture: string): this {
-        this.button.setDownTexture(texture)
+    setDownFrame(texture: string): this {
+        this.button.setDownFrame(texture)
         return this
     }
 
@@ -49,8 +56,8 @@ export class ButtonContainer extends Phaser.GameObjects.Container implements IBu
         return this
     }
 
-    setOverTexture(texture: string): this {
-        this.button.setOverTexture(texture)
+    setOverFrame(texture: string): this {
+        this.button.setOverFrame(texture)
         return this
     }
 
@@ -59,8 +66,8 @@ export class ButtonContainer extends Phaser.GameObjects.Container implements IBu
         return this
     }
 
-    setDisabledTexture(texture: string): this {
-        this.button.setDisabledTexture(texture)
+    setDisabledFrame(texture: string): this {
+        this.button.setDisabledFrame(texture)
         return this
     }
 

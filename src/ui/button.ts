@@ -1,136 +1,125 @@
 const WHITE = 0xffffff
 
-export interface IButton extends Phaser.GameObjects.GameObject, Phaser.GameObjects.Components.Transform
-	{
-		setUpTexture(texture: string): this
-		setUpTint(tint: number): this
-		setDownTexture(texture: string): this
-		setDownTint(tint: number): this
-		setOverTexture(texture: string): this
-		setOverTint(tint: number): this
-		setDisabledTexture(texture: string): this
-		setDisabledTint(tint: number): this
-		setDisabled(disabled: boolean): this
-	}
+export interface IButton extends Phaser.GameObjects.GameObject, Phaser.GameObjects.Components.Transform {
+    setUpFrame(texture: string): this
+    setUpTint(tint: number): this
+    setDownFrame(texture: string): this
+    setDownTint(tint: number): this
+    setOverFrame(texture: string): this
+    setOverTint(tint: number): this
+    setDisabledFrame(texture: string): this
+    setDisabledTint(tint: number): this
+    setDisabled(disabled: boolean): this
+}
 
-export class Button extends Phaser.GameObjects.Image implements IButton
-{
-	private upTexture: string
-	private upTint: number
-	private downTexture: string
-	private downTint: number
-	private overTexture: string
-	private overTint: number
-	private disabledTexture: string
-	private disabledTint: number
+export class Button extends Phaser.GameObjects.Image implements IButton {
+    private upFrame: string
+    private upTint: number
+    private downFrame: string
+    private downTint: number
+    private overFrame: string
+    private overTint: number
+    private disabledFrame: string
+    private disabledTint: number
 
-	constructor(scene: Phaser.Scene, x: number, y: number, texture: string, tint: number = WHITE)
-	{
-		super(scene, x, y, texture)
+    constructor(
+        scene: Phaser.Scene,
+        x: number,
+        y: number,
+        texture: string,
+        frame: string,
+        tint: number = WHITE
+    ) {
+        super(scene, x, y, texture, frame)
+        this.setTint(tint)
 
-		this.setTint(tint)
+        this.upFrame = frame
+        this.upTint = tint
+        this.downFrame = frame
+        this.downTint = tint
+        this.overFrame = frame
+        this.overTint = tint
+        this.disabledFrame = frame
+        this.disabledTint = tint
 
-		this.upTexture = texture
-		this.upTint = tint
-		this.downTexture = texture
-		this.downTint = tint
-		this.overTexture = texture
-		this.overTint = tint
-		this.disabledTexture = texture
-		this.disabledTint = tint
+        this.setInteractive({ cursor: 'pointer' })
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handleUp, this)
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, this.handleOut, this)
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, this.handleDown, this)
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, this.handleOver, this)
+    }
 
-		this.setInteractive({cursor: 'pointer'})
-			.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handleUp, this)
-			.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OUT, this.handleOut, this)
-			.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, this.handleDown, this)
-			.on(Phaser.Input.Events.GAMEOBJECT_POINTER_OVER, this.handleOver, this)
-	}
+    setUpFrame(texture: string) {
+        this.upFrame = texture
+        return this
+    }
 
-	setUpTexture(texture: string)
-	{
-		this.upTexture = texture
-		return this
-	}
+    setUpTint(tint: number) {
+        this.upTint = tint
+        return this
+    }
 
-	setUpTint(tint: number)
-	{
-		this.upTint = tint
-		return this
-	}
+    setDownFrame(texture: string) {
+        this.downFrame = texture
+        return this
+    }
 
-	setDownTexture(texture: string)
-	{
-		this.downTexture = texture
-		return this
-	}
+    setDownTint(tint: number) {
+        this.downTint = tint
+        return this
+    }
 
-	setDownTint(tint: number)
-	{
-		this.downTint = tint
-		return this
-	}
+    setOverFrame(texture: string) {
+        this.overFrame = texture
+        return this
+    }
 
-	setOverTexture(texture: string)
-	{
-		this.overTexture = texture
-		return this
-	}
+    setOverTint(tint: number) {
+        this.overTint = tint
+        return this
+    }
 
-	setOverTint(tint: number)
-	{
-		this.overTint = tint
-		return this
-	}
+    setDisabledFrame(texture: string) {
+        this.disabledFrame = texture
+        return this
+    }
 
-	setDisabledTexture(texture: string)
-	{
-		this.disabledTexture = texture
-		return this
-	}
+    setDisabledTint(tint: number) {
+        this.disabledTint = tint
+        return this
+    }
 
-	setDisabledTint(tint: number)
-	{
-		this.disabledTint = tint
-		return this
-	}
+    setDisabled(disabled: boolean) {
+        if (disabled) {
+            this.setFrame(this.disabledFrame)
+            this.setTint(this.disabledTint)
+            this.disableInteractive()
+            return this
+        }
 
-	setDisabled(disabled: boolean)
-	{
-		if (disabled)
-		{
-			this.setTexture(this.disabledTexture)
-			this.setTint(this.disabledTint)
-			this.disableInteractive()
-			return this
-		}
+        this.setFrame(this.upFrame)
+        this.setTint(this.disabledTint)
+        this.setInteractive()
 
-		this.setTexture(this.upTexture)
-		this.setTint(this.disabledTint)
-		this.setInteractive()
+        return this
+    }
 
-		return this
-	}
+    private handleUp(pointer: Phaser.Input.Pointer) {
+        this.handleOver(pointer)
+    }
 
-	private handleUp(pointer: Phaser.Input.Pointer)
-	{
-		this.handleOver(pointer)
-	}
+    private handleOut(_pointer: Phaser.Input.Pointer) {
+        this.setFrame(this.upFrame)
+        this.setTint(this.upTint)
+    }
 
-	private handleOut(_pointer: Phaser.Input.Pointer)
-	{
-		this.setTexture(this.upTexture)
-		this.setTint(this.upTint)
-	}
+    private handleDown(_pointer: Phaser.Input.Pointer) {
+        this.setFrame(this.downFrame)
+        this.setTint(this.downTint)
+    }
 
-	private handleDown(_pointer: Phaser.Input.Pointer)
-	{
-		this.setTexture(this.downTexture)
-		this.setTint(this.downTint)
-	}
-
-	private handleOver(_pointer: Phaser.Input.Pointer)
-	{
-		this.setTexture(this.overTexture)
-		this.setTint(this.overTint)
-	}
+    private handleOver(_pointer: Phaser.Input.Pointer) {
+        this.setFrame(this.overFrame)
+        this.setTint(this.overTint)
+    }
 }

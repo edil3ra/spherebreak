@@ -1,0 +1,13 @@
+{ 
+    "preload": {
+        "files": [
+            {
+                "type": "atlas",
+                "key": "packer",
+                "textureURL": "assets/packer.png",
+                "atlasURL": "assets/packer.json"
+            }
+        ]
+    }
+}
+

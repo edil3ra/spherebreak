@@ -26,12 +26,13 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
         y: number,
         width: number,
         height: number,
+        texture: string,
         frame: string,
         numero: string
     ) {
         super(scene, x, y)
         this.state = 'inactive'
-        this.background = scene.add.image(0, 0, frame).setOrigin(0.5, 0.5)
+        this.background = scene.add.image(0, 0, texture, frame).setOrigin(0.5, 0.5)
         this.text = scene.add.text(0, 0, numero, numeroStyle)
 
         this.background.setDisplaySize(width, height)

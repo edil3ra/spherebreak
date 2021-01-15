@@ -38,7 +38,7 @@ export class BoardPanel {
 
     initBackground() {
         this.background = this.scene.add
-            .image(0, 0, 'banner')
+            .image(0, 0, Config.packer.name, Config.packer.bannerModern)
             .setOrigin(0, 0)
             .setSize(Config.scenes.game.boardPanel.width, Config.scenes.game.boardPanel.height)
             .setDisplaySize(Config.scenes.game.boardPanel.width, Config.scenes.game.boardPanel.height)

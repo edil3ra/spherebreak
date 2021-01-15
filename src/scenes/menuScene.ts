@@ -25,7 +25,9 @@ export class MenuScene extends Phaser.Scene {
             this.background.setPosition(0, 0)
             this.container.setPosition(this.scale.width / 2, 100)
         }, false)
-        this.handlePlay()
+        if(Config.scenes.skip.menu) {
+            this.handlePlay()
+        }
     }
     
     create() {
@@ -41,13 +43,13 @@ export class MenuScene extends Phaser.Scene {
 
     public setBackground() {
         this.background = this.add
-            .image(0, 0, 'background')
+            .image(0, 0, Config.packer.name, Config.packer.background)
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height)
     }
 
     public setBanner() {
-        const imageBanner = this.add.image(0, 0, 'banner')
+        const imageBanner = this.add.image(0, 0, Config.packer.name, Config.packer.bannerHanging)
 
         const text = this.add
             .text(0, 0, 'Spherebreak', uiConfigStyle)
@@ -59,7 +61,7 @@ export class MenuScene extends Phaser.Scene {
 
     public setButtonPlay() {
         this.buttonPlay = this.add
-            .buttonContainer(0, 120, 'menuButton', 0xdddddd)
+            .buttonContainer(0, 120, Config.packer.name, Config.packer.menuButton, 0xdddddd)
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
@@ -73,7 +75,7 @@ export class MenuScene extends Phaser.Scene {
 
     public setButtonTutorial() {
         this.buttonTutorial = this.add
-            .buttonContainer(0, 220, 'menuButton', 0xdddddd)
+            .buttonContainer(0, 220, Config.packer.name, Config.packer.menuButton, 0xdddddd)
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)

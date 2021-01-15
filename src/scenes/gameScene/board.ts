@@ -34,7 +34,8 @@ export class Board {
                 6,
             Config.scenes.game.board.sphereSize,
             Config.scenes.game.board.sphereSize,
-            'sphere',
+            Config.packer.name,
+            Config.packer.coinSphere,
             this.scene.data.sphere
         )
     }
@@ -71,7 +72,8 @@ export class Board {
                 newPositionY,
                 Config.scenes.game.board.borderSize,
                 Config.scenes.game.board.borderSize,
-                'border',
+                Config.packer.name,
+                Config.packer.coinBorder,
                 numero
             ) as CoinGraphics
             coin.background
@@ -111,7 +113,8 @@ export class Board {
                 newPositionY,
                 Config.scenes.game.board.entrySize,
                 Config.scenes.game.board.entrySize,
-                'entry',
+                Config.packer.name,
+                Config.packer.coinEntry,
                 numero
             ) as CoinGraphics
             coin.background
