@@ -2,7 +2,7 @@ import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
 import { CoinState, Difficulty, GameConfig, GameInfo } from '~/models'
 import { Board } from '~/scenes/gameScene/board'
-import { BoardPanel } from '~/scenes/gameScene/boardPanel'
+import { BoardPanelContainer } from '~/scenes/gameScene/panels/boardContainerPanel'
 import { GameDataManager } from '~/scenes/gameScene/gameDataManager'
 
 
@@ -12,7 +12,7 @@ export class GameScene extends Phaser.Scene {
     public entryClickedIndex: number
     public background: Phaser.GameObjects.Image
     public board: Board
-    public boardPanel: BoardPanel
+    public boardPanel: BoardPanelContainer
     public timerSyncCoin: Phaser.Time.TimerEvent
     public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
@@ -35,7 +35,7 @@ export class GameScene extends Phaser.Scene {
         this.data = new GameDataManager(this)
         this.registerDataEvents()
         this.board = new Board(this)
-        this.boardPanel = new BoardPanel(this)
+        this.boardPanel = new BoardPanelContainer(this)
         this.bordersStateChanged = []
         this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
             this.scene.pause(Config.scenes.keys.game)
@@ -90,7 +90,7 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on('changedata-timer', (_scene: GameScene, timer: number) => {
-            this.boardPanel.boardLeftPanel.setTimerText(timer)
+            this.boardPanel.boardMiddlePanel.setTimerText(timer)
             if (timer === 0) {
                 this.data.nextTurn()
             }

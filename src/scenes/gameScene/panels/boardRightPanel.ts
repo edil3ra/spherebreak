@@ -1,15 +1,9 @@
+import { Config } from "~/config"
 import { GameScene } from "~/scenes/gameScene"
 
-const textConfigStyle: Phaser.Types.GameObjects.Text.TextStyle = {
-    fontFamily: 'Play',
-    fontSize: '14px',
-    color: 'white',
-    fontStyle: 'bold',
-}
 
 export class BoardRightPanel {
     public scene: GameScene
-    // public background: Phaser.GameObjects.Image
     public container: Phaser.GameObjects.Container
     public comboMultipleText: Phaser.GameObjects.Text
     public comboCountText: Phaser.GameObjects.Text
@@ -28,28 +22,20 @@ export class BoardRightPanel {
 
     initComboMultipleText() {
         this.comboMultipleText = this.scene.add.text(0, 0, '')
-            .setStyle(textConfigStyle)
+            .setStyle(Config.scenes.game.boardPanel.textStyle)
     }
 
     initComboCountText() {
         this.comboCountText = this.scene.add.text(0, 20, '')
-            .setStyle(textConfigStyle)
+            .setStyle(Config.scenes.game.boardPanel.textStyle)
     }
 
     setTComboMultipleText(comboMultple: number, comboMultipleGoal: number | null) {
-        if (comboMultipleGoal === null) {
-            this.comboMultipleText.setText(`Combo Multiple     0`)
-        } else {
-            this.comboMultipleText.setText(`Combo Multiple     ${comboMultple}  ->  ${comboMultipleGoal}`)
-        }
+        this.comboMultipleText.setText(`Multiple     ${comboMultple}  ->  ${comboMultipleGoal || 'none'}`)
     }
     
     setTComboCountText(comboCount: number, comboCountGoal: number | null) {
-        if (comboCountGoal === null) {
-            this.comboCountText.setText(`Combo Count         0`)
-        } else {
-            this.comboCountText.setText(`Combo Count         ${comboCount}  ->  ${comboCountGoal}`)
-        }
+        this.comboCountText.setText(`Count         ${comboCount}  ->  ${comboCountGoal || 'none'}`)
     }
 
 

@@ -1,18 +1,21 @@
 import { GameScene } from '~/scenes/gameScene/gameScene'
-import { BoardLeftPanel } from '~/scenes/gameScene/boardLeftPanel'
-import { BoardRightPanel } from '~/scenes/gameScene//boardRightPanel'
+import { BoardLeftPanel } from '~/scenes/gameScene/panels/boardLeftPanel'
+import { BoardRightPanel } from '~/scenes/gameScene/panels/boardRightPanel'
+import { BoardMiddlePanel } from '~/scenes/gameScene/panels/boardMiddlePanel'
 import { Config } from '~/config'
 
-export class BoardPanel {
+export class BoardPanelContainer {
     public scene: GameScene
     public background: Phaser.GameObjects.Image
     public boardLeftPanel: BoardLeftPanel
     public boardRigthPanel: BoardRightPanel
+    public boardMiddlePanel: BoardMiddlePanel
     public container: Phaser.GameObjects.Container
 
     constructor(scene: GameScene) {
         this.scene = scene
         this.boardLeftPanel = new BoardLeftPanel(scene)
+        this.boardMiddlePanel = new BoardMiddlePanel(scene)
         this.boardRigthPanel = new BoardRightPanel(scene)
     }
 
@@ -23,14 +26,23 @@ export class BoardPanel {
             Config.scenes.game.boardPanel.leftPadding,
             Config.scenes.game.boardPanel.topPadding,
         )
+        
+        this.boardMiddlePanel.create()
+        this.boardMiddlePanel.container.setPosition(
+            Config.scenes.game.boardPanel.leftPadding + Config.scenes.game.boardPanel.middlePanelOffsetX,
+            Config.scenes.game.boardPanel.topPadding - 4,
+        )
+        
         this.boardRigthPanel.create()
         this.boardRigthPanel.container.setPosition(
             Config.scenes.game.boardPanel.leftPadding + Config.scenes.game.boardPanel.rightPanelOffsetX,
             Config.scenes.game.boardPanel.topPadding,
         )
+        
         this.container = this.scene.add.container(0, 0, [
             this.background,
             this.boardLeftPanel.container,
+            this.boardMiddlePanel.container,
             this.boardRigthPanel.container,
         ])
         this.setPosition()

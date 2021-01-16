@@ -22,11 +22,12 @@ function setBoardPanel() {
     return {
         width: BOARD_SIZE,
         height: 100,
-        topPadding: 22,
-        leftPadding: 40,
+        topPadding: 32,
+        leftPadding: 32,
         offsetItem: 20,
-        rightPanelOffsetX: 180,
-        textConfig: {
+        middlePanelOffsetX: 140,
+        rightPanelOffsetX: 228,
+        textStyle: {
             fontFamily: 'Play',
             fontSize: '14px',
             color: 'white',
