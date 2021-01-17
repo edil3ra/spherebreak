@@ -39,6 +39,10 @@ function setBoardPanel() {
 export class Config {
     public static readonly debug = process.env.DEBUG
 
+
+    public static readonly images = {
+        background: 'background'
+    }
     public static readonly packer = {
         name: 'packer',
         background: 'background-main.jpg',

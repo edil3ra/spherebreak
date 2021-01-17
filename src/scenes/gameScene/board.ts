@@ -10,6 +10,7 @@ export class Board {
     public sphereGraphics: CoinGraphics
     public bordersGraphics: Array<CoinGraphics>
     public entriesGraphics: Array<CoinGraphics>
+    public background: Phaser.GameObjects.TileSprite
 
     constructor(scene: GameScene) {
         this.scene = scene
@@ -21,6 +22,8 @@ export class Board {
         this.setEntriesGraphicsAndContainer()
         this.setBoardContainer()
     }
+
+
 
     setSphereGraphics() {
         this.sphereGraphics = this.scene.add.coin(

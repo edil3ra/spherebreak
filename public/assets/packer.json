@@ -4,72 +4,30 @@
 			"image": "packer.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 1564,
-				"h": 1026
+				"w": 918,
+				"h": 386
 			},
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "background-main.jpg",
+					"filename": "sphere.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 1024,
-						"h": 1024
+						"w": 329,
+						"h": 322
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 1024,
-						"h": 1024
+						"w": 329,
+						"h": 322
 					},
 					"frame": {
-						"x": 1,
-						"y": 1,
-						"w": 1024,
-						"h": 1024
-					}
-				},
-				{
-					"filename": "bannerHanging.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 536,
-						"h": 118
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 536,
-						"h": 118
-					},
-					"frame": {
-						"x": 1027,
-						"y": 1,
-						"w": 536,
-						"h": 118
-					}
-				},
-				{
-					"filename": "bannerModern.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 528,
-						"h": 100
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 528,
-						"h": 100
-					},
-					"frame": {
-						"x": 1027,
-						"y": 121,
-						"w": 528,
-						"h": 100
+						"x": 2,
+						"y": 2,
+						"w": 329,
+						"h": 322
 					}
 				},
 				{
@@ -87,31 +45,31 @@
 						"h": 126
 					},
 					"frame": {
-						"x": 1027,
-						"y": 223,
+						"x": 335,
+						"y": 2,
 						"w": 521,
 						"h": 126
 					}
 				},
 				{
-					"filename": "sphere.png",
+					"filename": "bannerModern.png",
 					"rotated": false,
-					"trimmed": true,
+					"trimmed": false,
 					"sourceSize": {
-						"w": 329,
-						"h": 322
+						"w": 528,
+						"h": 100
 					},
 					"spriteSourceSize": {
-						"x": 2,
-						"y": 3,
-						"w": 325,
-						"h": 317
+						"x": 0,
+						"y": 0,
+						"w": 528,
+						"h": 100
 					},
 					"frame": {
-						"x": 1027,
-						"y": 351,
-						"w": 325,
-						"h": 317
+						"x": 335,
+						"y": 132,
+						"w": 528,
+						"h": 100
 					}
 				},
 				{
@@ -129,8 +87,8 @@
 						"h": 128
 					},
 					"frame": {
-						"x": 1354,
-						"y": 351,
+						"x": 335,
+						"y": 236,
 						"w": 128,
 						"h": 128
 					}
@@ -150,8 +108,8 @@
 						"h": 128
 					},
 					"frame": {
-						"x": 1354,
-						"y": 481,
+						"x": 467,
+						"y": 236,
 						"w": 128,
 						"h": 128
 					}
@@ -171,31 +129,10 @@
 						"h": 120
 					},
 					"frame": {
-						"x": 1354,
-						"y": 611,
+						"x": 599,
+						"y": 236,
 						"w": 120,
 						"h": 120
-					}
-				},
-				{
-					"filename": "button_rectangleWood.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 80,
-						"h": 40
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 80,
-						"h": 40
-					},
-					"frame": {
-						"x": 1476,
-						"y": 611,
-						"w": 80,
-						"h": 40
 					}
 				},
 				{
@@ -213,10 +150,199 @@
 						"h": 120
 					},
 					"frame": {
-						"x": 1027,
-						"y": 733,
+						"x": 723,
+						"y": 236,
 						"w": 120,
 						"h": 120
+					}
+				},
+				{
+					"filename": "patternStripesMetal_large.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 860,
+						"y": 2,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "patternStripesMetal_small.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 860,
+						"y": 62,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "button_rectangleWood.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 80,
+						"h": 40
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 80,
+						"h": 40
+					},
+					"frame": {
+						"x": 2,
+						"y": 328,
+						"w": 80,
+						"h": 40
+					}
+				},
+				{
+					"filename": "patternStripesRed_large.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 86,
+						"y": 328,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "patternStripesRed_small.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 146,
+						"y": 328,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "patternStripesShadow_large.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 206,
+						"y": 328,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "patternStripesShadow_small.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 266,
+						"y": 328,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "pattern_blueprint.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 847,
+						"y": 236,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "pattern_blueprintPaper.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 847,
+						"y": 296,
+						"w": 56,
+						"h": 56
 					}
 				}
 			]
@@ -225,6 +351,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:a4f44208d3cab5d908e3505c734507ba:93f2db5c57117f3b3645c342c4abed77:01b2dbbd44720021de2f617999dc7e2f$"
+		"smartupdate": "$TexturePacker:SmartUpdate:f099b1371e649612e246f64f6a7b9f1b:7cf3b48f4bc743679cbad895521113b5:01b2dbbd44720021de2f617999dc7e2f$"
 	}
 }

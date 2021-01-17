@@ -208,7 +208,7 @@ export class GameScene extends Phaser.Scene {
 
     setBackground() {
         this.background = this.add
-            .image(0, 0, Config.packer.name, Config.packer.background)
+            .image(0, 0, Config.images.background)
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height)
     }

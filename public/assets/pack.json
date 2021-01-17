@@ -6,6 +6,11 @@
                 "key": "packer",
                 "textureURL": "assets/packer.png",
                 "atlasURL": "assets/packer.json"
+            },
+            {
+                "type": "image",
+                "key": "background",
+                "url": "assets/images/background-main.jpg"
             }
         ]
     }

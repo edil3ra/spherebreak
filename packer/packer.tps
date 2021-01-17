@@ -132,7 +132,7 @@
             <key>json</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../public/assets/packer.jsonccc</filename>
+                <filename>../public/assets/packer.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -163,13 +163,13 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>2</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -181,36 +181,6 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../public/assets/images/background-main.jpg</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>256,256,512,512</rect>
-                <key>scale9Paddings</key>
-                <rect>256,256,512,512</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../public/assets/images/bannerHanging.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>134,30,268,59</rect>
-                <key>scale9Paddings</key>
-                <rect>134,30,268,59</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">../public/assets/images/bannerModern.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -303,11 +273,31 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">../zzz/interface/patternStripesMetal_large.png</key>
+            <key type="filename">../zzz/interface/patternStripesMetal_small.png</key>
+            <key type="filename">../zzz/interface/patternStripesRed_large.png</key>
+            <key type="filename">../zzz/interface/patternStripesRed_small.png</key>
+            <key type="filename">../zzz/interface/patternStripesShadow_large.png</key>
+            <key type="filename">../zzz/interface/patternStripesShadow_small.png</key>
+            <key type="filename">../zzz/interface/pattern_blueprint.png</key>
+            <key type="filename">../zzz/interface/pattern_blueprintPaper.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>14,14,28,28</rect>
+                <key>scale9Paddings</key>
+                <rect>14,14,28,28</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>../public/assets/images/background-main.jpg</filename>
-            <filename>../public/assets/images/bannerHanging.png</filename>
             <filename>../public/assets/images/bannerModern.png</filename>
             <filename>../public/assets/images/bannerScroll.png</filename>
             <filename>../public/assets/images/button_rectangleWood.png</filename>
@@ -316,6 +306,14 @@
             <filename>../public/assets/images/gameInfoPannel.png</filename>
             <filename>../public/assets/images/sphere.png</filename>
             <filename>../public/assets/images/wood.png</filename>
+            <filename>../zzz/interface/patternStripesMetal_large.png</filename>
+            <filename>../zzz/interface/patternStripesMetal_small.png</filename>
+            <filename>../zzz/interface/patternStripesRed_large.png</filename>
+            <filename>../zzz/interface/patternStripesRed_small.png</filename>
+            <filename>../zzz/interface/patternStripesShadow_large.png</filename>
+            <filename>../zzz/interface/patternStripesShadow_small.png</filename>
+            <filename>../zzz/interface/pattern_blueprint.png</filename>
+            <filename>../zzz/interface/pattern_blueprintPaper.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
