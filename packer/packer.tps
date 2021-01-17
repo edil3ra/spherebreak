@@ -181,7 +181,22 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../public/assets/images/bannerModern.png</key>
+            <key type="filename">images/bannerHanging.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>134,30,268,59</rect>
+                <key>scale9Paddings</key>
+                <rect>134,30,268,59</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/bannerModern.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -196,7 +211,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../public/assets/images/bannerScroll.png</key>
+            <key type="filename">images/bannerScroll.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -211,7 +226,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../public/assets/images/button_rectangleWood.png</key>
+            <key type="filename">images/button_rectangleWood.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -226,8 +241,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../public/assets/images/coin-entry.gif</key>
-            <key type="filename">../public/assets/images/coin.gif</key>
+            <key type="filename">images/coin-entry.gif</key>
+            <key type="filename">images/coin.gif</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -242,8 +257,26 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../public/assets/images/gameInfoPannel.png</key>
-            <key type="filename">../public/assets/images/wood.png</key>
+            <key type="filename">images/double-dragon.png</key>
+            <key type="filename">images/dragon-head.png</key>
+            <key type="filename">images/dragon-spiral.png</key>
+            <key type="filename">images/dragon.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,12,24,24</rect>
+                <key>scale9Paddings</key>
+                <rect>12,12,24,24</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/gameInfoPannel.png</key>
+            <key type="filename">images/wood.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -258,7 +291,14 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../public/assets/images/sphere.png</key>
+            <key type="filename">images/patternStripesMetal_large.png</key>
+            <key type="filename">images/patternStripesMetal_small.png</key>
+            <key type="filename">images/patternStripesRed_large.png</key>
+            <key type="filename">images/patternStripesRed_small.png</key>
+            <key type="filename">images/patternStripesShadow_large.png</key>
+            <key type="filename">images/patternStripesShadow_small.png</key>
+            <key type="filename">images/pattern_blueprint.png</key>
+            <key type="filename">images/pattern_blueprintPaper.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -267,20 +307,13 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>82,81,165,161</rect>
+                <rect>14,14,28,28</rect>
                 <key>scale9Paddings</key>
-                <rect>82,81,165,161</rect>
+                <rect>14,14,28,28</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../zzz/interface/patternStripesMetal_large.png</key>
-            <key type="filename">../zzz/interface/patternStripesMetal_small.png</key>
-            <key type="filename">../zzz/interface/patternStripesRed_large.png</key>
-            <key type="filename">../zzz/interface/patternStripesRed_small.png</key>
-            <key type="filename">../zzz/interface/patternStripesShadow_large.png</key>
-            <key type="filename">../zzz/interface/patternStripesShadow_small.png</key>
-            <key type="filename">../zzz/interface/pattern_blueprint.png</key>
-            <key type="filename">../zzz/interface/pattern_blueprintPaper.png</key>
+            <key type="filename">images/sphere.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -289,31 +322,36 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>14,14,28,28</rect>
+                <rect>82,81,165,161</rect>
                 <key>scale9Paddings</key>
-                <rect>14,14,28,28</rect>
+                <rect>82,81,165,161</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>../public/assets/images/bannerModern.png</filename>
-            <filename>../public/assets/images/bannerScroll.png</filename>
-            <filename>../public/assets/images/button_rectangleWood.png</filename>
-            <filename>../public/assets/images/coin-entry.gif</filename>
-            <filename>../public/assets/images/coin.gif</filename>
-            <filename>../public/assets/images/gameInfoPannel.png</filename>
-            <filename>../public/assets/images/sphere.png</filename>
-            <filename>../public/assets/images/wood.png</filename>
-            <filename>../zzz/interface/patternStripesMetal_large.png</filename>
-            <filename>../zzz/interface/patternStripesMetal_small.png</filename>
-            <filename>../zzz/interface/patternStripesRed_large.png</filename>
-            <filename>../zzz/interface/patternStripesRed_small.png</filename>
-            <filename>../zzz/interface/patternStripesShadow_large.png</filename>
-            <filename>../zzz/interface/patternStripesShadow_small.png</filename>
-            <filename>../zzz/interface/pattern_blueprint.png</filename>
-            <filename>../zzz/interface/pattern_blueprintPaper.png</filename>
+            <filename>images/bannerHanging.png</filename>
+            <filename>images/bannerModern.png</filename>
+            <filename>images/bannerScroll.png</filename>
+            <filename>images/button_rectangleWood.png</filename>
+            <filename>images/coin-entry.gif</filename>
+            <filename>images/coin.gif</filename>
+            <filename>images/double-dragon.png</filename>
+            <filename>images/dragon-head.png</filename>
+            <filename>images/dragon-spiral.png</filename>
+            <filename>images/dragon.png</filename>
+            <filename>images/gameInfoPannel.png</filename>
+            <filename>images/patternStripesMetal_large.png</filename>
+            <filename>images/patternStripesMetal_small.png</filename>
+            <filename>images/patternStripesRed_large.png</filename>
+            <filename>images/patternStripesRed_small.png</filename>
+            <filename>images/patternStripesShadow_large.png</filename>
+            <filename>images/patternStripesShadow_small.png</filename>
+            <filename>images/pattern_blueprint.png</filename>
+            <filename>images/pattern_blueprintPaper.png</filename>
+            <filename>images/sphere.png</filename>
+            <filename>images/wood.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

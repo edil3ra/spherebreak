@@ -4,11 +4,32 @@
 			"image": "packer.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 918,
-				"h": 386
+				"w": 865,
+				"h": 500
 			},
 			"scale": 1,
 			"frames": [
+				{
+					"filename": "bannerHanging.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 536,
+						"h": 118
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 536,
+						"h": 118
+					},
+					"frame": {
+						"x": 2,
+						"y": 2,
+						"w": 536,
+						"h": 118
+					}
+				},
 				{
 					"filename": "sphere.png",
 					"rotated": false,
@@ -25,30 +46,9 @@
 					},
 					"frame": {
 						"x": 2,
-						"y": 2,
+						"y": 124,
 						"w": 329,
 						"h": 322
-					}
-				},
-				{
-					"filename": "bannerScroll.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 521,
-						"h": 126
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 521,
-						"h": 126
-					},
-					"frame": {
-						"x": 335,
-						"y": 2,
-						"w": 521,
-						"h": 126
 					}
 				},
 				{
@@ -67,9 +67,30 @@
 					},
 					"frame": {
 						"x": 335,
-						"y": 132,
+						"y": 124,
 						"w": 528,
 						"h": 100
+					}
+				},
+				{
+					"filename": "bannerScroll.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 521,
+						"h": 126
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 521,
+						"h": 126
+					},
+					"frame": {
+						"x": 335,
+						"y": 228,
+						"w": 521,
+						"h": 126
 					}
 				},
 				{
@@ -88,7 +109,7 @@
 					},
 					"frame": {
 						"x": 335,
-						"y": 236,
+						"y": 358,
 						"w": 128,
 						"h": 128
 					}
@@ -109,7 +130,7 @@
 					},
 					"frame": {
 						"x": 467,
-						"y": 236,
+						"y": 358,
 						"w": 128,
 						"h": 128
 					}
@@ -130,7 +151,7 @@
 					},
 					"frame": {
 						"x": 599,
-						"y": 236,
+						"y": 358,
 						"w": 120,
 						"h": 120
 					}
@@ -151,51 +172,9 @@
 					},
 					"frame": {
 						"x": 723,
-						"y": 236,
+						"y": 358,
 						"w": 120,
 						"h": 120
-					}
-				},
-				{
-					"filename": "patternStripesMetal_large.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 56,
-						"h": 56
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 56,
-						"h": 56
-					},
-					"frame": {
-						"x": 860,
-						"y": 2,
-						"w": 56,
-						"h": 56
-					}
-				},
-				{
-					"filename": "patternStripesMetal_small.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 56,
-						"h": 56
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 56,
-						"h": 56
-					},
-					"frame": {
-						"x": 860,
-						"y": 62,
-						"w": 56,
-						"h": 56
 					}
 				},
 				{
@@ -213,10 +192,136 @@
 						"h": 40
 					},
 					"frame": {
-						"x": 2,
-						"y": 328,
+						"x": 542,
+						"y": 2,
 						"w": 80,
 						"h": 40
+					}
+				},
+				{
+					"filename": "patternStripesMetal_large.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 542,
+						"y": 46,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "double-dragon.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"frame": {
+						"x": 2,
+						"y": 450,
+						"w": 48,
+						"h": 48
+					}
+				},
+				{
+					"filename": "dragon-head.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"frame": {
+						"x": 54,
+						"y": 450,
+						"w": 48,
+						"h": 48
+					}
+				},
+				{
+					"filename": "dragon-spiral.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"frame": {
+						"x": 106,
+						"y": 450,
+						"w": 48,
+						"h": 48
+					}
+				},
+				{
+					"filename": "dragon.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"frame": {
+						"x": 158,
+						"y": 450,
+						"w": 48,
+						"h": 48
+					}
+				},
+				{
+					"filename": "patternStripesMetal_small.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 626,
+						"y": 2,
+						"w": 56,
+						"h": 56
 					}
 				},
 				{
@@ -234,8 +339,8 @@
 						"h": 56
 					},
 					"frame": {
-						"x": 86,
-						"y": 328,
+						"x": 686,
+						"y": 2,
 						"w": 56,
 						"h": 56
 					}
@@ -255,8 +360,8 @@
 						"h": 56
 					},
 					"frame": {
-						"x": 146,
-						"y": 328,
+						"x": 746,
+						"y": 2,
 						"w": 56,
 						"h": 56
 					}
@@ -276,8 +381,8 @@
 						"h": 56
 					},
 					"frame": {
-						"x": 206,
-						"y": 328,
+						"x": 806,
+						"y": 2,
 						"w": 56,
 						"h": 56
 					}
@@ -297,8 +402,8 @@
 						"h": 56
 					},
 					"frame": {
-						"x": 266,
-						"y": 328,
+						"x": 602,
+						"y": 62,
 						"w": 56,
 						"h": 56
 					}
@@ -318,8 +423,8 @@
 						"h": 56
 					},
 					"frame": {
-						"x": 847,
-						"y": 236,
+						"x": 662,
+						"y": 62,
 						"w": 56,
 						"h": 56
 					}
@@ -339,8 +444,8 @@
 						"h": 56
 					},
 					"frame": {
-						"x": 847,
-						"y": 296,
+						"x": 722,
+						"y": 62,
 						"w": 56,
 						"h": 56
 					}
@@ -351,6 +456,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:f099b1371e649612e246f64f6a7b9f1b:7cf3b48f4bc743679cbad895521113b5:01b2dbbd44720021de2f617999dc7e2f$"
+		"smartupdate": "$TexturePacker:SmartUpdate:5e98b36dd06dd836d55e19acbfb55ab2:7a40fc4885bc8a0c3a88c9a10f0d0ac9:01b2dbbd44720021de2f617999dc7e2f$"
 	}
 }

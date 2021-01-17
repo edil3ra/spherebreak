@@ -36,17 +36,6 @@ export class BootScene extends Phaser.Scene {
             },
         )
 
-        
-        // this.load.image('background', 'assets/images/background-main.jpg')
-        // this.load.image('menuButton', 'assets/images/button_rectangleWood.png')
-        // this.load.image('banner', 'assets/images/bannerModern.png')
-        // this.load.image('boardBackground', 'assets/images/gameInfoPannel.png')
-        
-        // this.load.image('entry', 'assets/images/coin-entry.gif')
-        // this.load.image('border', 'assets/images/coin.gif')
-        // this.load.image('sphere', 'assets/images/sphere.png')
-
-
         this.load.pack('preload', 'assets/pack.json', 'preload')
         this.load.webfont('Open Sans', 'https://fonts.googleapis.com/css2?family=Open+Sans&display=swap')
         this.load.webfont('Play', 'https://fonts.googleapis.com/css2?family=Play&display=swap')

@@ -25,8 +25,8 @@ function setBoardPanel() {
         topPadding: 32,
         leftPadding: 32,
         offsetItem: 20,
-        middlePanelOffsetX: 140,
-        rightPanelOffsetX: 228,
+        middlePanelOffsetX: 144,
+        rightPanelOffsetX: 242,
         textStyle: {
             fontFamily: 'Play',
             fontSize: '14px',
@@ -55,6 +55,7 @@ export class Config {
         coinSphere: 'sphere.png',
         menuButton: 'button_rectangleWood.png',
         coinBorder: 'coin.gif',
+        pattern: 'patternStripesMetal_large.png',
     }
 
     public static readonly difficulties: Record<Difficulty, GameInfo> = {
@@ -82,7 +83,7 @@ export class Config {
     
     public static readonly scenes = {
         skip: {
-            menu: Config.debug,
+            menu: false,
         },
         keys: {
             game: 'gameScene',
@@ -93,6 +94,14 @@ export class Config {
         game: {
             board: setBoard(),
             boardPanel: setBoardPanel(),
+        },
+        menu: {
+            style: {
+                fontFamily: 'Play',
+                fontSize: '18px',
+                color: 'white',
+                fontStyle: 'bold',
+            }
         },
     }
 }

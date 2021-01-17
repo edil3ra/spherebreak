@@ -31,11 +31,11 @@ export class BoardRightPanel {
     }
 
     setTComboMultipleText(comboMultple: number, comboMultipleGoal: number | null) {
-        this.comboMultipleText.setText(`Multiple     ${comboMultple}  ->  ${comboMultipleGoal || 'none'}`)
+        this.comboMultipleText.setText(`Multiple     ${comboMultple}   ->   ${comboMultipleGoal || '-'}`)
     }
     
     setTComboCountText(comboCount: number, comboCountGoal: number | null) {
-        this.comboCountText.setText(`Count         ${comboCount}  ->  ${comboCountGoal || 'none'}`)
+        this.comboCountText.setText(`Count         ${comboCount}   ->   ${comboCountGoal || '-'}`)
     }
 
 
