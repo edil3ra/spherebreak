@@ -1,77 +1,14 @@
 import { Config } from '~/config'
 import { Difficulty } from '~/models'
 import { ButtonContainer } from '~/ui/buttonContainer'
-
-class DifficultyGraphics extends Phaser.GameObjects.Container {
-    scene: MenuScene
-    background: Phaser.GameObjects.Graphics
-    image: Phaser.GameObjects.Image
-
-    constructor(
-        scene: MenuScene,
-        name: Difficulty,
-        x: number,
-        y: number,
-        texture: string,
-        frame: string,
-        backgroundColor: number
-    ) {
-        super(scene, x, y)
-        this.name = name
-        this.background = scene.add.graphics()
-        this.background.fillStyle(backgroundColor)
-        this.background.fillRect(0, 0, 54, 54)
-        this.background.setAlpha(0)
-        this.image = scene.add.image(2, 2, texture, frame).setOrigin(0, 0)
-        this.add([this.background, this.image])
-        this.image.setInteractive({ cursor: 'pointer' }).on('pointerdown', this.selectDifficulty.bind(this))
-    }
-
-    selectDifficulty() {
-        this.scene.difficultiesGraphics.forEach((icon: DifficultyGraphics) => {
-            icon.background.setAlpha(0)
-        })
-        this.background.setAlpha(1)
-        localStorage.setItem('difficulty', this.name)
-    }
-}
-
+import { DifficultyGraphics, EntryGrahpics } from '~/scenes/menuScene/graphics'
 
 const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
     fontFamily: 'Play',
-    fontSize: '40px',
+    fontSize: '30px',
     color: 'white',
     fontStyle: 'bold',
 }
-
-
-class EntryGrahpics extends Phaser.GameObjects.Container {
-    scene: MenuScene
-    text: Phaser.GameObjects.Text
-    background: Phaser.GameObjects.Image
-
-    constructor(
-        scene: MenuScene,
-        x: number,
-        y: number,
-        texture: string,
-        frame: string,
-        numero: string
-    ) {
-        super(scene, x, y)
-        this.background = scene.add.image(0, 0, texture, frame).setOrigin(0, 0)
-        this.text = scene.add.text(0, 0, numero, numeroStyle)
-        Phaser.Display.Align.In.Center(this.text, this.background)
-        this.add([this.background, this.text])
-    }
-
-    setText(text: number) {
-        this.text.setText(`${text}`)
-        return this
-    }
-}
-
-
 
 export class MenuScene extends Phaser.Scene {
     currentDifficulty: Difficulty
@@ -85,11 +22,11 @@ export class MenuScene extends Phaser.Scene {
     difficultiesGraphics: Array<DifficultyGraphics>
     entriesContainer: Phaser.GameObjects.Container
     entriesGraphics: Array<EntryGrahpics>
-    
+
     constructor() {
         super({ key: Config.scenes.keys.menu })
     }
-    
+
     init() {
         window.addEventListener(
             'resize',
@@ -111,29 +48,28 @@ export class MenuScene extends Phaser.Scene {
         this.setBackground()
         this.setBackgroundContainer()
         this.setBanner()
-        this.setButtonPlay()
-        this.setButtonTutorial()
         this.setDifficultiesContainer()
         this.setEntriesContainer()
+        this.setButtonPlay()
+        this.setButtonTutorial()
 
         this.mainContainer = this.add
             .container(0, 0, [
-                this.backgroundContainer,
+                this.backgroundContainer.setOrigin(0.5, 0),
                 this.banner,
-                this.buttonPlay,
-                this.difficultiesContainer,
-                this.buttonTutorial,
+                this.entriesContainer.setPosition(-220, 100),
+                this.difficultiesContainer.setPosition(48, 100),
+                this.buttonPlay.setPosition(0, 400),
+                this.buttonTutorial.setPosition(0, 500),
             ])
             .setSize(600, 600)
             .setDisplaySize(600, 600)
             .setPosition(this.scale.width / 2, this.scale.height / 2 - 600 / 2)
 
-
         const difficultyIcon = this.difficultiesGraphics.find(
             (icon) => icon.name === this.currentDifficulty
         ) as DifficultyGraphics
         difficultyIcon.selectDifficulty()
-        
     }
 
     setBackground() {
@@ -144,9 +80,14 @@ export class MenuScene extends Phaser.Scene {
     }
 
     setBackgroundContainer() {
-        this.backgroundContainer = this.add
-            .tileSprite(0, 0, 600, 600, Config.packer.name, Config.packer.pattern)
-            .setOrigin(0.5, 0)
+        this.backgroundContainer = this.add.tileSprite(
+            0,
+            0,
+            600,
+            600,
+            Config.packer.name,
+            Config.packer.pattern
+        )
     }
 
     setBanner() {
@@ -160,9 +101,85 @@ export class MenuScene extends Phaser.Scene {
         this.banner = this.add.container(0, 0, [imageBanner, text])
     }
 
+    setDifficultiesContainer() {
+        const text = this.add.text(24, 0, 'Difficulty', numeroStyle)
+        const textOffset = 40
+        const xOffset = 88
+        const yOffset = 88
+
+        this.difficultiesGraphics = [
+            new DifficultyGraphics(
+                this,
+                'easy',
+                0,
+                textOffset,
+                Config.packer.name,
+                Config.packer.difficulties.easy,
+                0x00ff00
+            ),
+            new DifficultyGraphics(
+                this,
+                'medium',
+                xOffset,
+                textOffset,
+                Config.packer.name,
+                Config.packer.difficulties.medium,
+                0x00ff00
+            ),
+            new DifficultyGraphics(
+                this,
+                'hard',
+                xOffset,
+                textOffset + yOffset,
+                Config.packer.name,
+                Config.packer.difficulties.hard,
+                0x00ff00
+            ),
+            new DifficultyGraphics(
+                this,
+                'insane',
+                0,
+                textOffset + yOffset,
+                Config.packer.name,
+                Config.packer.difficulties.insane,
+                0x00ff00
+            ),
+        ]
+        this.difficultiesContainer = this.add.container(0, 0, [text, ...this.difficultiesGraphics])
+    }
+
+    setEntriesContainer() {
+        const text = this.add.text(40, 0, 'Coins', numeroStyle).setOrigin(0, 0)
+        const textOffset = 40
+        const xOffset = 88
+        const yOffset = 88
+
+        this.entriesGraphics = [
+            new EntryGrahpics(this, 0, textOffset, Config.packer.name, Config.packer.coinEntry, '1'),
+            new EntryGrahpics(this, xOffset, textOffset, Config.packer.name, Config.packer.coinEntry, '1'),
+            new EntryGrahpics(
+                this,
+                xOffset,
+                textOffset + yOffset,
+                Config.packer.name,
+                Config.packer.coinEntry,
+                '1'
+            ),
+            new EntryGrahpics(
+                this,
+                0,
+                textOffset + yOffset,
+                Config.packer.name,
+                Config.packer.coinEntry,
+                '1'
+            ),
+        ]
+        this.entriesContainer = this.add.container(0, 0, [text, ...this.entriesGraphics])
+    }
+
     setButtonPlay() {
         this.buttonPlay = this.add
-            .buttonContainer(0, 120, Config.packer.name, Config.packer.menuButton, 0xdddddd)
+            .buttonContainer(0, 0, Config.packer.name, Config.packer.menuButton, 0xdddddd)
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
@@ -174,67 +191,9 @@ export class MenuScene extends Phaser.Scene {
         this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handlePlay.bind(this))
     }
 
-    setDifficultiesContainer() {
-        this.difficultiesGraphics = [
-            new DifficultyGraphics(
-                this,
-                'easy',
-                0,
-                0,
-                Config.packer.name,
-                Config.packer.difficulties.easy,
-                0x00ff00
-            ),
-            new DifficultyGraphics(
-                this,
-                'medium',
-                60,
-                0,
-                Config.packer.name,
-                Config.packer.difficulties.medium,
-                0x00ff00
-            ),
-            new DifficultyGraphics(
-                this,
-                'hard',
-                120,
-                0,
-                Config.packer.name,
-                Config.packer.difficulties.hard,
-                0x00ff00
-            ),
-            new DifficultyGraphics(
-                this,
-                'insane',
-                180,
-                0,
-                Config.packer.name,
-                Config.packer.difficulties.insane,
-                0x00ff00
-            ),
-        ]
-        this.difficultiesContainer = this.add
-            .container(-120, 180, this.difficultiesGraphics)
-            .setSize(500, 500)
-            .setDisplaySize(500, 500)
-    }
-
-    setEntriesContainer() {
-        this.entriesGraphics = [
-            new EntryGrahpics(this, 0, 0, Config.packer.name, Config.packer.coinEntry, '1'),
-            new EntryGrahpics(this, 100, 0, Config.packer.name, Config.packer.coinEntry, '1'),
-            new EntryGrahpics(this, 100, 100, Config.packer.name, Config.packer.coinEntry, '1'),
-            new EntryGrahpics(this, 0, 100, Config.packer.name, Config.packer.coinEntry, '1'),
-
-        ]
-        this.entriesContainer = this.add
-            .container(100, 100, this.entriesGraphics)
-        
-    }
-    
     setButtonTutorial() {
         this.buttonTutorial = this.add
-            .buttonContainer(0, 300, Config.packer.name, Config.packer.menuButton, 0xdddddd)
+            .buttonContainer(0, 0, Config.packer.name, Config.packer.menuButton, 0xdddddd)
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)

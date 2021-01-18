@@ -1,6 +1,6 @@
 import { CoinState } from '~/models'
 
-interface Icoin {
+interface Icon {
     setFrame(frame: string): this
     setText(text: number): this
 }
@@ -12,7 +12,7 @@ const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
     fontStyle: 'bold',
 }
 
-export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin {
+export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
     public text: Phaser.GameObjects.Text
     public background: Phaser.GameObjects.Image
     public state: CoinState
@@ -39,8 +39,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icoin 
         this.background.setSize(width, height)
         Phaser.Display.Align.In.Center(this.text, this.background)
 
-        this.add(this.background)
-        this.add(this.text)
+        this.add([this.background, this.text])
 
         this.tweenFlipping = this.scene.tweens.add({
             targets: this.background,
