@@ -106,11 +106,35 @@ export class Config {
             boardPanel: setBoardPanel(),
         },
         menu: {
-            style: {
-                fontFamily: 'Play',
-                fontSize: '18px',
-                color: 'white',
-                fontStyle: 'bold',
+            entries: {
+                width: 80,
+                height: 80,
+                textBottomPadding: 40,
+                textLeftPadding: 40,
+                xPadding: 10,
+                yPadding: 10,
+            },
+            difficulties: {
+                width: 80,
+                height: 80,
+                textBottomPadding: 40,
+                textLeftPadding: 24,
+                xPadding: 10,
+                yPadding: 10,
+            },
+            styles: {
+                button: {
+                    fontFamily: 'Play',
+                    fontSize: '18px',
+                    color: 'white',
+                    fontStyle: 'bold',
+                },
+                coin: {
+                    fontFamily: 'Play',
+                    fontSize: '30px',
+                    color: 'white',
+                    fontStyle: 'bold',
+                }
             }
         },
     }
