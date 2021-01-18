@@ -106,17 +106,31 @@ export class Config {
             boardPanel: setBoardPanel(),
         },
         menu: {
+            entriesContainer: {
+                x: -240,
+                y: 80,
+            },
+            difficultiesContainer: {
+                x: 48,
+                y: 80,
+            },
             entries: {
-                width: 80,
-                height: 80,
+                width: 96,
+                height: 96,
                 textBottomPadding: 40,
-                textLeftPadding: 40,
+                textLeftPadding: 68,
                 xPadding: 10,
                 yPadding: 10,
             },
+            helperEntries: {
+                width: 60,
+                height: 60,
+                xPadding: 14,
+                yPadding: 14,
+            },
             difficulties: {
-                width: 80,
-                height: 80,
+                width: 92,
+                height: 92,
                 textBottomPadding: 40,
                 textLeftPadding: 24,
                 xPadding: 10,
@@ -132,6 +146,18 @@ export class Config {
                 coin: {
                     fontFamily: 'Play',
                     fontSize: '30px',
+                    color: 'white',
+                    fontStyle: 'bold',
+                },
+                numero: {
+                    fontFamily: 'Play',
+                    fontSize: '40px',
+                    color: 'white',
+                    fontStyle: 'bold',
+                },
+                helper: {
+                    fontFamily: 'Play',
+                    fontSize: '20px',
                     color: 'white',
                     fontStyle: 'bold',
                 }

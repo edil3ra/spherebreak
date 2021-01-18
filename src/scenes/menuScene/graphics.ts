@@ -1,12 +1,7 @@
+import { Config } from '~/config'
 import { Difficulty } from '~/models'
 import { MenuScene } from './menuScene'
 
-const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
-    fontFamily: 'Play',
-    fontSize: '40px',
-    color: 'white',
-    fontStyle: 'bold',
-}
 
 export class DifficultyGraphics extends Phaser.GameObjects.Container {
     scene: MenuScene
@@ -52,7 +47,8 @@ export class EntryGrahpics extends Phaser.GameObjects.Container {
     scene: MenuScene
     text: Phaser.GameObjects.Text
     image: Phaser.GameObjects.Image
-
+    numero: number
+    
     constructor(
         scene: MenuScene,
         x: number,
@@ -61,36 +57,33 @@ export class EntryGrahpics extends Phaser.GameObjects.Container {
         height: number,
         texture: string,
         frame: string,
-        numero: string
+        numero: number
     ) {
         super(scene, x, y)
+        this.numero = numero
         this.image = scene.add
             .image(0, 0, texture, frame)
             .setOrigin(0, 0)
             .setSize(width, height)
             .setDisplaySize(width, height)
-        this.text = scene.add.text(0, 0, numero, numeroStyle)
+        this.text = scene.add.text(0, 0, `${this.numero}`, Config.scenes.menu.styles.numero)
         Phaser.Display.Align.In.Center(this.text, this.image)
         this.add([this.image, this.text])
     }
 
-    setText(text: number) {
-        this.text.setText(`${text}`)
+    setNumero(numero: number) {
+        this.numero = numero
+        this.text.setText(`${numero}`)
         return this
     }
 }
 
-const helperStyle: Phaser.Types.GameObjects.Text.TextStyle = {
-    fontFamily: 'Play',
-    fontSize: '20px',
-    color: 'white',
-    fontStyle: 'bold',
-}
 
 export class EntryGraphicsHelper extends Phaser.GameObjects.Container {
     scene: MenuScene
     text: Phaser.GameObjects.Text
     image: Phaser.GameObjects.Image
+    numero: number
 
     constructor(
         scene: MenuScene,
@@ -100,22 +93,23 @@ export class EntryGraphicsHelper extends Phaser.GameObjects.Container {
         height: number,
         texture: string,
         frame: string,
-        numero: string
+        numero: number
     ) {
         super(scene, x, y)
+        this.numero = numero
         this.image = scene.add
             .image(0, 0, texture, frame)
             .setOrigin(0, 0)
             .setDisplaySize(width, height)
             .setSize(width, height)
-        this.text = scene.add.text(0, 0, numero, helperStyle)
+        this.text = scene.add.text(0, 0, `${this.numero}`, Config.scenes.menu.styles.helper)
         Phaser.Display.Align.In.Center(this.text, this.image)
         this.add([this.image, this.text])
-        this.image.setInteractive({ cursor: 'pointer' }).on('pointerdown', this.switchNumber.bind(this))
     }
 
-    setText(text: number) {
-        this.text.setText(`${text}`)
+    setNumero(numero: number) {
+        this.numero = numero
+        this.text.setText(`${numero}`)
         return this
     }
 

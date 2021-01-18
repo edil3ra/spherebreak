@@ -12,10 +12,12 @@ export class MenuScene extends Phaser.Scene {
     currentDifficulty: Difficulty
     difficultiesContainer: Phaser.GameObjects.Container
     difficultiesGraphics: Array<DifficultyGraphics>
-    entriesContainer: Phaser.GameObjects.Container
     entriesGraphics: Array<EntryGrahpics>
-    mainContainer: Phaser.GameObjects.Container
+    entriesHelperGraphics: Array<EntryGrahpics>
+    entriesContainer: Phaser.GameObjects.Container
     entriesHelpContainer: Phaser.GameObjects.Container
+    mainContainer: Phaser.GameObjects.Container
+    selectedEntry: EntryGrahpics
 
     constructor() {
         super({ key: Config.scenes.keys.menu })
@@ -52,8 +54,14 @@ export class MenuScene extends Phaser.Scene {
             .container(0, 0, [
                 this.backgroundContainer.setOrigin(0.5, 0),
                 this.banner,
-                this.entriesContainer.setPosition(-220, 100),
-                this.difficultiesContainer.setPosition(48, 100),
+                this.entriesContainer.setPosition(
+                    Config.scenes.menu.entriesContainer.x,
+                    Config.scenes.menu.entriesContainer.y
+                ),
+                this.difficultiesContainer.setPosition(
+                    Config.scenes.menu.difficultiesContainer.x,
+                    Config.scenes.menu.difficultiesContainer.y
+                ),
                 this.buttonPlay.setPosition(0, 400),
                 this.buttonTutorial.setPosition(0, 500),
             ])
@@ -118,7 +126,7 @@ export class MenuScene extends Phaser.Scene {
             const entry = new DifficultyGraphics(
                 this,
                 difficultyToIndex[index],
-                x * (Config.scenes.menu.difficulties.width + Config.scenes.menu.difficulties.yPadding),
+                x * (Config.scenes.menu.difficulties.width + Config.scenes.menu.difficulties.xPadding),
                 y * (Config.scenes.menu.difficulties.height + Config.scenes.menu.difficulties.yPadding) +
                     Config.scenes.menu.difficulties.textBottomPadding,
                 Config.scenes.menu.difficulties.width,
@@ -146,19 +154,19 @@ export class MenuScene extends Phaser.Scene {
             const y = Math.floor(index / 2)
             const entry = new EntryGrahpics(
                 this,
-                x * (Config.scenes.menu.entries.width + Config.scenes.menu.entries.yPadding),
+                x * (Config.scenes.menu.entries.width + Config.scenes.menu.entries.xPadding),
                 y * (Config.scenes.menu.entries.height + Config.scenes.menu.entries.yPadding) +
                     Config.scenes.menu.entries.textBottomPadding,
                 Config.scenes.menu.entries.width,
                 Config.scenes.menu.entries.height,
                 Config.packer.name,
                 Config.packer.coinEntry,
-                `${index + 1}`
+                index + 1
             )
             entry.image.setInteractive({ cursor: 'pointer', pixelPerfect: true }).on(
                 Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
                 () => {
-                    this.onEntriesClicked(entry)
+                    this.onEntriyClicked(entry)
                 },
                 this
             )
@@ -173,24 +181,29 @@ export class MenuScene extends Phaser.Scene {
     }
 
     setHelpEntriesContainer() {
-        const entriesHelper = []
+        this.entriesHelperGraphics = []
         for (const index of Array(9).keys()) {
             const x = index % 3
             const y = Math.floor(index / 3)
-            const helper = new EntryGraphicsHelper(
+            const entryHelper = new EntryGraphicsHelper(
                 this,
-                (x - 1) * 40,
-                (y - 1) * 40,
-                40,
-                40,
+                (x - 1) * Config.scenes.menu.helperEntries.width,
+                (y - 1) * Config.scenes.menu.helperEntries.height,
+                Config.scenes.menu.helperEntries.width,
+                Config.scenes.menu.helperEntries.height,
                 Config.packer.name,
-                Config.packer.coinEntry,
-                `${index + 1}`
+                Config.packer.coinBorder,
+                index + 1,
             )
-            entriesHelper.push(helper)
+            entryHelper.image
+                .setInteractive({ cursor: 'pointer', pixelPerfect: true })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                    this.onEntryHelperClicked(entryHelper)
+                })
+            entryHelper.image.setInteractive({enabled: false})
+            this.entriesHelperGraphics.push(entryHelper)
         }
-        this.entriesHelpContainer = this.add.container(0, 0, entriesHelper)
-
+        this.entriesHelpContainer = this.add.container(0, 0, this.entriesHelperGraphics)
         this.entriesHelpContainer.setActive(false).setVisible(false)
     }
 
@@ -243,11 +256,42 @@ export class MenuScene extends Phaser.Scene {
         localStorage.setItem('difficulty', graphic.name)
     }
 
-    onEntriesClicked(graphic: EntryGrahpics) {
-        Phaser.Display.Align.In.BottomRight(this.entriesHelpContainer, graphic)
+    onEntriyClicked(graphic: EntryGrahpics) {
+        this.selectedEntry = graphic
+        Phaser.Display.Align.In.Center(this.entriesHelpContainer, graphic)
         this.entriesHelpContainer
             .setVisible(true)
             .setActive(true)
-            .setPosition(this.entriesHelpContainer.x + 20, this.entriesHelpContainer.y + 20)
+            .setPosition(this.entriesHelpContainer.x + 16, this.entriesHelpContainer.y + 16)
+        const numbersToExclude = this.entriesGraphics.map((graphic) => {
+            return graphic.numero
+        })
+        
+        this.entriesHelperGraphics.forEach((entry: EntryGraphicsHelper) => {
+            if(numbersToExclude.find(exclude => exclude === entry.numero)) {
+                entry.image.setAlpha(0.4).setActive(false)
+            } else {
+                entry.image.setAlpha(1).setActive(true)
+                console.log('hello')
+            }
+        })
+    }
+
+    onEntryHelperClicked(graphic: EntryGraphicsHelper) {
+        const numbersToExclude = this.entriesGraphics.map((graphic) => {
+            return graphic.numero
+        })
+        
+        if(!numbersToExclude.find(exclude => exclude === graphic.numero)) {
+            this.entriesHelpContainer
+                .setVisible(false)
+                .setActive(false)
+            this.selectedEntry.setNumero(graphic.numero)
+        }
+        
+
+
+
+        
     }
 }
