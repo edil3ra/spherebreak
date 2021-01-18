@@ -1,10 +1,11 @@
-export type Difficulty = 'easy' | 'medium' | 'hard' | 'veryHard'
+export type Difficulty = 'easy' | 'medium' | 'hard' | 'insane'
 
 
 export type GameInfo = {
     turn: number
     timer: number
     quota: number
+    entries: Array<number>
 }
 
 export type GameConfig =  {

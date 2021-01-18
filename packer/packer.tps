@@ -259,7 +259,6 @@
             </struct>
             <key type="filename">images/double-dragon.png</key>
             <key type="filename">images/dragon-head.png</key>
-            <key type="filename">images/dragon-spiral.png</key>
             <key type="filename">images/dragon.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -272,6 +271,21 @@
                 <rect>12,12,24,24</rect>
                 <key>scale9Paddings</key>
                 <rect>12,12,24,24</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">images/dragon-spiral.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>13,13,25,25</rect>
+                <key>scale9Paddings</key>
+                <rect>13,13,25,25</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -339,7 +353,6 @@
             <filename>images/coin.gif</filename>
             <filename>images/double-dragon.png</filename>
             <filename>images/dragon-head.png</filename>
-            <filename>images/dragon-spiral.png</filename>
             <filename>images/dragon.png</filename>
             <filename>images/gameInfoPannel.png</filename>
             <filename>images/patternStripesMetal_large.png</filename>
@@ -352,6 +365,7 @@
             <filename>images/pattern_blueprintPaper.png</filename>
             <filename>images/sphere.png</filename>
             <filename>images/wood.png</filename>
+            <filename>images/dragon-spiral.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

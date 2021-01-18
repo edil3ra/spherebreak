@@ -56,6 +56,12 @@ export class Config {
         menuButton: 'button_rectangleWood.png',
         coinBorder: 'coin.gif',
         pattern: 'patternStripesMetal_large.png',
+        difficulties: {
+            easy: 'dragon.png',
+            medium: 'dragon-head.png',
+            hard: 'double-dragon.png',
+            insane: 'dragon-spiral.png',
+        }
     }
 
     public static readonly difficulties: Record<Difficulty, GameInfo> = {
@@ -63,21 +69,25 @@ export class Config {
             quota: 20,
             timer: 60,
             turn: 15,
+            entries: [1, 2, 3, 4],
         },
         medium: {
             quota: 50,
             timer: 45,
             turn: 20,
+            entries: [1, 2, 3, 4],
         },
         hard: {
             quota: 100,
             timer: 30,
             turn: 20,
+            entries: [1, 2, 3, 6],
         },
-        veryHard: {
+        insane: {
             quota: 200,
             timer: 15,
             turn: 30,
+            entries: [3, 7, 9, 4],
         }
     }
     
