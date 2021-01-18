@@ -21,7 +21,7 @@ export class GameScene extends Phaser.Scene {
         super({ key: Config.scenes.keys.game })
     }
 
-    init(gameConfig: GameConfig) {
+    init() {
         window.addEventListener(
             'resize',
             () => {

@@ -1,9 +1,9 @@
 import { Config } from '~/config'
 import { Difficulty } from '~/models'
 import { ButtonContainer } from '~/ui/buttonContainer'
-import { DifficultyGraphics, EntryGrahpics } from '~/scenes/menuScene/graphics'
+import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from '~/scenes/menuScene/graphics'
 
-const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
+const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
     fontFamily: 'Play',
     fontSize: '30px',
     color: 'white',
@@ -11,17 +11,18 @@ const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
 }
 
 export class MenuScene extends Phaser.Scene {
-    currentDifficulty: Difficulty
     background: Phaser.GameObjects.Image
-    mainContainer: Phaser.GameObjects.Container
     backgroundContainer: Phaser.GameObjects.TileSprite
+    banner: Phaser.GameObjects.Container
     buttonPlay: ButtonContainer
     buttonTutorial: ButtonContainer
-    banner: Phaser.GameObjects.Container
+    currentDifficulty: Difficulty
     difficultiesContainer: Phaser.GameObjects.Container
     difficultiesGraphics: Array<DifficultyGraphics>
     entriesContainer: Phaser.GameObjects.Container
     entriesGraphics: Array<EntryGrahpics>
+    mainContainer: Phaser.GameObjects.Container
+    entriesHelpContainer: Phaser.GameObjects.Container
 
     constructor() {
         super({ key: Config.scenes.keys.menu })
@@ -52,6 +53,7 @@ export class MenuScene extends Phaser.Scene {
         this.setEntriesContainer()
         this.setButtonPlay()
         this.setButtonTutorial()
+        this.setHelpEntriesContainer()
 
         this.mainContainer = this.add
             .container(0, 0, [
@@ -61,6 +63,7 @@ export class MenuScene extends Phaser.Scene {
                 this.difficultiesContainer.setPosition(48, 100),
                 this.buttonPlay.setPosition(0, 400),
                 this.buttonTutorial.setPosition(0, 500),
+                this.entriesHelpContainer,
             ])
             .setSize(600, 600)
             .setDisplaySize(600, 600)
@@ -102,79 +105,96 @@ export class MenuScene extends Phaser.Scene {
     }
 
     setDifficultiesContainer() {
-        const text = this.add.text(24, 0, 'Difficulty', numeroStyle)
+        const text = this.add.text(24, 0, 'Difficulty', textStyle)
         const textOffset = 40
+        const width = 80
+        const height = 80
         const xOffset = 88
         const yOffset = 88
-
-        this.difficultiesGraphics = [
-            new DifficultyGraphics(
-                this,
-                'easy',
-                0,
-                textOffset,
-                Config.packer.name,
-                Config.packer.difficulties.easy,
-                0x00ff00
-            ),
-            new DifficultyGraphics(
-                this,
-                'medium',
-                xOffset,
-                textOffset,
-                Config.packer.name,
-                Config.packer.difficulties.medium,
-                0x00ff00
-            ),
-            new DifficultyGraphics(
-                this,
-                'hard',
-                xOffset,
-                textOffset + yOffset,
-                Config.packer.name,
-                Config.packer.difficulties.hard,
-                0x00ff00
-            ),
-            new DifficultyGraphics(
-                this,
-                'insane',
-                0,
-                textOffset + yOffset,
-                Config.packer.name,
-                Config.packer.difficulties.insane,
-                0x00ff00
-            ),
+        const difficultyToIndex: Array<Difficulty> = ['easy', 'medium', 'hard', 'insane']
+        const imageToIndex = [
+            Config.packer.difficulties.easy,
+            Config.packer.difficulties.medium,
+            Config.packer.difficulties.hard,
+            Config.packer.difficulties.insane,
         ]
+        this.difficultiesGraphics = []
+
+        for (const index of Array(4).keys()) {
+            const x = index % 2
+            const y = Math.floor(index / 2)
+            const entry = new DifficultyGraphics(
+                this,
+                difficultyToIndex[index],
+                x * xOffset,
+                y * yOffset + textOffset,
+                width,
+                height,
+                Config.packer.name,
+                imageToIndex[index],
+                0x00ff00
+            )
+            entry.image
+                .setInteractive({ cursor: 'pointer', pixelPerfect: true })
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.onDifficultySelected(entry), this)
+            this.difficultiesGraphics.push(entry)
+        }
         this.difficultiesContainer = this.add.container(0, 0, [text, ...this.difficultiesGraphics])
     }
 
     setEntriesContainer() {
-        const text = this.add.text(40, 0, 'Coins', numeroStyle).setOrigin(0, 0)
+        const text = this.add.text(40, 0, 'Coins', textStyle).setOrigin(0, 0)
+        const width = 80
+        const height = 80
         const textOffset = 40
         const xOffset = 88
         const yOffset = 88
 
-        this.entriesGraphics = [
-            new EntryGrahpics(this, 0, textOffset, Config.packer.name, Config.packer.coinEntry, '1'),
-            new EntryGrahpics(this, xOffset, textOffset, Config.packer.name, Config.packer.coinEntry, '1'),
-            new EntryGrahpics(
+        this.entriesGraphics = []
+        for (const index of Array(4).keys()) {
+            const x = index % 2
+            const y = Math.floor(index / 2)
+            const entry = new EntryGrahpics(
                 this,
-                xOffset,
-                textOffset + yOffset,
+                x * xOffset,
+                y * yOffset + textOffset,
+                width,
+                height,
                 Config.packer.name,
                 Config.packer.coinEntry,
-                '1'
-            ),
-            new EntryGrahpics(
-                this,
-                0,
-                textOffset + yOffset,
-                Config.packer.name,
-                Config.packer.coinEntry,
-                '1'
-            ),
-        ]
+                `${index + 1}`
+            )
+            entry.image.setInteractive({ cursor: 'pointer', pixelPerfect: true }).on(
+                Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
+                () => {
+                    console.log('hello')
+                },
+                this
+            )
+            this.entriesGraphics.push(entry)
+        }
+
         this.entriesContainer = this.add.container(0, 0, [text, ...this.entriesGraphics])
+    }
+
+    setHelpEntriesContainer() {
+        const entriesHelper = []
+        for (const index of Array(9).keys()) {
+            const x = index % 3
+            const y = Math.floor(index / 3)
+            const helper = new EntryGraphicsHelper(
+                this,
+                (x - 1) * 40,
+                (y - 1) * 40,
+                40,
+                40,
+                Config.packer.name,
+                Config.packer.coinEntry,
+                `${index + 1}`
+            )
+            entriesHelper.push(helper)
+        }
+        this.entriesHelpContainer = this.add.container(0, 0, entriesHelper)
     }
 
     setButtonPlay() {
@@ -216,5 +236,13 @@ export class MenuScene extends Phaser.Scene {
         this.scene.start(Config.scenes.keys.game, { difficulty: 'easy' })
         this.scene.launch(Config.scenes.keys.gamePause)
         this.scene.sleep(Config.scenes.keys.gamePause)
+    }
+
+    onDifficultySelected(entry: DifficultyGraphics) {
+        this.difficultiesGraphics.forEach((icon: DifficultyGraphics) => {
+            icon.background.setAlpha(0)
+        })
+        entry.background.setAlpha(1)
+        localStorage.setItem('difficulty', entry.name)
     }
 }

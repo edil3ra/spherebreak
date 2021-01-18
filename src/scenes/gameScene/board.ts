@@ -24,7 +24,6 @@ export class Board {
     }
 
 
-
     setSphereGraphics() {
         this.sphereGraphics = this.scene.add.coin(
             Config.scenes.game.board.borderPadding +
