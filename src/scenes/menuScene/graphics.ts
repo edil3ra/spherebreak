@@ -31,7 +31,6 @@ export class DifficultyGraphics extends Phaser.GameObjects.Container {
             .setDisplaySize(width - 4, height - 4)
             .setSize(width - 4, height - 4)
         this.add([this.background, this.image])
-        this.image.setInteractive({ cursor: 'pointer' }).on('pointerdown', this.selectDifficulty.bind(this))
     }
 
     selectDifficulty() {
@@ -39,7 +38,7 @@ export class DifficultyGraphics extends Phaser.GameObjects.Container {
             icon.background.setAlpha(0)
         })
         this.background.setAlpha(1)
-        localStorage.setItem('difficulty', this.name)
+
     }
 }
 

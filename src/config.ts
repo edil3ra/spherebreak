@@ -106,6 +106,7 @@ export class Config {
             boardPanel: setBoardPanel(),
         },
         menu: {
+            logState: true,
             entriesContainer: {
                 x: -240,
                 y: 80,

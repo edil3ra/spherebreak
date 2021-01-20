@@ -47,12 +47,16 @@ export class MenuScene extends Phaser.Scene {
 
         this.currentDifficulty = (window.localStorage.getItem('difficulty') as Difficulty) || 'easy'
         this.stateService = buildMenuService(this)
-        this.stateService.onTransition((state) => {
-            console.log(state)
-        })
+
         this.stateService.start()
+
+        if (Config.scenes.menu.logState) {
+            this.stateService.onTransition((state) => {
+                console.log(state)
+            })
+        }
         if (Config.scenes.skip.menu) {
-            this.handlePlay()
+            this.stateService.send(EVENT_MENU.PLAY)
         }
     }
 
@@ -88,7 +92,7 @@ export class MenuScene extends Phaser.Scene {
         const difficultyIcon = this.difficultiesGraphics.find(
             (icon) => icon.name === this.currentDifficulty
         ) as DifficultyGraphics
-        difficultyIcon.selectDifficulty()
+        this.handleDifficultySelected(difficultyIcon)
     }
 
     setBackground() {
@@ -153,10 +157,9 @@ export class MenuScene extends Phaser.Scene {
             )
             entry.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                // .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.onDifficultyClicked(entry), this)
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                     this.stateService.send(EVENT_MENU.SELECT_DIFFICULTY, {
-                        value: entry as DifficultyGraphics,
+                        value: entry,
                     })
                 })
             this.difficultiesGraphics.push(entry)
@@ -187,7 +190,7 @@ export class MenuScene extends Phaser.Scene {
             entry.image.setInteractive({ cursor: 'pointer', pixelPerfect: true }).on(
                 Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
                 () => {
-                    this.onEntriyClicked(entry)
+                    this.stateService.send(EVENT_MENU.SELECT_ENTRIES, { value: entry })
                 },
                 this
             )
@@ -219,7 +222,8 @@ export class MenuScene extends Phaser.Scene {
             entryHelper.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                    this.onEntryHelperClicked(entryHelper)
+                    this.stateService.send(EVENT_MENU.SELECT_ENTRY, { value: entryHelper })
+                    this.handleEntrySelected(entryHelper)
                 })
             entryHelper.image.setInteractive({ enabled: false })
             this.entriesHelperGraphics.push(entryHelper)
@@ -239,7 +243,6 @@ export class MenuScene extends Phaser.Scene {
             .setTextStyle(Config.scenes.menu.styles.button)
 
         this.buttonPlay.button.setScale(1.6, 1)
-        // this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handlePlay.bind(this))
         this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
             this.stateService.send(EVENT_MENU.PLAY)
         })
@@ -272,14 +275,11 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {
-        this.difficultiesGraphics.forEach((icon: DifficultyGraphics) => {
-            icon.background.setAlpha(0)
-        })
-        graphic.background.setAlpha(1)
+        graphic.selectDifficulty()
         localStorage.setItem('difficulty', graphic.name)
     }
 
-    onEntriyClicked(graphic: EntryGrahpics) {
+    handleEntriesSelected(graphic: EntryGrahpics) {
         this.selectedEntry = graphic
         Phaser.Display.Align.In.Center(this.entriesHelpContainer, graphic)
         this.entriesHelpContainer
@@ -299,7 +299,7 @@ export class MenuScene extends Phaser.Scene {
         })
     }
 
-    onEntryHelperClicked(graphic: EntryGraphicsHelper) {
+    handleEntrySelected(graphic: EntryGraphicsHelper) {
         const numbersToExclude = this.entriesGraphics.map((graphic) => {
             return graphic.numero
         })
