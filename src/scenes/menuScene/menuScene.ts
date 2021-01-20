@@ -2,6 +2,8 @@ import { Config } from '~/config'
 import { Difficulty } from '~/models'
 import { ButtonContainer } from '~/ui/buttonContainer'
 import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from '~/scenes/menuScene/graphics'
+import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menuScene/menuStateMachine'
+import { EventObject, Interpreter } from 'xstate'
 
 export class MenuScene extends Phaser.Scene {
     background: Phaser.GameObjects.Image
@@ -18,6 +20,15 @@ export class MenuScene extends Phaser.Scene {
     entriesHelpContainer: Phaser.GameObjects.Container
     mainContainer: Phaser.GameObjects.Container
     selectedEntry: EntryGrahpics
+    stateService: Interpreter<
+        MenuContext,
+        any,
+        EventObject,
+        {
+            value: any
+            context: MenuContext
+        }
+    >
 
     constructor() {
         super({ key: Config.scenes.keys.menu })
@@ -35,6 +46,11 @@ export class MenuScene extends Phaser.Scene {
         )
 
         this.currentDifficulty = (window.localStorage.getItem('difficulty') as Difficulty) || 'easy'
+        this.stateService = buildMenuService(this)
+        this.stateService.onTransition((state) => {
+            console.log(state)
+        })
+        this.stateService.start()
         if (Config.scenes.skip.menu) {
             this.handlePlay()
         }
@@ -137,7 +153,12 @@ export class MenuScene extends Phaser.Scene {
             )
             entry.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.onDifficultyClicked(entry), this)
+                // .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.onDifficultyClicked(entry), this)
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                    this.stateService.send(EVENT_MENU.SELECT_DIFFICULTY, {
+                        value: entry as DifficultyGraphics,
+                    })
+                })
             this.difficultiesGraphics.push(entry)
         }
         this.difficultiesContainer = this.add.container(0, 0, [text, ...this.difficultiesGraphics])
@@ -193,14 +214,14 @@ export class MenuScene extends Phaser.Scene {
                 Config.scenes.menu.helperEntries.height,
                 Config.packer.name,
                 Config.packer.coinBorder,
-                index + 1,
+                index + 1
             )
             entryHelper.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                     this.onEntryHelperClicked(entryHelper)
                 })
-            entryHelper.image.setInteractive({enabled: false})
+            entryHelper.image.setInteractive({ enabled: false })
             this.entriesHelperGraphics.push(entryHelper)
         }
         this.entriesHelpContainer = this.add.container(0, 0, this.entriesHelperGraphics)
@@ -218,7 +239,10 @@ export class MenuScene extends Phaser.Scene {
             .setTextStyle(Config.scenes.menu.styles.button)
 
         this.buttonPlay.button.setScale(1.6, 1)
-        this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handlePlay.bind(this))
+        // this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, this.handlePlay.bind(this))
+        this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+            this.stateService.send(EVENT_MENU.PLAY)
+        })
     }
 
     setButtonTutorial() {
@@ -231,14 +255,13 @@ export class MenuScene extends Phaser.Scene {
             .setText('Tutorial')
             .setTextStyle(Config.scenes.menu.styles.button)
         this.buttonTutorial.button.setScale(1.6, 1)
-        this.buttonTutorial.button.on(
-            Phaser.Input.Events.GAMEOBJECT_POINTER_UP,
-            this.handleTutorial.bind(this)
-        )
+        this.buttonTutorial.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+            this.stateService.send(EVENT_MENU.TUTORIAL)
+        })
     }
 
-    handleTutorial(pointer: Phaser.Input.Pointer) {
-        console.log('Tutorial')
+    handleTutorial() {
+        console.log('tutorial')
     }
 
     handlePlay() {
@@ -248,7 +271,7 @@ export class MenuScene extends Phaser.Scene {
         this.scene.sleep(Config.scenes.keys.gamePause)
     }
 
-    onDifficultyClicked(graphic: DifficultyGraphics) {
+    handleDifficultySelected(graphic: DifficultyGraphics) {
         this.difficultiesGraphics.forEach((icon: DifficultyGraphics) => {
             icon.background.setAlpha(0)
         })
@@ -266,13 +289,12 @@ export class MenuScene extends Phaser.Scene {
         const numbersToExclude = this.entriesGraphics.map((graphic) => {
             return graphic.numero
         })
-        
+
         this.entriesHelperGraphics.forEach((entry: EntryGraphicsHelper) => {
-            if(numbersToExclude.find(exclude => exclude === entry.numero)) {
+            if (numbersToExclude.find((exclude) => exclude === entry.numero)) {
                 entry.image.setAlpha(0.4).setActive(false)
             } else {
                 entry.image.setAlpha(1).setActive(true)
-                console.log('hello')
             }
         })
     }
@@ -281,17 +303,10 @@ export class MenuScene extends Phaser.Scene {
         const numbersToExclude = this.entriesGraphics.map((graphic) => {
             return graphic.numero
         })
-        
-        if(!numbersToExclude.find(exclude => exclude === graphic.numero)) {
-            this.entriesHelpContainer
-                .setVisible(false)
-                .setActive(false)
+
+        if (!numbersToExclude.find((exclude) => exclude === graphic.numero)) {
+            this.entriesHelpContainer.setVisible(false).setActive(false)
             this.selectedEntry.setNumero(graphic.numero)
         }
-        
-
-
-
-        
     }
 }
