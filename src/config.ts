@@ -88,7 +88,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            menu: false,
+            menu: true,
         },
         keys: {
             game: 'gameScene',

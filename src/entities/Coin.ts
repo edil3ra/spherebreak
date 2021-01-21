@@ -17,6 +17,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
     public background: Phaser.GameObjects.Image
     public state: CoinState
     public tweenFlipping: Phaser.Tweens.Tween
+    // public tweenFlipping: Phaser.Tweens.Timeline
     public tweenRevive: Phaser.Tweens.Timeline
     public tweenKill: Phaser.Tweens.Timeline
     
@@ -43,8 +44,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
 
         this.tweenFlipping = this.scene.tweens.add({
             targets: this.background,
-            scaleX: 0.25,
-            scaleY: 0.5,
+            scaleX: 0,
             ease: 'Sine.easeInOut',
             duration: 200,
             repeat: -1,
