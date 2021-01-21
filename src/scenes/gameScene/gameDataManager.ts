@@ -105,7 +105,6 @@ export class GameDataManager extends Phaser.Data.DataManager {
 
     nextTurn() {
         if (this.isTotalMultipleOfSphere()) {
-            console.log('winning turn')
             this.handleWinTurn()
         }
         else if (this.isAllSphereActive() || this.isTimerOver()) {
@@ -113,11 +112,11 @@ export class GameDataManager extends Phaser.Data.DataManager {
         }
 
         if(this.isMaxTurnReached()) {
-            console.log('game lost')
+            this.events.emit('gameLost')
         }
 
         else if(this.isQuotaReached()) {
-            console.log('game win')
+            this.events.emit('gameWin')
         }
     }
 

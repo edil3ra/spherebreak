@@ -20,6 +20,7 @@ export class EntriesSelectionScene extends Phaser.Scene {
             },
             false
         )
+        this.menuScene = this.scene.get(Config.scenes.keys.menu) as MenuScene
         this.menuScene = menuScene
 
         this.events.on('wake', () => {

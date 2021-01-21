@@ -65,7 +65,7 @@ export class MenuScene extends Phaser.Scene {
         if (Config.scenes.skip.menu) {
             this.stateService.send(EVENT_MENU.PLAY)
         }
-        this.scene.launch(Config.scenes.keys.entriesSelection, this)
+        this.scene.launch(Config.scenes.keys.entriesSelection)
         this.scene.sleep(Config.scenes.keys.entriesSelection)
 
         this.events.on('wake', () => {

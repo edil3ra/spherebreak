@@ -41,6 +41,9 @@ export class GameScene extends Phaser.Scene {
             this.scene.pause(Config.scenes.keys.game)
             this.scene.wake(Config.scenes.keys.gamePause)
         })
+
+        this.scene.launch(Config.scenes.keys.entriesSelection)
+        this.scene.sleep(Config.scenes.keys.entriesSelection)
     }
 
     create(gameConfig: GameConfig) {
@@ -66,6 +69,7 @@ export class GameScene extends Phaser.Scene {
         this.data.quota = 0
         this.data.sphere = this.data.pickNewRandomNumber()
         this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
+        this.events.emit('gameWin')
     }
 
     registerDataEvents() {
@@ -179,6 +183,15 @@ export class GameScene extends Phaser.Scene {
         this.events.on('finishTurn', () => {
             this.startTimerTurn()
         })
+
+        this.events.on('gameWin', () => {
+            console.log('Game Win')
+        })
+
+        this.events.on('gameLost', () => {
+            console.log('Game Lost')
+        })
+        
     }
 
     initTimerSyncCoin() {
