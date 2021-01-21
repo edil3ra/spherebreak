@@ -1,3 +1,4 @@
+import { GameState } from '~/models'
 import { GameScene } from '~/scenes/gameScene'
 
 export class GameDataManager extends Phaser.Data.DataManager {
@@ -11,9 +12,9 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.turn = 0
         this.timer = 0
         this.quota = 0
+        this.gameState = 'normal'
         this.maxTurn = 0
         this.maxQuota = 0
-        this.quota = 0
         this.comboCount = 0
         this.comboMultiple = 0
         this.comboMultipleGoal = null
@@ -112,11 +113,11 @@ export class GameDataManager extends Phaser.Data.DataManager {
         }
 
         if(this.isMaxTurnReached()) {
-            this.events.emit('gameLost')
+            this.gameState = 'lost'
         }
 
         else if(this.isQuotaReached()) {
-            this.events.emit('gameWin')
+            this.gameState = 'win'
         }
     }
 
@@ -207,6 +208,10 @@ export class GameDataManager extends Phaser.Data.DataManager {
         return this.get('quota') as number
     }
 
+    get gameState(): GameState {
+        return this.get('gameState') as GameState
+    }
+
     get maxTurn(): number {
         return this.get('maxTurn') as number
     }
@@ -273,6 +278,10 @@ export class GameDataManager extends Phaser.Data.DataManager {
 
     set quota(value: number) {
         this.set('quota', value)
+    }
+
+    set gameState(value: GameState) {
+        this.set('gameState', value)
     }
 
     set comboCount(value: number) {

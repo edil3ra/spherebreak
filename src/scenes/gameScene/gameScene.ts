@@ -1,6 +1,6 @@
 import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
-import { CoinState, Difficulty, GameConfig, GameInfo } from '~/models'
+import { CoinState, Difficulty, GameConfig, GameInfo, GameState } from '~/models'
 import { Board } from '~/scenes/gameScene/board'
 import { BoardPanelContainer } from '~/scenes/gameScene/panels/boardContainerPanel'
 import { GameDataManager } from '~/scenes/gameScene/gameDataManager'
@@ -16,6 +16,7 @@ export class GameScene extends Phaser.Scene {
     public timerSyncCoin: Phaser.Time.TimerEvent
     public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
+
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -69,7 +70,7 @@ export class GameScene extends Phaser.Scene {
         this.data.quota = 0
         this.data.sphere = this.data.pickNewRandomNumber()
         this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
-        this.events.emit('gameWin')
+        this.data.gameState = 'lost'
     }
 
     registerDataEvents() {
@@ -184,8 +185,12 @@ export class GameScene extends Phaser.Scene {
             this.startTimerTurn()
         })
 
-        this.events.on('gameWin', () => {
-            console.log('Game Win')
+        this.events.on('changedata-gameState', (_scene: GameScene, state: GameState) => {
+            if(state === 'lost') {
+                console.log('lost')
+            } else if (state === 'win') {
+                console.log('win')
+            }
         })
 
         this.events.on('gameLost', () => {
