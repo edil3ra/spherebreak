@@ -1,6 +1,6 @@
 import { createMachine, interpret } from 'xstate'
 import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from './graphics'
-import { MenuScene } from './menuScene'
+import { MenuScene } from '~/scenes/menuScene'
 
 export interface MenuContext {
     scene: MenuScene
@@ -23,7 +23,7 @@ export const EVENT = {
 type EVENT_PLAY = { type: typeof EVENT.PLAY }
 type EVENT_TUTORIAL = { type: typeof EVENT.TUTORIAL }
 type EVENT_SELECT_DIFFICULTY = { type: typeof EVENT.SELECT_DIFFICULTY; value: DifficultyGraphics }
-type EVENT_SELECT_ENTRIES = { type: typeof EVENT.SELECT_ENTRIES; value: EntryGrahpics }
+type EVENT_SELECT_ENTRIES = { type: typeof EVENT.SELECT_ENTRIES; value: {entry: EntryGrahpics, index: number} }
 type EVENT_UNSELECT_ENTRIES = { type: typeof EVENT.UNSELECT_ENTRIES }
 type EVENT_SELECT_ENTRY = { type: typeof EVENT.SELECT_ENTRY, value: EntryGraphicsHelper }
 
@@ -46,6 +46,14 @@ export type MenuState =
       }
 
 
+export const ACTIONS = {
+    PLAY: 'play',
+    TUTORIAL: 'tutorial',
+    CHANGE_DIFFICULTY: 'changeDifficulty',
+    SELECT_ENTRIES: 'selectEntries',
+    SELECT_ENTRY: 'selectEntry' ,
+}
+
 
 const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
     {
@@ -55,12 +63,12 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
             [STATE.BASE]: {
                 on: {
                     [EVENT.PLAY]: {
-                        actions: ['play'],
+                        actions: [ACTIONS.PLAY],
                         internal: true,
                         target: STATE.BASE,
                     },
                     [EVENT.TUTORIAL]: {
-                        actions: ['tutorial'],
+                        actions: [ACTIONS.TUTORIAL],
                         internal: true,
                         target: STATE.BASE,
                     },
@@ -70,12 +78,12 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
                     [EVENT.SELECT_DIFFICULTY]: {
                         target: STATE.BASE,
                         internal: true,
-                        actions: ['difficulty']
+                        actions: [ACTIONS.CHANGE_DIFFICULTY]
                     },
                 },
             },
             [STATE.ENTRIES_SELECTED]: {
-                entry: ['entriesSelected'],
+                entry: [ACTIONS.SELECT_ENTRIES],
                 on: {
                     [EVENT.SELECT_ENTRIES]: {
                         target: STATE.ENTRIES_SELECTED,
@@ -85,7 +93,7 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
                         target: STATE.BASE,
                     },
                     [EVENT.SELECT_ENTRY]: {
-                        actions: ['entrySelected'],
+                        actions: [ACTIONS.SELECT_ENTRY],
                         target: STATE.BASE,
                     },
                 },
@@ -94,19 +102,19 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
     },
     {
         actions: {
-            play: (context, event) => {
+            [ACTIONS.PLAY]: (context, event) => {
                 context.scene.handlePlay()
             },
-            tutorial: (context, event) => {
+            [ACTIONS.TUTORIAL]: (context, event) => {
                 context.scene.handleTutorial()
             },
-            difficulty: (context, event: EVENT_SELECT_DIFFICULTY) => {
+            [ACTIONS.CHANGE_DIFFICULTY]: (context, event: EVENT_SELECT_DIFFICULTY) => {
                 context.scene.handleDifficultySelected(event.value)
             },
-            entriesSelected: (context, event: EVENT_SELECT_ENTRIES) => {
-                context.scene.handleEntriesSelected(event.value)
+            [ACTIONS.SELECT_ENTRIES]: (context, event: EVENT_SELECT_ENTRIES) => {
+                context.scene.handleEntriesSelected(event.value.entry, event.value.index)
             },
-            entrySelected: (context, event: EVENT_SELECT_ENTRY) => {
+            [ACTIONS.SELECT_ENTRY]: (context, event: EVENT_SELECT_ENTRY) => {
                 context.scene.handleEntrySelected(event.value)
             },
         },

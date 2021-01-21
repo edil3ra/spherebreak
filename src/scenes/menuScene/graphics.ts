@@ -7,7 +7,8 @@ export class DifficultyGraphics extends Phaser.GameObjects.Container {
     scene: MenuScene
     background: Phaser.GameObjects.Graphics
     image: Phaser.GameObjects.Image
-
+    name: Difficulty
+    
     constructor(
         scene: MenuScene,
         name: Difficulty,
