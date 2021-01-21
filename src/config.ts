@@ -100,6 +100,7 @@ export class Config {
             gamePause: 'gamePauseScene',
             menu: 'menuScene',
             boot: 'bootScene',
+            entriesSelection: 'entriesSelection',
         },
         game: {
             board: setBoard(),
@@ -124,16 +125,16 @@ export class Config {
                 yPadding: 10,
             },
             helperEntries: {
-                width: 60,
-                height: 60,
-                xPadding: 14,
-                yPadding: 14,
+                width: 140,
+                height: 140,
+                xPadding: 16,
+                yPadding: 16,
             },
             difficulties: {
                 width: 92,
                 height: 92,
                 textBottomPadding: 40,
-                textLeftPadding: 24,
+                textLeftPadding: 40,
                 xPadding: 10,
                 yPadding: 10,
             },
@@ -158,7 +159,7 @@ export class Config {
                 },
                 helper: {
                     fontFamily: 'Play',
-                    fontSize: '20px',
+                    fontSize: '50px',
                     color: 'white',
                     fontStyle: 'bold',
                 }

@@ -140,7 +140,6 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
                 context.scene.handleEntriesSelected(event.value)
             },
             entrySelected: (context, event: EVENT_SELECT_ENTRY) => {
-                console.log('hello')
                 context.scene.handleEntrySelected(event.value)
             },
         },

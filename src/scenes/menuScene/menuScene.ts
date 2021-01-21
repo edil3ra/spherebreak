@@ -1,9 +1,9 @@
+import { EventObject, Interpreter } from 'xstate'
+import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menuScene/menuStateMachine'
 import { Config } from '~/config'
 import { Difficulty } from '~/models'
 import { ButtonContainer } from '~/ui/buttonContainer'
 import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from '~/scenes/menuScene/graphics'
-import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menuScene/menuStateMachine'
-import { EventObject, Interpreter } from 'xstate'
 
 export class MenuScene extends Phaser.Scene {
     background: Phaser.GameObjects.Image
@@ -15,7 +15,7 @@ export class MenuScene extends Phaser.Scene {
     difficultiesContainer: Phaser.GameObjects.Container
     difficultiesGraphics: Array<DifficultyGraphics>
     entriesGraphics: Array<EntryGrahpics>
-    entriesHelperGraphics: Array<EntryGrahpics>
+    entriesHelperGraphics: Array<EntryGraphicsHelper>
     entriesContainer: Phaser.GameObjects.Container
     entriesHelpContainer: Phaser.GameObjects.Container
     mainContainer: Phaser.GameObjects.Container
@@ -58,6 +58,8 @@ export class MenuScene extends Phaser.Scene {
         if (Config.scenes.skip.menu) {
             this.stateService.send(EVENT_MENU.PLAY)
         }
+        this.scene.launch(Config.scenes.keys.entriesSelection, this)
+        this.scene.sleep(Config.scenes.keys.entriesSelection)
     }
 
     create() {
@@ -281,22 +283,8 @@ export class MenuScene extends Phaser.Scene {
 
     handleEntriesSelected(graphic: EntryGrahpics) {
         this.selectedEntry = graphic
-        Phaser.Display.Align.In.Center(this.entriesHelpContainer, graphic)
-        this.entriesHelpContainer
-            .setVisible(true)
-            .setActive(true)
-            .setPosition(this.entriesHelpContainer.x + 16, this.entriesHelpContainer.y + 16)
-        const numbersToExclude = this.entriesGraphics.map((graphic) => {
-            return graphic.numero
-        })
-
-        this.entriesHelperGraphics.forEach((entry: EntryGraphicsHelper) => {
-            if (numbersToExclude.find((exclude) => exclude === entry.numero)) {
-                entry.image.setAlpha(0.4).setActive(false)
-            } else {
-                entry.image.setAlpha(1).setActive(true)
-            }
-        })
+        this.scene.pause(Config.scenes.keys.menu)
+        this.scene.wake(Config.scenes.keys.entriesSelection, this)
     }
 
     handleEntrySelected(graphic: EntryGraphicsHelper) {

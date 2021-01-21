@@ -79,13 +79,13 @@ export class EntryGrahpics extends Phaser.GameObjects.Container {
 
 
 export class EntryGraphicsHelper extends Phaser.GameObjects.Container {
-    scene: MenuScene
+    scene: Phaser.Scene
     text: Phaser.GameObjects.Text
     image: Phaser.GameObjects.Image
     numero: number
 
     constructor(
-        scene: MenuScene,
+        scene: Phaser.Scene,
         x: number,
         y: number,
         width: number,
@@ -98,7 +98,7 @@ export class EntryGraphicsHelper extends Phaser.GameObjects.Container {
         this.numero = numero
         this.image = scene.add
             .image(0, 0, texture, frame)
-            .setOrigin(0, 0)
+            .setOrigin(0.5, 0.5)
             .setDisplaySize(width, height)
             .setSize(width, height)
         this.text = scene.add.text(0, 0, `${this.numero}`, Config.scenes.menu.styles.helper)
