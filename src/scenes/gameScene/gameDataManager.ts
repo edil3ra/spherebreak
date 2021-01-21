@@ -182,10 +182,6 @@ export class GameDataManager extends Phaser.Data.DataManager {
             return count >= 3 ? 0: this.bordersAlive[index] ? count: count + 1
         })
         this.events.emit('finishTurn')
-        console.log({
-            borders: this.borders,
-            bordersDeadCount: this.bordersDeadCount,
-        })
     }
 
     pickNewRandomNumber() {

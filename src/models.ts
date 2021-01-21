@@ -5,11 +5,11 @@ export type GameInfo = {
     turn: number
     timer: number
     quota: number
-    entries: Array<number>
 }
 
 export type GameConfig =  {
     difficulty: Difficulty
+    entries: Array<number>
 }
 
 

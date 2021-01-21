@@ -49,12 +49,10 @@ export class MenuScene extends Phaser.Scene {
 
         this.currentDifficulty = (window.localStorage.getItem('difficulty') as Difficulty) || 'easy'
         this.currentEntries = [1, 2, 3, 4]
-        const parsedResult = window.localStorage.getItem('entries') 
-        if(parsedResult) {
+        const parsedResult = window.localStorage.getItem('entries')
+        if (parsedResult) {
             this.currentEntries = JSON.parse(parsedResult)
         }
-
-        
 
         this.stateService = buildMenuService(this)
         this.stateService.start()
@@ -304,10 +302,10 @@ export class MenuScene extends Phaser.Scene {
 
     handlePlay() {
         window.gdsdk.showAd()
-        this.scene.start(Config.scenes.keys.game, { difficulty: 'easy' })
+        this.saveState()
+        this.scene.start(Config.scenes.keys.game, { difficulty: 'easy', entries: this.currentEntries })
         this.scene.launch(Config.scenes.keys.gamePause)
         this.scene.sleep(Config.scenes.keys.gamePause)
-        this.saveState()
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {

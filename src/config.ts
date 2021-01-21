@@ -68,25 +68,21 @@ export class Config {
             quota: 20,
             timer: 60,
             turn: 15,
-            entries: [1, 2, 3, 4],
         },
         medium: {
             quota: 50,
             timer: 45,
             turn: 20,
-            entries: [1, 2, 3, 4],
         },
         hard: {
             quota: 100,
             timer: 30,
             turn: 20,
-            entries: [1, 2, 3, 6],
         },
         insane: {
             quota: 200,
             timer: 15,
             turn: 30,
-            entries: [3, 7, 9, 4],
         },
     }
 

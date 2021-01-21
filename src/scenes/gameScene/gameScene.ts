@@ -57,6 +57,7 @@ export class GameScene extends Phaser.Scene {
         this.data.maxTimer = initialGameInfo.timer
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
+        this.data.entries = gameConfig.entries
         this.data.comboMultipleGoal = null
         this.data.comboCountGoal = null
         this.data.comboCount = 0
@@ -64,7 +65,6 @@ export class GameScene extends Phaser.Scene {
         this.data.turn = 0
         this.data.quota = 0
         this.data.sphere = this.data.pickNewRandomNumber()
-        this.data.entries = [1, 2, 3, 4]
         this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
     }
 
