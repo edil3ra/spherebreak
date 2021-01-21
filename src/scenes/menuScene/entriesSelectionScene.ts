@@ -23,22 +23,17 @@ export class EntriesSelectionScene extends Phaser.Scene {
         this.menuScene = menuScene
 
         this.events.on('wake', () => {
-            // console.log('hello')
             this.showEntries()
         })
-
-        
     }
 
     create() {
         this.setEntriesContainer()
-        // this.showEntries()
-        console.log('create')
         this.input.on(
             'pointerdown',
-             () => {
-                 // this.scene.sleep(Config.scenes.keys.entriesSelection)
-                 // this.scene.wake(Config.scenes.keys.menu)
+            () => {
+                this.menuScene.stateService.send(EVENT_MENU.UNSELECT_ENTRIES)
+                this.menuScene.fromEntriesToSelectionToMenu()
             },
             this
         )
@@ -65,8 +60,6 @@ export class EntriesSelectionScene extends Phaser.Scene {
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                     this.menuScene.stateService.send(EVENT_MENU.SELECT_ENTRY, { value: entryHelper })
-                    this.scene.sleep(Config.scenes.keys.entriesSelection)
-                    // this.handleEntrySelected(entryHelper)
                 })
             entryHelper.image.setInteractive({ enabled: false })
             this.entriesHelperGraphics.push(entryHelper)

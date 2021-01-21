@@ -47,7 +47,6 @@ export class MenuScene extends Phaser.Scene {
 
         this.currentDifficulty = (window.localStorage.getItem('difficulty') as Difficulty) || 'easy'
         this.stateService = buildMenuService(this)
-
         this.stateService.start()
 
         if (Config.scenes.menu.logState) {
@@ -60,6 +59,14 @@ export class MenuScene extends Phaser.Scene {
         }
         this.scene.launch(Config.scenes.keys.entriesSelection, this)
         this.scene.sleep(Config.scenes.keys.entriesSelection)
+        
+        this.events.on('wake', () => {
+            this.tweens.add({
+                ...Config.scenes.menu.tweens.camera.in,
+                targets: this.cameras.main,
+                callbackScope: this
+            })
+        })
     }
 
     create() {
@@ -265,6 +272,24 @@ export class MenuScene extends Phaser.Scene {
         })
     }
 
+    fromMenuToEntriesSelection() {
+        this.tweens.add({
+            ...Config.scenes.menu.tweens.camera.out,
+            targets: this.cameras.main,
+            onComplete: () => {
+                this.scene.pause(Config.scenes.keys.menu)
+                this.scene.wake(Config.scenes.keys.entriesSelection, this)
+            },
+            
+        })
+    }
+
+
+    fromEntriesToSelectionToMenu() {
+        this.scene.wake(Config.scenes.keys.menu)
+        this.scene.sleep(Config.scenes.keys.entriesSelection)
+    }
+    
     handleTutorial() {
         console.log('tutorial')
     }
@@ -283,8 +308,7 @@ export class MenuScene extends Phaser.Scene {
 
     handleEntriesSelected(graphic: EntryGrahpics) {
         this.selectedEntry = graphic
-        this.scene.pause(Config.scenes.keys.menu)
-        this.scene.wake(Config.scenes.keys.entriesSelection, this)
+        this.fromMenuToEntriesSelection()
     }
 
     handleEntrySelected(graphic: EntryGraphicsHelper) {
@@ -296,5 +320,6 @@ export class MenuScene extends Phaser.Scene {
             this.entriesHelpContainer.setVisible(false).setActive(false)
             this.selectedEntry.setNumero(graphic.numero)
         }
+        this.fromEntriesToSelectionToMenu()
     }
 }

@@ -8,11 +8,7 @@ export interface MenuContext {
 
 export const STATE = {
     BASE: 'base',
-    PLAY: 'play',
-    TUTORIAL: 'tutorial',
-    DIFFICULTY: 'difficulty',
     ENTRIES_SELECTED: 'entriesSelected',
-    ENTRY_SELECTED: 'entrySelected',
 }
 
 export const EVENT = {
@@ -45,23 +41,7 @@ export type MenuState =
           context: MenuContext
       }
     | {
-          value: typeof STATE.PLAY
-          context: MenuContext
-      }
-    | {
-          value: typeof STATE.TUTORIAL
-          context: MenuContext
-      }
-    | {
-          value: typeof STATE.DIFFICULTY
-          context: MenuContext
-      }
-    | {
           value: typeof STATE.ENTRIES_SELECTED
-          context: MenuContext
-      }
-    | {
-          value: typeof STATE.ENTRY_SELECTED
           context: MenuContext
       }
 
@@ -75,16 +55,22 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
             [STATE.BASE]: {
                 on: {
                     [EVENT.PLAY]: {
-                        target: STATE.PLAY,
+                        actions: ['play'],
+                        internal: true,
+                        target: STATE.BASE,
                     },
                     [EVENT.TUTORIAL]: {
-                        target: STATE.TUTORIAL,
+                        actions: ['tutorial'],
+                        internal: true,
+                        target: STATE.BASE,
                     },
                     [EVENT.SELECT_ENTRIES]: {
                         target: STATE.ENTRIES_SELECTED,
                     },
                     [EVENT.SELECT_DIFFICULTY]: {
-                        target: STATE.DIFFICULTY,
+                        target: STATE.BASE,
+                        internal: true,
+                        actions: ['difficulty']
                     },
                 },
             },
@@ -99,28 +85,9 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
                         target: STATE.BASE,
                     },
                     [EVENT.SELECT_ENTRY]: {
-                        target: STATE.ENTRY_SELECTED,
+                        actions: ['entrySelected'],
+                        target: STATE.BASE,
                     },
-                },
-            },
-            [STATE.ENTRY_SELECTED]: {
-                entry: ['entrySelected'],
-                on: {
-                    '': STATE.BASE,
-                },
-            },
-            [STATE.PLAY]: {
-                type: 'final',
-                entry: ['play'],
-            },
-            [STATE.TUTORIAL]: {
-                type: 'final',
-                entry: ['tutorial'],
-            },
-            [STATE.DIFFICULTY]: {
-                entry: ['difficulty'],
-                on: {
-                    '': STATE.BASE,
                 },
             },
         },
@@ -154,7 +121,3 @@ export function buildMenuService(scene: MenuScene) {
     )
     return menuService
 }
-
-// menuService.subscribe((state) => {
-//     console.log('hello')
-// })

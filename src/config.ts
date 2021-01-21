@@ -1,4 +1,4 @@
-import { Difficulty, GameInfo } from "./models"
+import { Difficulty, GameInfo } from './models'
 
 const BORDER_PADDING = 16
 const BORDER_SIZE = 94
@@ -32,16 +32,15 @@ function setBoardPanel() {
             fontSize: '14px',
             color: 'white',
             fontStyle: 'bold',
-        }
+        },
     }
 }
 
 export class Config {
     public static readonly debug = process.env.DEBUG
 
-
     public static readonly images = {
-        background: 'background'
+        background: 'background',
     }
     public static readonly packer = {
         name: 'packer',
@@ -61,7 +60,7 @@ export class Config {
             medium: 'dragon-head.png',
             hard: 'double-dragon.png',
             insane: 'dragon-spiral.png',
-        }
+        },
     }
 
     public static readonly difficulties: Record<Difficulty, GameInfo> = {
@@ -88,9 +87,9 @@ export class Config {
             timer: 15,
             turn: 30,
             entries: [3, 7, 9, 4],
-        }
+        },
     }
-    
+
     public static readonly scenes = {
         skip: {
             menu: false,
@@ -138,6 +137,20 @@ export class Config {
                 xPadding: 10,
                 yPadding: 10,
             },
+            tweens: {
+                camera: {
+                    in: {
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 100,
+                    },
+                    out: {
+                        alpha: 0.4,
+                        ease: 'Sine.easeInOut',
+                        duration: 100,
+                    },
+                },
+            },
             styles: {
                 button: {
                     fontFamily: 'Play',
@@ -162,8 +175,8 @@ export class Config {
                     fontSize: '50px',
                     color: 'white',
                     fontStyle: 'bold',
-                }
-            }
+                },
+            },
         },
     }
 }
