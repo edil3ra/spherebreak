@@ -9,6 +9,7 @@ export interface MenuContext {
 export const STATE = {
     BASE: 'base',
     ENTRIES_SELECTED: 'entriesSelected',
+    INACTIVE: 'inactive'
 }
 
 export const EVENT = {
@@ -18,6 +19,7 @@ export const EVENT = {
     SELECT_ENTRIES: 'SELECT_ENTRIES',
     UNSELECT_ENTRIES: 'UNSELECT_ENTRIES',
     SELECT_ENTRY: 'SELECT_ENTRY',
+    WAKE: 'WAKE'
 }
 
 type EVENT_PLAY = { type: typeof EVENT.PLAY }
@@ -85,19 +87,22 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
             [STATE.ENTRIES_SELECTED]: {
                 entry: [ACTIONS.SELECT_ENTRIES],
                 on: {
-                    [EVENT.SELECT_ENTRIES]: {
-                        target: STATE.ENTRIES_SELECTED,
-                        internal: false
-                    },
                     [EVENT.UNSELECT_ENTRIES]: {
-                        target: STATE.BASE,
+                        target: STATE.INACTIVE,
                     },
                     [EVENT.SELECT_ENTRY]: {
                         actions: [ACTIONS.SELECT_ENTRY],
-                        target: STATE.BASE,
+                        target: STATE.INACTIVE,
                     },
                 },
             },
+            [STATE.INACTIVE]: {
+                on: {
+                    [EVENT.WAKE]: {
+                        target: STATE.BASE
+                    }
+                }
+            }
         },
     },
     {

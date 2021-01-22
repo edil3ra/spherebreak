@@ -120,7 +120,7 @@ export class Config {
             entriesSelection: 'entriesSelectionScene',
         },
         menu: {
-            logState: false,
+            logState: true,
             entriesContainer: {
                 x: -240,
                 y: 80,
@@ -180,7 +180,7 @@ export class Config {
                 },
                 numero: {
                     fontFamily: 'Play',
-                    fontSize: '48px',
+                    fontSize: '40px',
                     color: 'white',
                     fontStyle: 'bold',
                 },

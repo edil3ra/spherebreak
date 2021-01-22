@@ -211,21 +211,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/bannerScroll.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>130,32,261,63</rect>
-                <key>scale9Paddings</key>
-                <rect>130,32,261,63</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">images/button_rectangleWood.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -307,12 +292,7 @@
             </struct>
             <key type="filename">images/patternStripesMetal_large.png</key>
             <key type="filename">images/patternStripesMetal_small.png</key>
-            <key type="filename">images/patternStripesRed_large.png</key>
-            <key type="filename">images/patternStripesRed_small.png</key>
-            <key type="filename">images/patternStripesShadow_large.png</key>
             <key type="filename">images/patternStripesShadow_small.png</key>
-            <key type="filename">images/pattern_blueprint.png</key>
-            <key type="filename">images/pattern_blueprintPaper.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -347,7 +327,6 @@
         <array>
             <filename>images/bannerHanging.png</filename>
             <filename>images/bannerModern.png</filename>
-            <filename>images/bannerScroll.png</filename>
             <filename>images/button_rectangleWood.png</filename>
             <filename>images/coin-entry.gif</filename>
             <filename>images/coin.gif</filename>
@@ -357,12 +336,7 @@
             <filename>images/gameInfoPannel.png</filename>
             <filename>images/patternStripesMetal_large.png</filename>
             <filename>images/patternStripesMetal_small.png</filename>
-            <filename>images/patternStripesRed_large.png</filename>
-            <filename>images/patternStripesRed_small.png</filename>
-            <filename>images/patternStripesShadow_large.png</filename>
             <filename>images/patternStripesShadow_small.png</filename>
-            <filename>images/pattern_blueprint.png</filename>
-            <filename>images/pattern_blueprintPaper.png</filename>
             <filename>images/sphere.png</filename>
             <filename>images/wood.png</filename>
             <filename>images/dragon-spiral.png</filename>

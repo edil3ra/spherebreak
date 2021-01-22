@@ -73,6 +73,7 @@ export class MenuScene extends Phaser.Scene {
                 ...Config.scenes.menu.tweens.camera.in,
                 targets: this.cameras.main,
                 callbackScope: this,
+                onComplete: () => {this.stateService.send(EVENT_MENU.WAKE)}
             })
         })
     }
@@ -174,7 +175,7 @@ export class MenuScene extends Phaser.Scene {
             )
             entry.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
                     this.stateService.send(EVENT_MENU.SELECT_DIFFICULTY, {
                         value: entry,
                     })
@@ -205,7 +206,7 @@ export class MenuScene extends Phaser.Scene {
                 this.currentEntries[index]
             )
             entry.image.setInteractive({ cursor: 'pointer', pixelPerfect: true }).on(
-                Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
+                Phaser.Input.Events.GAMEOBJECT_POINTER_UP,
                 () => {
                     this.stateService.send(EVENT_MENU.SELECT_ENTRIES, { value: { entry, index } })
                 },
@@ -238,7 +239,7 @@ export class MenuScene extends Phaser.Scene {
             )
             entryHelper.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
                     this.stateService.send(EVENT_MENU.SELECT_ENTRY, { value: entryHelper })
                     // this.handleEntrySelected(entryHelper)
                 })
@@ -292,8 +293,8 @@ export class MenuScene extends Phaser.Scene {
     }
 
     fromEntriesToSelectionToMenu() {
-        this.scene.wake(Config.scenes.keys.menu)
         this.scene.sleep(Config.scenes.keys.entriesSelection)
+        this.scene.wake(Config.scenes.keys.menu)
     }
 
     handleTutorial() {

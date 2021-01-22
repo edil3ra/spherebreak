@@ -30,10 +30,10 @@ export class EntriesSelectionScene extends Phaser.Scene {
     create() {
         this.setEntriesContainer()
         this.input.on(
-            'pointerdown',
+            Phaser.Input.Events.GAMEOBJECT_POINTER_UP,
             () => {
+                // this.menuScene.fromEntriesToSelectionToMenu()
                 this.menuScene.stateService.send(EVENT_MENU.UNSELECT_ENTRIES)
-                this.menuScene.fromEntriesToSelectionToMenu()
             },
             this
         )
