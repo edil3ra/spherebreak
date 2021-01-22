@@ -12,7 +12,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.turn = 0
         this.timer = 0
         this.quota = 0
-        this.gameState = 'normal'
+        this.gameState = 'play'
         this.maxTurn = 0
         this.maxQuota = 0
         this.comboCount = 0

@@ -311,7 +311,6 @@ export class MenuScene extends Phaser.Scene {
     handleDifficultySelected(graphic: DifficultyGraphics) {
         this.currentDifficulty = graphic.name
         graphic.selectDifficulty()
-        // localStorage.setItem('difficulty', graphic.name)
     }
 
     handleEntriesSelected(graphic: EntryGrahpics, index: number) {

@@ -93,13 +93,10 @@ export class Config {
         keys: {
             game: 'gameScene',
             gamePause: 'gamePauseScene',
+            gameOver: 'gameOverScene',
             menu: 'menuScene',
             boot: 'bootScene',
-            entriesSelection: 'entriesSelection',
-        },
-        game: {
-            board: setBoard(),
-            boardPanel: setBoardPanel(),
+            entriesSelection: 'entriesSelectionScene',
         },
         menu: {
             logState: false,
@@ -173,6 +170,29 @@ export class Config {
                     fontStyle: 'bold',
                 },
             },
+        },
+        game: {
+            board: setBoard(),
+            boardPanel: setBoardPanel(),
+        },
+        gameOver: {
+            button: {
+                scale: 3,
+                padding: 20,
+            },
+            styles: {
+                button: {
+                    fontFamily: 'Play',
+                    fontSize: '10px',
+                    color: 'black',
+                },
+                text: {
+                    fontFamily: 'Play',
+                    fontSize: '60px',
+                    color: 'white',
+                    fontStyle: 'bold',
+                }
+            }
         },
     }
 }

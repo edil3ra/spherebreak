@@ -43,8 +43,8 @@ export class GameScene extends Phaser.Scene {
             this.scene.wake(Config.scenes.keys.gamePause)
         })
 
-        this.scene.launch(Config.scenes.keys.entriesSelection)
-        this.scene.sleep(Config.scenes.keys.entriesSelection)
+        this.scene.launch(Config.scenes.keys.gameOver)
+        this.scene.sleep(Config.scenes.keys.gameOver)
     }
 
     create(gameConfig: GameConfig) {
@@ -186,10 +186,23 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on('changedata-gameState', (_scene: GameScene, state: GameState) => {
-            if(state === 'lost') {
-                console.log('lost')
-            } else if (state === 'win') {
-                console.log('win')
+            switch (state) {
+                case 'play':
+                    console.log('play')
+                    break
+                case 'win':
+                    console.log('win')
+                    this.scene.pause(Config.scenes.keys.game)
+                    this.scene.wake(Config.scenes.keys.gameOver)
+                    this.scene.bringToTop(Config.scenes.keys.gameOver)
+                    break
+                case 'lost':
+                    console.log('lost')
+                    this.cameras.main.setAlpha(0)
+                    this.scene.pause(Config.scenes.keys.game)
+                    this.scene.wake(Config.scenes.keys.gameOver)
+                    this.scene.bringToTop(Config.scenes.keys.gameOver)
+                    break
             }
         })
 

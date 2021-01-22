@@ -10,6 +10,8 @@ export interface IButton extends Phaser.GameObjects.GameObject, Phaser.GameObjec
     setDisabledFrame(texture: string): this
     setDisabledTint(tint: number): this
     setDisabled(disabled: boolean): this
+    width: number
+    height: number
 }
 
 export class Button extends Phaser.GameObjects.Image implements IButton {
