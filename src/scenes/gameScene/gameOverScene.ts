@@ -30,42 +30,47 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     create() {
-        this.buttonPlay = this.add.buttonContainer(
-            0,
-            100,
-            Config.packer.name,
-            Config.packer.menuButton,
-            0xdddddd
-        )
-        this.buttonPlay.setText('Play Again').setTextStyle(Config.scenes.gameOver.styles.button)
+        this.buttonPlay = this.add
+            .buttonContainer(0, 100, Config.packer.name, Config.packer.menuButton, 0xdddddd)
+            .setUpTint(0xcccccc)
+            .setOverTint(0xeeeeee)
+            .setDownTint(0xf8f8f8)
+            .setTextStyle(Config.scenes.gameOver.styles.button)
+            .setText('Play Again')
 
         this.buttonPlay.button.setDisplaySize(
             Config.scenes.gameOver.button.width,
             Config.scenes.gameOver.button.height
-        )
+        ).setSize(
+            Config.scenes.gameOver.button.width,
+            Config.scenes.gameOver.button.height
+        ).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+            this.HandlePlayAgain()
+        })
 
-        this.buttonPlay.button.setSize(
-            Config.scenes.gameOver.button.width,
-            Config.scenes.gameOver.button.height
-        )
+        this.buttonBack = this.add
+            .buttonContainer(
+                this.buttonPlay.button.width + Config.scenes.gameOver.button.padding,
+                100,
+                Config.packer.name,
+                Config.packer.menuButton,
+                0xdddddd
+            )
+            .setUpTint(0xcccccc)
+            .setOverTint(0xeeeeee)
+            .setDownTint(0xf8f8f8)
+            .setTextStyle(Config.scenes.gameOver.styles.button)
+            .setText('Back To Menu')
 
-        this.buttonBack = this.add.buttonContainer(
-            this.buttonPlay.button.width + Config.scenes.gameOver.button.padding,
-            100,
-            Config.packer.name,
-            Config.packer.menuButton,
-            0xdddddd
-        )
-        this.buttonBack.setText('Back To Menu').setTextStyle(Config.scenes.gameOver.styles.button)
-        
-        this.buttonPlay.button.setSize(
+        this.buttonBack.button.setSize(
             Config.scenes.gameOver.button.width,
             Config.scenes.gameOver.button.height
-        )
-        this.buttonBack.button.setDisplaySize(
+        ).setDisplaySize(
             Config.scenes.gameOver.button.width,
             Config.scenes.gameOver.button.height
-        )
+        ).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+            this.handleBackToMenu()
+        })
 
         this.text = this.add.text(
             (this.buttonPlay.button.width + Config.scenes.gameOver.button.padding / 2) / 2,
@@ -76,6 +81,18 @@ export class GameOverScene extends Phaser.Scene {
         this.text.setOrigin(0.5, 0.5)
         const [x, y] = this.getContainerCenterPosition()
         this.container = this.add.container(x, y, [this.text, this.buttonPlay, this.buttonBack])
+    }
+    
+    handleBackToMenu() {
+        this.scene.stop(Config.scenes.keys.game)
+        this.scene.stop(Config.scenes.keys.gameOver)
+        this.scene.start(Config.scenes.keys.menu)
+    }
+    
+    HandlePlayAgain() {
+        this.scene.stop(Config.scenes.keys.game)
+        this.scene.stop(Config.scenes.keys.gameOver)
+        this.scene.start(Config.scenes.keys.game)
     }
 
     getContainerCenterPosition(): [number, number] {

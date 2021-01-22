@@ -86,9 +86,30 @@ export class Config {
         },
     }
 
+
+    public static readonly events = {
+        game: {
+            CHANGEDATA_SPHERE: 'changedata-sphere',
+            CHANGEDATA_ENTRIES: 'changedata-entries',
+            CHANGEDATA_BORDERS: 'changedata-borders',
+            CHANGEDATA_TURN: 'changedata-turn',
+            CHANGEDATA_TIMER: 'changedata-timer',
+            CHANGEDATA_QUOTA: 'changedata-quota',
+            CHANGEDATA_COMBO_COUNT: 'changedata-comboCount',
+            CHANGEDATA_COMBO_COUNT_GOAL: 'changedata-comboCountGoal',
+            CHANGEDATA_COMBO_MULTIPLE: 'changedata-comboMultiple',
+            CHANGEDATA_COMBO_MULTIPLE_GOAL: 'changedata-comboMultipleGoal',
+            CHANGEDATA_BORDERS_ACTIVE: 'changedata-bordersActive',
+            CHANGEDATA_ENTRIES_ACTIVE: 'changedata-entriesActive',
+            CHANGEDATA_BORDERS_ALIVE: 'changedata-bordersAlive',
+            CHANGEDATA_GAME_STATE: 'changedata-gameState',
+            FINISH_TURN: 'finishTurn',
+        }
+    }
+
     public static readonly scenes = {
         skip: {
-            menu: true,
+            menu: false,
         },
         keys: {
             game: 'gameScene',
