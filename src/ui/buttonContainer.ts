@@ -6,7 +6,7 @@ export interface IButtonContainer extends IButton {
 }
 
 export class ButtonContainer extends Phaser.GameObjects.Container implements IButtonContainer {
-    public button: IButton
+    public button: IButton & Phaser.GameObjects.Image
     public text: Phaser.GameObjects.Text
 
     constructor(

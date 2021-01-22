@@ -30,34 +30,45 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     create() {
-        const paddingButton =  Config.scenes.gameOver.button.padding
-        const scaleButton = Config.scenes.gameOver.button.scale
         this.buttonPlay = this.add.buttonContainer(
             0,
-            120,
+            100,
             Config.packer.name,
             Config.packer.menuButton,
             0xdddddd
         )
-        this.buttonPlay
-            .setScale(scaleButton)
-            .setText('Play Again')
-            .setTextStyle(Config.scenes.gameOver.styles.button)
+        this.buttonPlay.setText('Play Again').setTextStyle(Config.scenes.gameOver.styles.button)
+
+        this.buttonPlay.button.setDisplaySize(
+            Config.scenes.gameOver.button.width,
+            Config.scenes.gameOver.button.height
+        )
+
+        this.buttonPlay.button.setSize(
+            Config.scenes.gameOver.button.width,
+            Config.scenes.gameOver.button.height
+        )
 
         this.buttonBack = this.add.buttonContainer(
-            this.buttonPlay.button.width * scaleButton + paddingButton,
-            120,
+            this.buttonPlay.button.width + Config.scenes.gameOver.button.padding,
+            100,
             Config.packer.name,
             Config.packer.menuButton,
             0xdddddd
         )
-        this.buttonBack
-            .setScale(scaleButton)
-            .setText('Back To Menu')
-            .setTextStyle(Config.scenes.gameOver.styles.button)
+        this.buttonBack.setText('Back To Menu').setTextStyle(Config.scenes.gameOver.styles.button)
+        
+        this.buttonPlay.button.setSize(
+            Config.scenes.gameOver.button.width,
+            Config.scenes.gameOver.button.height
+        )
+        this.buttonBack.button.setDisplaySize(
+            Config.scenes.gameOver.button.width,
+            Config.scenes.gameOver.button.height
+        )
 
         this.text = this.add.text(
-            (this.buttonPlay.button.width * scaleButton + paddingButton / 2) / 2,
+            (this.buttonPlay.button.width + Config.scenes.gameOver.button.padding / 2) / 2,
             0,
             '',
             Config.scenes.gameOver.styles.text
@@ -68,8 +79,8 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     getContainerCenterPosition(): [number, number] {
-        const buttonWidth = this.buttonPlay.button.width * Config.scenes.gameOver.button.scale
-        const buttonHeight = this.buttonPlay.button.height * Config.scenes.gameOver.button.scale
+        const buttonWidth = this.buttonPlay.button.width
+        const buttonHeight = this.buttonPlay.button.height
         const x = this.scale.width * 0.5 - buttonWidth * 0.5
         const y = this.scale.height * 0.5 - buttonHeight * 0.5
         return [x, y]

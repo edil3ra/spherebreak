@@ -177,14 +177,16 @@ export class Config {
         },
         gameOver: {
             button: {
-                scale: 3,
+                width: 200,
+                height: 100,
                 padding: 20,
             },
             styles: {
                 button: {
                     fontFamily: 'Play',
-                    fontSize: '10px',
+                    fontSize: '24px',
                     color: 'black',
+                    fontStyle: 'bold',
                 },
                 text: {
                     fontFamily: 'Play',
