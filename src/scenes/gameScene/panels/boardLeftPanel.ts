@@ -37,12 +37,12 @@ export class BoardLeftPanel {
 
 
     setTurnText(turn: number) {
-        this.turnText.setText(`Turn         ${turn}/${this.scene.data.maxTurn}`)
+        this.turnText.setText(`Turn         ${turn} / ${this.scene.data.maxTurn}`)
     }
 
 
     setQuotaText(quota: number) {
-        this.quotaText.setText(`Quota      ${quota}/${this.scene.data.maxQuota}`)
+        this.quotaText.setText(`Quota      ${quota} / ${this.scene.data.maxQuota}`)
     }
 
     initContainer() {

@@ -1,6 +1,6 @@
 import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
-import { CoinState, Difficulty, GameConfig, GameInfo, GameState } from '~/models'
+import { CoinState, GameConfig, GameState } from '~/models'
 import { Board } from '~/scenes/gameScene/board'
 import { BoardPanelContainer } from '~/scenes/gameScene/panels/boardContainerPanel'
 import { GameDataManager } from '~/scenes/gameScene/gameDataManager'
@@ -44,6 +44,14 @@ export class GameScene extends Phaser.Scene {
         this.scene.launch(Config.scenes.keys.gameOver)
         this.scene.sleep(Config.scenes.keys.gameOver)
 
+        this.events.on('wake', () => {
+            this.tweens.add({
+                ...Config.scenes.game.tweens.camera.in,
+                targets: this.cameras.main,
+                callbackScope: this,
+            })
+        })
+        
         this.events.on('shutdown', () => {
             for (const event of Object.values(Config.events.game)) {
                 this.events.off(event)
@@ -61,6 +69,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     initData(gameConfig: GameConfig) {
+        console.log(gameConfig)
         const initialGameInfo = Config.difficulties[gameConfig.difficulty]
         this.data.maxTimer = initialGameInfo.timer
         this.data.maxTurn = initialGameInfo.turn
@@ -74,7 +83,6 @@ export class GameScene extends Phaser.Scene {
         this.data.quota = 0
         this.data.sphere = this.data.pickNewRandomNumber()
         this.data.borders = this.data.borders.map((_border) => this.data.pickNewRandomNumber())
-        this.data.gameState = 'lost'
     }
 
     registerDataEvents() {
@@ -213,18 +221,27 @@ export class GameScene extends Phaser.Scene {
                     console.log('play')
                     break
                 case 'win':
-                    console.log('win')
-                    this.scene.pause(Config.scenes.keys.game)
-                    this.scene.wake(Config.scenes.keys.gameOver)
-                    this.scene.bringToTop(Config.scenes.keys.gameOver)
+                    this.tweens.add({
+                        ...Config.scenes.game.tweens.camera.out,
+                        targets: this.cameras.main,
+                        onComplete: () => {
+                            this.scene.pause(Config.scenes.keys.game)
+                            this.scene.wake(Config.scenes.keys.gameOver)
+                            this.scene.bringToTop(Config.scenes.keys.gameOver)
+                        },
+                    })
+                    
                     break
                 case 'lost':
-                    console.log('lost')
-                    console.log('lost again')
-                    this.cameras.main.setAlpha(0)
-                    this.scene.pause(Config.scenes.keys.game)
-                    this.scene.wake(Config.scenes.keys.gameOver)
-                    this.scene.bringToTop(Config.scenes.keys.gameOver)
+                    this.tweens.add({
+                        ...Config.scenes.game.tweens.camera.out,
+                        targets: this.cameras.main,
+                        onComplete: () => {
+                            this.scene.pause(Config.scenes.keys.game)
+                            this.scene.wake(Config.scenes.keys.gameOver)
+                            this.scene.bringToTop(Config.scenes.keys.gameOver)
+                        },
+                    })
                     break
             }
         })

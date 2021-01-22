@@ -303,7 +303,10 @@ export class MenuScene extends Phaser.Scene {
     handlePlay() {
         window.gdsdk.showAd()
         this.saveState()
-        this.scene.start(Config.scenes.keys.game, { difficulty: 'easy', entries: this.currentEntries })
+        this.scene.start(Config.scenes.keys.game, {
+            difficulty: this.currentDifficulty,
+            entries: this.currentEntries,
+        })
         this.scene.launch(Config.scenes.keys.gamePause)
         this.scene.sleep(Config.scenes.keys.gamePause)
     }

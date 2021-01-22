@@ -98,8 +98,8 @@ export class GameOverScene extends Phaser.Scene {
     getContainerCenterPosition(): [number, number] {
         const buttonWidth = this.buttonPlay.button.width
         const buttonHeight = this.buttonPlay.button.height
-        const x = this.scale.width * 0.5 - buttonWidth * 0.5
-        const y = this.scale.height * 0.5 - buttonHeight * 0.5
+        const x = this.scale.width * 0.5 - buttonWidth * 0.5 - Config.scenes.gameOver.button.padding * 0.5
+        const y = this.scale.height * 0.5 - buttonHeight * 0.5 - Config.scenes.gameOver.button.padding * 0.5
         return [x, y]
     }
 

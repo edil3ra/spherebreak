@@ -180,7 +180,7 @@ export class Config {
                 },
                 numero: {
                     fontFamily: 'Play',
-                    fontSize: '40px',
+                    fontSize: '48px',
                     color: 'white',
                     fontStyle: 'bold',
                 },
@@ -195,6 +195,20 @@ export class Config {
         game: {
             board: setBoard(),
             boardPanel: setBoardPanel(),
+            tweens: {
+                camera: {
+                    in: {
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 100,
+                    },
+                    out: {
+                        alpha: 0.4,
+                        ease: 'Sine.easeInOut',
+                        duration: 100,
+                    },
+                },
+            },
         },
         gameOver: {
             button: {

@@ -6,7 +6,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
     public bordersAliveIndexesChanged: Array<number>
     public bordersDeadCount: Array<number>
     public entriesActiveIndexesChanged: Array<number>
-
+    public reviveAfterTurn: number
     constructor(scene: GameScene) {
         super(scene)
         this.turn = 0
@@ -32,6 +32,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.bordersDeadCount = new Array(12).fill(0)
         this.bordersActiveIndexesChanged = []
         this.bordersAliveIndexesChanged = []
+        this.reviveAfterTurn = 4
     }
 
     get total(): number {
@@ -66,7 +67,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         if (combo === 0) {
             return 0
         } else {
-            return Math.pow(2, combo - 1)
+            return (combo - 1) * 2
         }
     }
 
@@ -175,11 +176,11 @@ export class GameDataManager extends Phaser.Data.DataManager {
 
 
         this.borders = this.borders.map((border: number, index: number) => {
-            return this.bordersDeadCount[index] >= 3 ? this.pickNewRandomNumber() : border
+            return this.bordersDeadCount[index] >= this.reviveAfterTurn ? this.pickNewRandomNumber() : border
         })
 
         this.bordersDeadCount = this.bordersDeadCount.map((count: number, index: number) => {
-            return count >= 3 ? 0: this.bordersAlive[index] ? count: count + 1
+            return count >= this.reviveAfterTurn ? 0: this.bordersAlive[index] ? count: count + 1
         })
         this.events.emit('finishTurn')
     }

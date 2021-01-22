@@ -35,7 +35,7 @@ export class BoardRightPanel {
     }
     
     setTComboCountText(comboCount: number, comboCountGoal: number | null) {
-        this.comboCountText.setText(`Count         ${comboCount}    ->   ${comboCountGoal || '-'}`)
+        this.comboCountText.setText(`Count         ${comboCount}   ->   ${comboCountGoal || '-'}`)
     }
 
 

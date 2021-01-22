@@ -7,6 +7,7 @@ export class DifficultyGraphics extends Phaser.GameObjects.Container {
     scene: MenuScene
     background: Phaser.GameObjects.Graphics
     image: Phaser.GameObjects.Image
+    text: Phaser.GameObjects.Text
     name: Difficulty
     
     constructor(
@@ -31,7 +32,16 @@ export class DifficultyGraphics extends Phaser.GameObjects.Container {
             .setOrigin(0, 0)
             .setDisplaySize(width - 4, height - 4)
             .setSize(width - 4, height - 4)
-        this.add([this.background, this.image])
+
+        const difficultyToNumber: Record<Difficulty, string> = {
+            easy: '1',
+            medium: '2',
+            hard: '3',
+            insane: '4',
+        }
+        this.text = scene.add.text(0, 0, difficultyToNumber[this.name], Config.scenes.menu.styles.numero)
+        Phaser.Display.Align.In.Center(this.text, this.image)
+        this.add([this.background, this.image, this.text])
     }
 
     selectDifficulty() {
