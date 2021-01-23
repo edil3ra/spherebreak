@@ -90,6 +90,9 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     HandlePlayAgain() {
+        if(Config.ads.playAgain) {
+            window.gdsdk.showAd()
+        }
         this.scene.stop(Config.scenes.keys.game)
         this.scene.stop(Config.scenes.keys.gameOver)
         this.scene.start(Config.scenes.keys.game)

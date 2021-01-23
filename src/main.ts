@@ -1,9 +1,9 @@
-const isDebug = process.env.DEBUG
 import * as Phaser from 'phaser'
 import { ButtonContainer } from '~/ui/buttonContainer'
 import { CoinGraphics } from './entities/Coin'
 import { initGame } from '~/game'
 import { initGameDistribution, mockGameDistribution } from '~/gameDistribution'
+import { Config } from './config'
 
 Phaser.GameObjects.GameObjectFactory.register(
     'buttonContainer',
@@ -28,7 +28,7 @@ Phaser.GameObjects.GameObjectFactory.register(
 )
 
 window.game = initGame()
-if (isDebug) {
+if (Config.debug) {
     mockGameDistribution()
 } else {
     initGameDistribution()

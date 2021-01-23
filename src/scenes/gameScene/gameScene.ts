@@ -69,7 +69,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     initData(gameConfig: GameConfig) {
-        console.log(gameConfig)
         const initialGameInfo = Config.difficulties[gameConfig.difficulty]
         this.data.maxTimer = initialGameInfo.timer
         this.data.maxTurn = initialGameInfo.turn
@@ -218,7 +217,6 @@ export class GameScene extends Phaser.Scene {
         this.events.on(Config.events.game.CHANGEDATA_GAME_STATE, (_scene: GameScene, state: GameState) => {
             switch (state) {
                 case 'play':
-                    console.log('play')
                     break
                 case 'win':
                     this.tweens.add({

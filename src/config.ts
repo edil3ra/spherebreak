@@ -1,5 +1,6 @@
 import { Difficulty, GameInfo } from './models'
 
+
 const BORDER_PADDING = 16
 const BORDER_SIZE = 94
 const ENTRY_SIZE = 98
@@ -38,6 +39,11 @@ function setBoardPanel() {
 
 export class Config {
     public static readonly debug = process.env.DEBUG
+    public static readonly ads = {
+        play: false,
+        playAgain: true
+    }
+
 
     public static readonly images = {
         background: 'background',
@@ -120,7 +126,7 @@ export class Config {
             entriesSelection: 'entriesSelectionScene',
         },
         menu: {
-            logState: true,
+            logState: false,
             entriesContainer: {
                 x: -240,
                 y: 80,

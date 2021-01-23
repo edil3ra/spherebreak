@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js",
 		"build": "webpack --config webpack.prod.config.js",
-		"zip": "rm -rf zzz/sphere.zip & zip -rj zzz/sphere.zip public/*",
+		"zip": "rm -rf zzz/sphere.zip && cd public && zip -r ../zzz/sphere.zip *",
 		"start": "npm run dev",
 		"lint": "eslint src/**/**/*"
 	},

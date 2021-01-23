@@ -302,7 +302,9 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handlePlay() {
-        window.gdsdk.showAd()
+        if(Config.ads.play) {
+            window.gdsdk.showAd()
+        }
         this.saveState()
         this.scene.start(Config.scenes.keys.game, {
             difficulty: this.currentDifficulty,

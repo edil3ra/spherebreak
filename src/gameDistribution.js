@@ -3,10 +3,8 @@ window["GD_OPTIONS"] = {
     "onEvent": function(event) {
         switch (event.name) {
             case "SDK_GAME_START":
-            window.game.scene.pause()
                 break;
             case "SDK_GAME_PAUSE":
-            window.game.scene.pause()
                 break;
             case "SDK_GDPR_TRACKING":
                 // this event is triggered when your user doesn't want to be tracked
