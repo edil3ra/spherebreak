@@ -36,14 +36,16 @@ export class GameScene extends Phaser.Scene {
         this.board = new Board(this)
         this.boardPanel = new BoardPanelContainer(this)
         this.bordersStateChanged = []
-        this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
-            this.scene.pause(Config.scenes.keys.game)
-            this.scene.wake(Config.scenes.keys.gamePause)
-        })
-
         this.scene.launch(Config.scenes.keys.gameOver)
         this.scene.sleep(Config.scenes.keys.gameOver)
 
+        if(Config.debug) {
+            this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
+                this.scene.pause(Config.scenes.keys.game)
+                this.scene.wake(Config.scenes.keys.gamePause)
+            })            
+        }
+        
         this.events.on('wake', () => {
             this.tweens.add({
                 ...Config.scenes.game.tweens.camera.in,

@@ -61,6 +61,7 @@ export class Config {
         menuButton: 'button_rectangleWood.png',
         coinBorder: 'coin.gif',
         pattern: 'patternStripesMetal_large.png',
+        hand: 'hand_cursor0000.png',
         difficulties: {
             easy: 'dragon.png',
             medium: 'dragon-head.png',

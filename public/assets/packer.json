@@ -178,6 +178,48 @@
 					}
 				},
 				{
+					"filename": "hand_cursor0000.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 583,
+						"y": 228,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "clicker.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 24,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 619,
+						"y": 228,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
 					"filename": "patternStripesMetal_small.png",
 					"rotated": false,
 					"trimmed": false,
@@ -330,6 +372,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:1be8cf51c3138d31259441170fd7371a:5e5a4c5a2f6912f3b05269084e20fb7d:01b2dbbd44720021de2f617999dc7e2f$"
+		"smartupdate": "$TexturePacker:SmartUpdate:4bfdd6fcfb9c18981195e4a02e3072be:2526324dafa9212ba9dee3f66fbf2fec:01b2dbbd44720021de2f617999dc7e2f$"
 	}
 }
