@@ -1,5 +1,5 @@
 import { Config } from '~/config'
-import { GameScene } from '~/scenes/gameScene'
+import { GameScene } from '~/scenes/games'
 
 export class PauseScene extends Phaser.Scene {
     public images: Array<Phaser.GameObjects.Image>

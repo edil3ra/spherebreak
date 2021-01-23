@@ -1,5 +1,5 @@
 import { GameState } from '~/models'
-import { GameScene } from '~/scenes/gameScene'
+import { GameScene } from '~/scenes/games'
 
 export class GameDataManager extends Phaser.Data.DataManager {
     public bordersActiveIndexesChanged: Array<number>

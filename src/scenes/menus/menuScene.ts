@@ -1,9 +1,9 @@
 import { EventObject, Interpreter } from 'xstate'
-import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menuScene/menuStateMachine'
+import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menus/menuStateMachine'
 import { Config } from '~/config'
 import { Difficulty } from '~/models'
 import { ButtonContainer } from '~/ui/buttonContainer'
-import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from '~/scenes/menuScene/graphics'
+import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from '~/scenes/menus/graphics'
 
 export class MenuScene extends Phaser.Scene {
     background: Phaser.GameObjects.Image

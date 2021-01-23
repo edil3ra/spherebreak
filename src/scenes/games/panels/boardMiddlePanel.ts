@@ -1,5 +1,5 @@
 import { Config } from "~/config"
-import { GameScene } from "~/scenes/gameScene"
+import { GameScene } from "~/scenes/games"
 
 const textStyle = {
     ...Config.scenes.game.boardPanel.textStyle,

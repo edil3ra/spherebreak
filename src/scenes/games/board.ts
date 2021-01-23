@@ -1,6 +1,6 @@
 import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
-import { GameScene } from '~/scenes/gameScene'
+import { GameScene } from '~/scenes/games'
 
 export class Board {
     public scene: GameScene

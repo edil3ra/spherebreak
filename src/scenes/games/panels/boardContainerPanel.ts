@@ -1,7 +1,7 @@
-import { GameScene } from '~/scenes/gameScene/gameScene'
-import { BoardLeftPanel } from '~/scenes/gameScene/panels/boardLeftPanel'
-import { BoardRightPanel } from '~/scenes/gameScene/panels/boardRightPanel'
-import { BoardMiddlePanel } from '~/scenes/gameScene/panels/boardMiddlePanel'
+import { GameScene } from '~/scenes/games/'
+import { BoardLeftPanel } from '~/scenes/games/panels/boardLeftPanel'
+import { BoardRightPanel } from '~/scenes/games/panels/boardRightPanel'
+import { BoardMiddlePanel } from '~/scenes/games/panels/boardMiddlePanel'
 import { Config } from '~/config'
 
 export class BoardPanelContainer {

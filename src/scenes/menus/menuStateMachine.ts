@@ -1,6 +1,6 @@
 import { createMachine, interpret } from 'xstate'
 import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from './graphics'
-import { MenuScene } from '~/scenes/menuScene'
+import { MenuScene } from '~/scenes/menus'
 
 export interface MenuContext {
     scene: MenuScene

@@ -1,9 +1,9 @@
 import { BootScene } from '~/scenes/bootScene'
-import { GameScene, PauseScene } from '~/scenes/gameScene'
-import { MenuScene } from '~/scenes/menuScene'
+import { GameScene, PauseScene } from '~/scenes/games'
+import { MenuScene } from '~/scenes/menus'
 import { WebFontLoaderPlugin } from 'phaser3-webfont-loader'
-import { EntriesSelectionScene } from '~/scenes/menuScene/entriesSelectionScene'
-import { GameOverScene } from './scenes/gameScene/gameOverScene'
+import { EntriesSelectionScene } from '~/scenes/menus/entriesSelectionScene'
+import { GameOverScene } from './scenes/games/gameOverScene'
 
 export function initGame(): Phaser.Game {
     const config: Phaser.Types.Core.GameConfig = {

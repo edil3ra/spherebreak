@@ -1,9 +1,9 @@
 import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
 import { CoinState, GameConfig, GameState } from '~/models'
-import { Board } from '~/scenes/gameScene/board'
-import { BoardPanelContainer } from '~/scenes/gameScene/panels/boardContainerPanel'
-import { GameDataManager } from '~/scenes/gameScene/gameDataManager'
+import { Board } from '~/scenes/games/board'
+import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
+import { GameDataManager } from '~/scenes/games/gameDataManager'
 
 export class GameScene extends Phaser.Scene {
     public data: GameDataManager

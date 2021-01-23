@@ -1,5 +1,5 @@
 import { Config } from '~/config'
-import { GameScene } from '~/scenes/gameScene'
+import { GameScene } from '~/scenes/games'
 import { ButtonContainer } from '~/ui/buttonContainer'
 
 export class GameOverScene extends Phaser.Scene {

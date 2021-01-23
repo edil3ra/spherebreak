@@ -1,6 +1,6 @@
-import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menuScene/menuStateMachine'
+import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menus/menuStateMachine'
 import { Config } from '~/config'
-import { MenuScene } from '~/scenes/menuScene'
+import { MenuScene } from '~/scenes/menus'
 import { EntryGrahpics, EntryGraphicsHelper } from './graphics'
 
 export class EntriesSelectionScene extends Phaser.Scene {
