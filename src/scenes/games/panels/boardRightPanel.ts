@@ -3,13 +3,13 @@ import { GameScene } from "~/scenes/games"
 
 
 export class BoardRightPanel {
-    public scene: GameScene
+    public scene: Phaser.Scene
     public container: Phaser.GameObjects.Container
     public comboMultipleText: Phaser.GameObjects.Text
     public comboCountText: Phaser.GameObjects.Text
     
     
-    constructor(scene: GameScene) {
+    constructor(scene: Phaser.Scene) {
         this.scene = scene
     }
 
@@ -30,20 +30,20 @@ export class BoardRightPanel {
             .setStyle(Config.scenes.game.boardPanel.textStyle)
     }
 
-    setTComboMultipleText(comboMultple: number, comboMultipleGoal: number | null) {
+    setComboMultipleText(comboMultple: number, comboMultipleGoal: number | null) {
         this.comboMultipleText.setText(`Multiple     ${comboMultple}   ->   ${comboMultipleGoal || '-'}`)
     }
     
-    setTComboCountText(comboCount: number, comboCountGoal: number | null) {
+    setComboCountText(comboCount: number, comboCountGoal: number | null) {
         this.comboCountText.setText(`Count         ${comboCount}   ->   ${comboCountGoal || '-'}`)
     }
-
 
     initContainer() {
         this.container = this.scene.add.container(0, 0, [
             this.comboMultipleText,
             this.comboCountText,
         ])
+        console.log(this.container)
     }
 }
 

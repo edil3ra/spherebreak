@@ -34,6 +34,9 @@ export class GameScene extends Phaser.Scene {
         this.data = new GameDataManager(this)
         this.registerDataEvents()
         this.board = new Board(this)
+            .attachClickBorder(this.handleClickedBorder)
+            .attachClickEntry(this.handleClickedEntry)
+        
         this.boardPanel = new BoardPanelContainer(this)
         this.bordersStateChanged = []
         this.scene.launch(Config.scenes.keys.gameOver)
@@ -104,8 +107,8 @@ export class GameScene extends Phaser.Scene {
             })
         })
 
-        this.events.on(Config.events.game.CHANGEDATA_TURN, (_scene: GameScene, value: number) => {
-            this.boardPanel.boardLeftPanel.setTurnText(value)
+        this.events.on(Config.events.game.CHANGEDATA_TURN, (_scene: GameScene, turn: number) => {
+            this.boardPanel.boardLeftPanel.setTurnText(turn, this.data.maxTurn)
         })
 
         this.events.on(Config.events.game.CHANGEDATA_TIMER, (_scene: GameScene, timer: number) => {
@@ -116,27 +119,27 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on(Config.events.game.CHANGEDATA_QUOTA, (_scene: GameScene, quota: number) => {
-            this.boardPanel.boardLeftPanel.setQuotaText(quota)
+            this.boardPanel.boardLeftPanel.setQuotaText(quota, this.data.maxQuota)
         })
 
         this.events.on(
             Config.events.game.CHANGEDATA_COMBO_COUNT,
             (_scene: GameScene, newComboCount: number) => {
-                this.boardPanel.boardRigthPanel.setTComboCountText(newComboCount, this.data.comboCountGoal)
+                this.boardPanel.boardRigthPanel.setComboCountText(newComboCount, this.data.comboCountGoal)
             }
         )
 
         this.events.on(
             Config.events.game.CHANGEDATA_COMBO_COUNT_GOAL,
             (_scene: GameScene, newComboCountGoal: number) => {
-                this.boardPanel.boardRigthPanel.setTComboCountText(this.data.comboCount, newComboCountGoal)
+                this.boardPanel.boardRigthPanel.setComboCountText(this.data.comboCount, newComboCountGoal)
             }
         )
 
         this.events.on(
             Config.events.game.CHANGEDATA_COMBO_MULTIPLE,
             (_scene: GameScene, newComboMultiple: number) => {
-                this.boardPanel.boardRigthPanel.setTComboMultipleText(
+                this.boardPanel.boardRigthPanel.setComboMultipleText(
                     newComboMultiple,
                     this.data.comboMultipleGoal
                 )
@@ -146,7 +149,7 @@ export class GameScene extends Phaser.Scene {
         this.events.on(
             Config.events.game.CHANGEDATA_COMBO_MULTIPLE_GOAL,
             (_scene: GameScene, newComboMultipleGoal: number) => {
-                this.boardPanel.boardRigthPanel.setTComboMultipleText(
+                this.boardPanel.boardRigthPanel.setComboMultipleText(
                     this.data.comboMultiple,
                     newComboMultipleGoal
                 )

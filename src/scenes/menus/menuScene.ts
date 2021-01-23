@@ -62,9 +62,14 @@ export class MenuScene extends Phaser.Scene {
                 console.log(state)
             })
         }
-        if (Config.scenes.skip.menu) {
+        if (Config.scenes.skip.scene === 'game') {
             this.stateService.send(EVENT_MENU.PLAY)
         }
+
+        if (Config.scenes.skip.scene === 'tutorial') {
+            this.stateService.send(EVENT_MENU.TUTORIAL)
+        }
+        
         this.scene.launch(Config.scenes.keys.entriesSelection)
         this.scene.sleep(Config.scenes.keys.entriesSelection)
 
@@ -241,7 +246,6 @@ export class MenuScene extends Phaser.Scene {
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
                     this.stateService.send(EVENT_MENU.SELECT_ENTRY, { value: entryHelper })
-                    // this.handleEntrySelected(entryHelper)
                 })
             entryHelper.image.setInteractive({ enabled: false })
             this.entriesHelperGraphics.push(entryHelper)
@@ -298,7 +302,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handleTutorial() {
-        console.log('tutorial')
+        this.scene.start(Config.scenes.keys.tutorial)
     }
 
     handlePlay() {

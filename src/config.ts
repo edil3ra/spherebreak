@@ -1,5 +1,6 @@
 import { Difficulty, GameInfo } from './models'
 
+type SkipScene = 'noSkip' | 'game' | 'tutorial'
 
 const BORDER_PADDING = 16
 const BORDER_SIZE = 94
@@ -114,9 +115,10 @@ export class Config {
         }
     }
 
+
     public static readonly scenes = {
         skip: {
-            menu: false,
+            scene: 'tutorial' as SkipScene 
         },
         keys: {
             game: 'gameScene',
@@ -125,6 +127,7 @@ export class Config {
             menu: 'menuScene',
             boot: 'bootScene',
             entriesSelection: 'entriesSelectionScene',
+            tutorial: 'tutorialScene',
         },
         menu: {
             logState: false,

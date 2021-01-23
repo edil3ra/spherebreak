@@ -1,18 +1,17 @@
-import { GameScene } from '~/scenes/games/'
 import { BoardLeftPanel } from '~/scenes/games/panels/boardLeftPanel'
 import { BoardRightPanel } from '~/scenes/games/panels/boardRightPanel'
 import { BoardMiddlePanel } from '~/scenes/games/panels/boardMiddlePanel'
 import { Config } from '~/config'
 
 export class BoardPanelContainer {
-    public scene: GameScene
+    public scene: Phaser.Scene
     public background: Phaser.GameObjects.Image
     public boardLeftPanel: BoardLeftPanel
     public boardRigthPanel: BoardRightPanel
     public boardMiddlePanel: BoardMiddlePanel
     public container: Phaser.GameObjects.Container
 
-    constructor(scene: GameScene) {
+    constructor(scene: Phaser.Scene) {
         this.scene = scene
         this.boardLeftPanel = new BoardLeftPanel(scene)
         this.boardMiddlePanel = new BoardMiddlePanel(scene)

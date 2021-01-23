@@ -4,13 +4,13 @@ import { GameScene } from "~/scenes/games"
 const OFFSET_ITEM = 20
 
 export class BoardLeftPanel {
-    public scene: GameScene
+    public scene: Phaser.Scene
     public container: Phaser.GameObjects.Container
     public turnText: Phaser.GameObjects.Text
     public quotaText: Phaser.GameObjects.Text
     
 
-    constructor(scene: GameScene) {
+    constructor(scene: Phaser.Scene) {
         this.scene = scene
     }
 
@@ -25,24 +25,24 @@ export class BoardLeftPanel {
         this.turnText = this.scene.add.text(0, 0, '')
             .setPosition(0)
             .setStyle(Config.scenes.game.boardPanel.textStyle)
-        this.setTurnText(0)
+        this.setTurnText(0, 0)
     }
 
     initQuotaText() {
         this.quotaText = this.scene.add.text(0, 0, '')
             .setPosition(0, Config.scenes.game.boardPanel.offsetItem)
             .setStyle(Config.scenes.game.boardPanel.textStyle)
-        this.setQuotaText(0)
+        this.setQuotaText(0, 0)
     }
 
 
-    setTurnText(turn: number) {
-        this.turnText.setText(`Turn         ${turn} / ${this.scene.data.maxTurn}`)
+    setTurnText(turn: number, maxTurn: number) {
+        this.turnText.setText(`Turn         ${turn} / ${maxTurn}`)
     }
 
 
-    setQuotaText(quota: number) {
-        this.quotaText.setText(`Quota      ${quota} / ${this.scene.data.maxQuota}`)
+    setQuotaText(quota: number, maxQuota: number) {
+        this.quotaText.setText(`Quota      ${quota} / ${maxQuota}`)
     }
 
     initContainer() {

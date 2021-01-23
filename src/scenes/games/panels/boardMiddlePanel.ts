@@ -7,12 +7,12 @@ const textStyle = {
 }
 
 export class BoardMiddlePanel {
-    public scene: GameScene
+    public scene: Phaser.Scene
     public container: Phaser.GameObjects.Container
     public timerText: Phaser.GameObjects.Text
 
 
-    constructor(scene: GameScene) {
+    constructor(scene: Phaser.Scene) {
         this.scene = scene
     }
 
@@ -26,7 +26,7 @@ export class BoardMiddlePanel {
         this.timerText = this.scene.add.text(0, 0, '')
             .setPosition(0, 0)
             .setStyle(textStyle)
-        this.setTimerText(this.scene.data.maxTimer)
+        this.setTimerText(0)
     }
 
 
