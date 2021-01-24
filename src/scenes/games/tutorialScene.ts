@@ -3,10 +3,30 @@ import { GameConfig } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
 
+type Turn = {
+    text: string
+    sphere: number
+    entries: Array<number>
+    borders: Array<number>
+    timer: number
+    turn: number
+    quota: number
+    maxQuota: number
+    maxTurn: number
+    comboCount: number
+    comboMultiple: number
+    comboCountGoal: number | null
+    comboMultipleGoal: number | null
+}
+
+
 export class TutorialScene extends Phaser.Scene {
     public background: Phaser.GameObjects.Image
     public board: Board
     public boardPanel: BoardPanelContainer
+    public turns: Array<Turn>
+    public turnsTemplate: Array<Partial<Turn>>
+    public currentTurn: Turn
 
     constructor() {
         super({ key: Config.scenes.keys.tutorial })
@@ -25,14 +45,74 @@ export class TutorialScene extends Phaser.Scene {
         )
         this.board = new Board(this)
         this.boardPanel = new BoardPanelContainer(this)
+        this.currentTurn = this.defaultTurn()
+        this.turnsTemplate = this.buildTurnsTemplate()
+        this.turns = this.buildTurns()
     }
 
-    create(gameConfig: GameConfig) {
+    create() {
         this.setBackground()
         this.board.create()
         this.boardPanel.create()
-        this.boardPanel.boardRigthPanel.setComboCountText(2,6)
-        this.boardPanel.boardRigthPanel.setComboMultipleText(2,6)
+        this.boardPanel.boardRigthPanel.setComboCountText(0, 0)
+        this.boardPanel.boardRigthPanel.setComboMultipleText(0, 0)
+        this.nextTurn(0)
+    }
+
+    defaultTurn(): Turn {
+        return {
+            text: '',
+            sphere: 4,
+            entries: [1, 2, 3, 4],
+            borders: [8, 2, 9, 4, 7, 8, 2, 3, 1, 2, 4, 3],
+            timer: 30,
+            turn: 1,
+            quota: 0,
+            maxQuota: 10,
+            maxTurn: 10,
+            comboCount: 0,
+            comboMultiple: 0,
+            comboCountGoal: null,
+            comboMultipleGoal: null,
+        }
+    }
+
+    buildTurnsTemplate(): Array<Partial<Turn>> {
+        return [
+            {text: 'first text'},
+            {text: 'secord text'},
+            {text: 'third text'},
+        ]
+    }
+
+
+    buildTurns(): Array<Turn> {
+        return this.turnsTemplate.map((turn) => {
+            return  {...this.defaultTurn(), ...turn}
+        })
+    }
+    
+
+    nextTurn(index: number) {
+        const currentTurn = Object.assign({}, this.currentTurn, this.turns[index])
+        this.board.sphereGraphics.setText(currentTurn.sphere)
+        currentTurn.entries.forEach((entry: number, index: number) => {
+            this.board.entriesGraphics[index].setText(entry)
+        })
+        currentTurn.borders.forEach((border: number, index: number) => {
+            this.board.bordersGraphics[index].setText(border)
+        })
+        this.boardPanel.boardLeftPanel.setTurnText(currentTurn.turn, currentTurn.maxTurn)
+        this.boardPanel.boardMiddlePanel.setTimerText(currentTurn.timer)
+        this.boardPanel.boardLeftPanel.setQuotaText(currentTurn.quota, currentTurn.maxQuota)
+        this.boardPanel.boardRigthPanel.setComboCountText(
+            currentTurn.comboCount,
+            currentTurn.comboMultipleGoal
+        )
+        this.boardPanel.boardRigthPanel.setComboMultipleText(
+            currentTurn.comboMultiple,
+            currentTurn.comboMultipleGoal
+        )
     }
 
     setBackground() {
@@ -41,6 +121,4 @@ export class TutorialScene extends Phaser.Scene {
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height)
     }
-    
-
 }

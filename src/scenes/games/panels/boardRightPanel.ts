@@ -43,7 +43,6 @@ export class BoardRightPanel {
             this.comboMultipleText,
             this.comboCountText,
         ])
-        console.log(this.container)
     }
 }
 
