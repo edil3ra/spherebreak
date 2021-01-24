@@ -72,7 +72,7 @@ export class TutorialScene extends Phaser.Scene {
             yoyo: true,
         })
 
-        this.nextTurn(0)
+        this.nextTurn(4)
     }
 
     defaultTurn(): Turn {
@@ -99,23 +99,37 @@ export class TutorialScene extends Phaser.Scene {
             {
                 pointer: {
                     x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
-                    y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 10,
+                    y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 12,
                 },
-                text: 'first text',
+                text: 'help for the turn',
             },
             {
                 pointer: {
-                    x: this.boardPanel.boardLeftPanel.container.x,
-                    y: this.boardPanel.boardLeftPanel.container.y,
+                    x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
+                    y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 32,
                 },
-                text: 'secord text',
+                text: 'help for the quota',
             },
             {
                 pointer: {
-                    x: this.boardPanel.boardMiddlePanel.timerText.x,
-                    y: this.boardPanel.boardMiddlePanel.timerText.y,
+                    x: this.boardPanel.container.x + this.boardPanel.boardMiddlePanel.container.x - 12,
+                    y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 24,
                 },
-                text: 'third text',
+                text: 'help for the timer',
+            },
+            {
+                pointer: {
+                    x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
+                    y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
+                },
+                text: 'help for multiple combo',
+            },
+            {
+                pointer: {
+                    x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
+                    y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 32,
+                },
+                text: 'help for count combo',
             },
         ]
     }
