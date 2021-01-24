@@ -29,12 +29,12 @@ export class Board {
 
 
     attachClickBorder(handleClickBorder: (index: number) => void ): this {
-        this.handleClickedBorder = handleClickBorder
+        this.handleClickedBorder = handleClickBorder.bind(this.scene)
         return this
     }
     
     attachClickEntry(handleClickEntry: (index: number) => void): this {
-        this.handleClickedEntry = handleClickEntry
+        this.handleClickedEntry = handleClickEntry.bind(this.scene)
         return this
     }
 

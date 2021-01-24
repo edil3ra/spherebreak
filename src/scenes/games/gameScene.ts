@@ -283,6 +283,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedBorder(index: number) {
+        // debugger
         this.borderClickedIndex = index
         this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value

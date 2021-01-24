@@ -118,7 +118,8 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: 'tutorial' as SkipScene 
+            scene: 'game' as SkipScene 
+            // scene: 'noSkip' as SkipScene 
         },
         keys: {
             game: 'gameScene',

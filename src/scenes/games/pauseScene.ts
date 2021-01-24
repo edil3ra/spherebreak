@@ -16,7 +16,6 @@ export class PauseScene extends Phaser.Scene {
             this.scene.sleep(Config.scenes.keys.gamePause)
         })
 
-
         this.input.mouse.disableContextMenu();
         this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
             if(pointer.rightButtonDown()) {

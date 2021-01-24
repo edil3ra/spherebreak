@@ -85,7 +85,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
             ease: 'Sine.easeOutIn',
             tweens: [{
                 scaleX: 0.2,
-                scaleY: 0e2,
+                scaleY: 0.2,
                 duration: 0,
                 alpha: 0
             },{
