@@ -23,7 +23,7 @@ export class TutorialHelperPanel {
 
     initBackground() {
         const width = Config.panels.tutorial.width
-        const height = 100
+        const height = Config.panels.tutorial.height
         this.background = this.scene.add.graphics({x: 0, y: 0})
             .fillStyle(0x222222, 0.5)
             .fillRoundedRect(6, 6, width, height, 16)
@@ -51,7 +51,8 @@ export class TutorialHelperPanel {
     setPosition() {
         this.container.setPosition(
             this.scene.scale.width / 2 - Config.panels.board.width / 2,
-            this.scene.scale.height / 2 - Config.panels.board.height / 2,
+            // this.scene.scale.height / 2 - Config.panels.board.height / 2 + Config.panels.board.height,
+            this.scene.scale.height / 2 + Config.board.height / 2 + 20 ,
         )
     }
 

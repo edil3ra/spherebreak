@@ -1,10 +1,5 @@
 import { Config } from "~/config"
-import { GameScene } from "~/scenes/games"
 
-const textStyle = {
-    ...Config.panels.board.textStyle,
-    fontSize: '42px',
-}
 
 export class BoardMiddlePanel {
     public scene: Phaser.Scene
@@ -25,7 +20,7 @@ export class BoardMiddlePanel {
     initTimerText() {
         this.timerText = this.scene.add.text(0, 0, '')
             .setPosition(0, 0)
-            .setStyle(textStyle)
+            .setStyle(Config.panels.board.styles.timer)
         this.setTimerText(0)
     }
 

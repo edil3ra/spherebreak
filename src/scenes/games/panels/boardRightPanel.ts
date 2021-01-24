@@ -22,12 +22,12 @@ export class BoardRightPanel {
 
     initComboMultipleText() {
         this.comboMultipleText = this.scene.add.text(0, 0, '')
-            .setStyle(Config.panels.board.textStyle)
+            .setStyle(Config.panels.board.styles.text)
     }
 
     initComboCountText() {
         this.comboCountText = this.scene.add.text(0, 20, '')
-            .setStyle(Config.panels.board.textStyle)
+            .setStyle(Config.panels.board.styles.text)
     }
 
     setComboMultipleText(comboMultple: number, comboMultipleGoal: number | null) {

@@ -1,7 +1,4 @@
 import { Config } from "~/config"
-import { GameScene } from "~/scenes/games"
-
-const OFFSET_ITEM = 20
 
 export class BoardLeftPanel {
     public scene: Phaser.Scene
@@ -24,14 +21,14 @@ export class BoardLeftPanel {
     initTurnText() {
         this.turnText = this.scene.add.text(0, 0, '')
             .setPosition(0)
-            .setStyle(Config.panels.board.textStyle)
+            .setStyle(Config.panels.board.styles.text)
         this.setTurnText(0, 0)
     }
 
     initQuotaText() {
         this.quotaText = this.scene.add.text(0, 0, '')
             .setPosition(0, Config.panels.board.offsetItem)
-            .setStyle(Config.panels.board.textStyle)
+            .setStyle(Config.panels.board.styles.text)
         this.setQuotaText(0, 0)
     }
 

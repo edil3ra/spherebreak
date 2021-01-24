@@ -17,7 +17,6 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
     public background: Phaser.GameObjects.Image
     public state: CoinState
     public tweenFlipping: Phaser.Tweens.Tween
-    // public tweenFlipping: Phaser.Tweens.Timeline
     public tweenRevive: Phaser.Tweens.Timeline
     public tweenKill: Phaser.Tweens.Timeline
     
@@ -34,8 +33,8 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
         super(scene, x, y)
         this.state = 'inactive'
         this.background = scene.add.image(0, 0, texture, frame).setOrigin(0.5, 0.5)
-        this.text = scene.add.text(0, 0, numero)
-
+        this.text = scene.add.text(0, 0, numero).setStyle(numeroStyle)
+        
         this.background.setDisplaySize(width, height)
         this.background.setSize(width, height)
         Phaser.Display.Align.In.Center(this.text, this.background)

@@ -29,12 +29,20 @@ function setBoardPanel() {
         offsetItem: 20,
         middlePanelOffsetX: 144,
         rightPanelOffsetX: 242,
-        textStyle: {
-            fontFamily: 'Play',
-            fontSize: '14px',
-            color: 'white',
-            fontStyle: 'bold',
-        },
+        styles: {
+            text: {
+                fontFamily: 'Play',
+                fontSize: '14px',
+                color: 'white',
+                fontStyle: 'bold', 
+            },
+            timer: {
+                fontFamily: 'Play',
+                fontSize: '42px',
+                color: 'white',
+                fontStyle: 'bold', 
+            }
+        }
     }
 }
 
