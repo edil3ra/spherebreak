@@ -26,7 +26,7 @@ export class GameScene extends Phaser.Scene {
             () => {
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
-                this.board.setBoardContainerPosition()
+                this.board.setPosition()
                 this.boardPanel.setPosition()
             },
             false
@@ -283,7 +283,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedBorder(index: number) {
-        // debugger
         this.borderClickedIndex = index
         this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value

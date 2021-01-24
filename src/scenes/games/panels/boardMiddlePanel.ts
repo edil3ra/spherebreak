@@ -2,7 +2,7 @@ import { Config } from "~/config"
 import { GameScene } from "~/scenes/games"
 
 const textStyle = {
-    ...Config.scenes.game.boardPanel.textStyle,
+    ...Config.panels.board.textStyle,
     fontSize: '42px',
 }
 

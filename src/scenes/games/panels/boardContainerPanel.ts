@@ -22,20 +22,20 @@ export class BoardPanelContainer {
         this.initBackground()
         this.boardLeftPanel.create()
         this.boardLeftPanel.container.setPosition(
-            Config.scenes.game.boardPanel.leftPadding,
-            Config.scenes.game.boardPanel.topPadding,
+            Config.panels.board.leftPadding,
+            Config.panels.board.topPadding,
         )
         
         this.boardMiddlePanel.create()
         this.boardMiddlePanel.container.setPosition(
-            Config.scenes.game.boardPanel.leftPadding + Config.scenes.game.boardPanel.middlePanelOffsetX,
-            Config.scenes.game.boardPanel.topPadding - 4,
+            Config.panels.board.leftPadding + Config.panels.board.middlePanelOffsetX,
+            Config.panels.board.topPadding - 4,
         )
         
         this.boardRigthPanel.create()
         this.boardRigthPanel.container.setPosition(
-            Config.scenes.game.boardPanel.leftPadding + Config.scenes.game.boardPanel.rightPanelOffsetX,
-            Config.scenes.game.boardPanel.topPadding,
+            Config.panels.board.leftPadding + Config.panels.board.rightPanelOffsetX,
+            Config.panels.board.topPadding,
         )
         
         this.container = this.scene.add.container(0, 0, [
@@ -51,18 +51,18 @@ export class BoardPanelContainer {
         this.background = this.scene.add
             .image(0, 0, Config.packer.name, Config.packer.bannerModern)
             .setOrigin(0, 0)
-            .setSize(Config.scenes.game.boardPanel.width, Config.scenes.game.boardPanel.height)
-            .setDisplaySize(Config.scenes.game.boardPanel.width, Config.scenes.game.boardPanel.height)
+            .setSize(Config.panels.board.width, Config.panels.board.height)
+            .setDisplaySize(Config.panels.board.width, Config.panels.board.height)
     }
 
 
     setPosition() {
         this.container.setPosition(
             this.scene.scale.width / 2 -
-                Config.scenes.game.boardPanel.width / 2,
+                Config.panels.board.width / 2,
             this.scene.scale.height / 2 -
-                Config.scenes.game.board.height / 2 -
-                Config.scenes.game.boardPanel.height - 20,
+                Config.board.height / 2 -
+                Config.panels.board.height - 20,
         )
     }
 }

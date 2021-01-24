@@ -38,6 +38,23 @@ function setBoardPanel() {
     }
 }
 
+
+function setTutorialPanel() {
+    return {
+        width: BOARD_SIZE,
+        height: 100,
+        styles: {
+            text: {
+                fontFamily: 'Play',
+                fontSize: '24px',
+                color: 'black',
+                fontStyle: 'bold',
+            }
+        },
+    }
+}
+
+
 export class Config {
     public static readonly debug = process.env.DEBUG
     public static readonly ads = {
@@ -114,7 +131,11 @@ export class Config {
             FINISH_TURN: 'finishTurn',
         }
     }
-
+    public static readonly board = setBoard()
+    public static readonly panels = {
+        board: setBoardPanel(),
+        tutorial: setTutorialPanel(),
+    }
 
     public static readonly scenes = {
         skip: {
@@ -203,8 +224,6 @@ export class Config {
             },
         },
         game: {
-            board: setBoard(),
-            boardPanel: setBoardPanel(),
             tweens: {
                 camera: {
                     in: {

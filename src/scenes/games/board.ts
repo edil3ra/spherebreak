@@ -40,16 +40,16 @@ export class Board {
 
     setSphereGraphics() {
         this.sphereGraphics = this.scene.add.coin(
-            Config.scenes.game.board.borderPadding +
-                Config.scenes.game.board.borderSize +
-                Config.scenes.game.board.entrySize * 0.5 +
+            Config.board.borderPadding +
+                Config.board.borderSize +
+                Config.board.entrySize * 0.5 +
                 4,
-            Config.scenes.game.board.borderPadding +
-                Config.scenes.game.board.borderSize +
-                Config.scenes.game.board.entrySize * 0.5 +
+            Config.board.borderPadding +
+                Config.board.borderSize +
+                Config.board.entrySize * 0.5 +
                 6,
-            Config.scenes.game.board.sphereSize,
-            Config.scenes.game.board.sphereSize,
+            Config.board.sphereSize,
+            Config.board.sphereSize,
             Config.packer.name,
             Config.packer.coinSphere,
             0
@@ -78,16 +78,16 @@ export class Board {
             const [directionX, directionY] = directions[index]
             const newPositionX =
                 positionX +
-                directionX * (Config.scenes.game.board.borderSize + Config.scenes.game.board.borderPadding)
+                directionX * (Config.board.borderSize + Config.board.borderPadding)
             const newPositionY =
                 positionY +
-                directionY * (Config.scenes.game.board.borderSize + Config.scenes.game.board.borderPadding)
+                directionY * (Config.board.borderSize + Config.board.borderPadding)
             currentPosition = [newPositionX, newPositionY]
             const coin = this.scene.add.coin(
                 newPositionX,
                 newPositionY,
-                Config.scenes.game.board.borderSize,
-                Config.scenes.game.board.borderSize,
+                Config.board.borderSize,
+                Config.board.borderSize,
                 Config.packer.name,
                 Config.packer.coinBorder,
                 0
@@ -118,16 +118,16 @@ export class Board {
             const [directionX, directionY] = directions[index]
             const newPositionX =
                 positionX +
-                directionX * (Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding)
+                directionX * (Config.board.entrySize + Config.board.entryPadding)
             const newPositionY =
                 positionY +
-                directionY * (Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding)
+                directionY * (Config.board.entrySize + Config.board.entryPadding)
             currentPosition = [newPositionX, newPositionY]
             const coin = this.scene.add.coin(
                 newPositionX,
                 newPositionY,
-                Config.scenes.game.board.entrySize,
-                Config.scenes.game.board.entrySize,
+                Config.board.entrySize,
+                Config.board.entrySize,
                 Config.packer.name,
                 Config.packer.coinEntry,
                 0
@@ -145,8 +145,8 @@ export class Board {
         this.entriesContainer = this.scene.add
             .container(0, 0, this.entriesGraphics)
             .setPosition(
-                Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding,
-                Config.scenes.game.board.entrySize + Config.scenes.game.board.entryPadding
+                Config.board.entrySize + Config.board.entryPadding,
+                Config.board.entrySize + Config.board.entryPadding
             )
     }
 
@@ -156,17 +156,17 @@ export class Board {
             this.entriesContainer,
             this.sphereGraphics,
         ])
-        this.setBoardContainerPosition()
+        this.setPosition()
     }
 
-    setBoardContainerPosition() {
+    setPosition() {
         this.boardContainer.setPosition(
             this.scene.scale.width / 2 -
-                Config.scenes.game.board.width / 2 +
-                Config.scenes.game.board.borderSize / 2,
+                Config.board.width / 2 +
+                Config.board.borderSize / 2,
             this.scene.scale.height / 2 -
-                Config.scenes.game.board.height / 2 +
-                Config.scenes.game.board.borderSize / 2
+                Config.board.height / 2 +
+                Config.board.borderSize / 2
         )
     }
 }

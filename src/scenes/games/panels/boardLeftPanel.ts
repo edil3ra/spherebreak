@@ -24,14 +24,14 @@ export class BoardLeftPanel {
     initTurnText() {
         this.turnText = this.scene.add.text(0, 0, '')
             .setPosition(0)
-            .setStyle(Config.scenes.game.boardPanel.textStyle)
+            .setStyle(Config.panels.board.textStyle)
         this.setTurnText(0, 0)
     }
 
     initQuotaText() {
         this.quotaText = this.scene.add.text(0, 0, '')
-            .setPosition(0, Config.scenes.game.boardPanel.offsetItem)
-            .setStyle(Config.scenes.game.boardPanel.textStyle)
+            .setPosition(0, Config.panels.board.offsetItem)
+            .setStyle(Config.panels.board.textStyle)
         this.setQuotaText(0, 0)
     }
 

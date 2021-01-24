@@ -1,6 +1,7 @@
 import { Config } from '~/config'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
+import { TutorialHelperPanel } from './panels/tutorialHelperPanel'
 
 type Turn = {
     pointer: { x: number; y: number }
@@ -22,8 +23,9 @@ type Turn = {
 export class TutorialScene extends Phaser.Scene {
     public background: Phaser.GameObjects.Image
     public pointer: Phaser.GameObjects.Image
-    public board: Board
     public boardPanel: BoardPanelContainer
+    public tutorialHelperPanel: TutorialHelperPanel
+    public board: Board
     public turns: Array<Turn>
     public turnsTemplate: Array<Partial<Turn>>
     public currentTurn: Turn
@@ -39,13 +41,15 @@ export class TutorialScene extends Phaser.Scene {
             () => {
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
-                this.board.setBoardContainerPosition()
+                this.board.setPosition()
                 this.boardPanel.setPosition()
             },
             false
         )
         this.board = new Board(this)
         this.boardPanel = new BoardPanelContainer(this)
+        this.tutorialHelperPanel = new TutorialHelperPanel(this)
+        
         this.currentTurn = this.defaultTurn()
     }
 
@@ -53,16 +57,19 @@ export class TutorialScene extends Phaser.Scene {
         this.setBackground()
         this.board.create()
         this.boardPanel.create()
+        this.tutorialHelperPanel.create()
         this.pointer = this.add.image(0, 0, Config.packer.name, Config.packer.hand)
         this.boardPanel.boardRigthPanel.setComboCountText(0, 0)
         this.boardPanel.boardRigthPanel.setComboMultipleText(0, 0)
-        this.board.setBoardContainerPosition()
+        this.board.setPosition()
         this.boardPanel.setPosition()
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
+        this.attachTweenCursor()
+        this.nextTurn(0)
+    }
 
-        // this.tweenCursor = this.tweens.add()
-
+    attachTweenCursor() {
         this.tweenCursor = this.tweens.add({
             targets: this.pointer,
             x: '-=10',
@@ -71,8 +78,6 @@ export class TutorialScene extends Phaser.Scene {
             repeat: -1,
             yoyo: true,
         })
-
-        this.nextTurn(4)
     }
 
     defaultTurn(): Turn {
