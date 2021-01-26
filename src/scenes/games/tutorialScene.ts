@@ -4,7 +4,7 @@ import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
 import { TutorialHelperPanel } from './panels/tutorialHelperPanel'
 
 type Turn = {
-    pointer: { x: number; y: number }
+    pointers: Array<{ x: number; y: number }>
     text: string
     sphere: number
     entries: Array<number>
@@ -22,7 +22,7 @@ type Turn = {
 
 export class TutorialScene extends Phaser.Scene {
     public background: Phaser.GameObjects.Image
-    public pointer: Phaser.GameObjects.Image
+    public pointersImage: Array<Phaser.GameObjects.Image>
     public boardPanel: BoardPanelContainer
     public tutorialHelperPanel: TutorialHelperPanel
     public board: Board
@@ -49,7 +49,7 @@ export class TutorialScene extends Phaser.Scene {
         this.board = new Board(this)
         this.boardPanel = new BoardPanelContainer(this)
         this.tutorialHelperPanel = new TutorialHelperPanel(this)
-        
+
         this.currentTurn = this.defaultTurn()
     }
 
@@ -58,7 +58,12 @@ export class TutorialScene extends Phaser.Scene {
         this.board.create()
         this.boardPanel.create()
         this.tutorialHelperPanel.create()
-        this.pointer = this.add.image(0, 0, Config.packer.name, Config.packer.hand)
+        this.pointersImage = []
+        for (let i = 0; i < 12; i++) {
+            this.pointersImage.push(
+                this.add.image(0, 0, Config.packer.name, Config.packer.hand).setVisible(false)
+            )
+        }
         this.boardPanel.boardRigthPanel.setComboCountText(0, 0)
         this.boardPanel.boardRigthPanel.setComboMultipleText(0, 0)
         this.board.setPosition()
@@ -66,12 +71,12 @@ export class TutorialScene extends Phaser.Scene {
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
         this.attachTweenCursor()
-        this.nextTurn(0)
+        this.nextTurn(2)
     }
 
     attachTweenCursor() {
         this.tweenCursor = this.tweens.add({
-            targets: this.pointer,
+            targets: this.pointersImage,
             x: '-=10',
             ease: 'Sine.easeInOut',
             duration: 400,
@@ -82,7 +87,7 @@ export class TutorialScene extends Phaser.Scene {
 
     defaultTurn(): Turn {
         return {
-            pointer: { x: 0, y: 0 },
+            pointers: [{ x: 0, y: 0 }],
             text: '',
             sphere: 4,
             entries: [1, 2, 3, 4],
@@ -100,40 +105,69 @@ export class TutorialScene extends Phaser.Scene {
     }
 
     buildTurnsTemplate(): Array<Partial<Turn>> {
+        const entriesGraphicsPosition = this.board.entriesGraphics.map((entry) => {
+            return {
+                x: entry.x + this.board.container.x + Config.board.entrySize + Config.board.entryPadding - 16,
+                y: entry.y + this.board.container.y + Config.board.entrySize + Config.board.entryPadding,
+            }
+        })
+
+        const bordersGraphicsPosition = this.board.bordersGraphics.map((border) => {
+            return { x: border.x + this.board.container.x - 12, y: border.y + this.board.container.y }
+        })
+
         return [
             {
-                pointer: {
-                    x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
-                    y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 12,
-                },
+                pointers: [
+                    {
+                        x: this.board.container.x + this.board.sphereGraphics.x - 16,
+                        y: this.board.container.y + this.board.sphereGraphics.y,
+                    },
+                ],
+                text: 'help for the sphere',
+            },
+            {
+                pointers: entriesGraphicsPosition,
+                text: 'help for the entries',
+            },
+            {
+                pointers: bordersGraphicsPosition,
                 text: 'help for the turn',
             },
             {
-                pointer: {
-                    x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
-                    y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 32,
-                },
+                pointers: [
+                    {
+                        x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
+                        y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 32,
+                    },
+                ],
                 text: 'help for the quota',
             },
             {
-                pointer: {
-                    x: this.boardPanel.container.x + this.boardPanel.boardMiddlePanel.container.x - 12,
-                    y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 24,
-                },
+                pointers: [
+                    {
+                        x: this.boardPanel.container.x + this.boardPanel.boardMiddlePanel.container.x - 12,
+                        y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 24,
+                    },
+                ],
                 text: 'help for the timer',
             },
             {
-                pointer: {
-                    x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
-                    y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
-                },
+                pointers: [
+                    {
+                        x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
+                        y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
+                    },
+                ],
                 text: 'help for multiple combo',
             },
             {
-                pointer: {
-                    x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
-                    y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 32,
-                },
+                pointers: [
+                    {
+                        x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
+                        y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 32,
+                    },
+                ],
                 text: 'help for count combo',
             },
         ]
@@ -147,11 +181,13 @@ export class TutorialScene extends Phaser.Scene {
 
     nextTurn(index: number) {
         const currentTurn = Object.assign({}, this.currentTurn, this.turns[index])
-        this.pointer.setPosition(currentTurn.pointer.x, currentTurn.pointer.y)
+        currentTurn.pointers.forEach((pointer: { x: number; y: number }, index: number) => {
+            this.pointersImage[index].setPosition(pointer.x, pointer.y).setVisible(true)
+        })
 
         this.board.sphereGraphics.setText(currentTurn.sphere)
-        currentTurn.entries.forEach((entry: number, index: number) => {
-            this.board.entriesGraphics[index].setText(entry)
+        currentTurn.entries.forEach((border: number, index: number) => {
+            this.board.entriesGraphics[index].setText(border)
         })
         currentTurn.borders.forEach((border: number, index: number) => {
             this.board.bordersGraphics[index].setText(border)
@@ -167,6 +203,7 @@ export class TutorialScene extends Phaser.Scene {
             currentTurn.comboMultiple,
             currentTurn.comboMultipleGoal
         )
+        this.tutorialHelperPanel.setText(currentTurn.text)
     }
 
     setBackground() {

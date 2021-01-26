@@ -1,5 +1,4 @@
 import { Config } from "~/config"
-import { GameScene } from "~/scenes/games"
 
 
 export class TutorialHelperPanel {

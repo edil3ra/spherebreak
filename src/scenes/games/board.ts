@@ -1,12 +1,11 @@
 import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
-import { GameScene } from '~/scenes/games'
 
 export class Board {
     public scene: Phaser.Scene
     public coinsContainer: Phaser.GameObjects.Container
     public entriesContainer: Phaser.GameObjects.Container
-    public boardContainer: Phaser.GameObjects.Container
+    public container: Phaser.GameObjects.Container
     public sphereGraphics: CoinGraphics
     public bordersGraphics: Array<CoinGraphics>
     public entriesGraphics: Array<CoinGraphics>
@@ -151,7 +150,7 @@ export class Board {
     }
 
     setBoardContainer() {
-        this.boardContainer = this.scene.add.container(0, 0, [
+        this.container = this.scene.add.container(0, 0, [
             this.coinsContainer,
             this.entriesContainer,
             this.sphereGraphics,
@@ -160,7 +159,7 @@ export class Board {
     }
 
     setPosition() {
-        this.boardContainer.setPosition(
+        this.container.setPosition(
             this.scene.scale.width / 2 -
                 Config.board.width / 2 +
                 Config.board.borderSize / 2,
