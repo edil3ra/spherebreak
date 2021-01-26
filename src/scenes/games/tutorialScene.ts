@@ -71,7 +71,7 @@ export class TutorialScene extends Phaser.Scene {
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
         this.attachTweenCursor()
-        this.nextTurn(2)
+        this.nextTurn(6)
     }
 
     attachTweenCursor() {
@@ -105,14 +105,14 @@ export class TutorialScene extends Phaser.Scene {
     }
 
     buildTurnsTemplate(): Array<Partial<Turn>> {
-        const entriesGraphicsPosition = this.board.entriesGraphics.map((entry) => {
+        const bordersGraphicsPosition = this.board.entriesGraphics.map((entry) => {
             return {
                 x: entry.x + this.board.container.x + Config.board.entrySize + Config.board.entryPadding - 16,
                 y: entry.y + this.board.container.y + Config.board.entrySize + Config.board.entryPadding,
             }
         })
 
-        const bordersGraphicsPosition = this.board.bordersGraphics.map((border) => {
+        const entriesGraphicsPosition = this.board.bordersGraphics.map((border) => {
             return { x: border.x + this.board.container.x - 12, y: border.y + this.board.container.y }
         })
 
@@ -124,15 +124,37 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.board.container.y + this.board.sphereGraphics.y,
                     },
                 ],
-                text: 'help for the sphere',
+                text: `The sphere that is in bright blue.
+It's positioned at the center of the board.
+This cannot be selected
+It act as the guide on the multiples
+`
             },
             {
                 pointers: entriesGraphicsPosition,
-                text: 'help for the entries',
+                text: `12 coins that are in blue-purpish in colour.
+They are all positioned at the extreme corner,
+thus the name border coins.
+They dissappear after you use it.`,
             },
             {
                 pointers: bordersGraphicsPosition,
-                text: 'help for the turn',
+                text: `4 coins that are in yellowish colour.
+They are positioned within the square borders.
+These entry coins will never dissappear, but
+does not add to the quota every time you use it`,
+            },
+            {
+                pointers: [
+                    {
+                        x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
+                        y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 12,
+                    },
+                ],
+                text: `The game comes in turns.
+Every time you core break, the turn ends.
+You will need to complete the quota
+before all the turns ends!`,
             },
             {
                 pointers: [
@@ -141,7 +163,10 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 32,
                     },
                 ],
-                text: 'help for the quota',
+                text: `Quota is something like the score in the game.
+You get one quota for each border coin.
+You will need to reach the quota to win the game
+`,
             },
             {
                 pointers: [
@@ -150,7 +175,10 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 24,
                     },
                 ],
-                text: 'help for the timer',
+                text: `Every turn, there's a time limit.
+You need to make your decision using the coin.
+If the time runs out,
+you will automatically lose the turn`
             },
             {
                 pointers: [
@@ -159,7 +187,12 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
                     },
                 ],
-                text: 'help for multiple combo',
+                text: `Example, you have a core number 2. 2,4,6,8...
+You have a sum of 8, core break.
+Next turn, you have a core number 3. 3,6,9,12...
+You make a sum of 12, core break.
+8 and 12 is a multiple of 4
+`,
             },
             {
                 pointers: [
@@ -168,7 +201,10 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 32,
                     },
                 ],
-                text: 'help for count combo',
+                text: `example, you used 3 coins previous turn
+if you use 3 coins, you increase your combo
+if you use 2 coins, you lose the combo
+`
             },
         ]
     }

@@ -50,13 +50,13 @@ function setBoardPanel() {
 function setTutorialPanel() {
     return {
         width: BOARD_SIZE,
-        height: 100,
+        height: 160,
+        paddingX: 36,
+        paddingY: 46,
         styles: {
             text: {
-                fontFamily: 'Play',
-                fontSize: '24px',
-                color: 'black',
-                fontStyle: 'bold',
+                fontSize: '13px',
+                color: 'white',
             }
         },
     }
