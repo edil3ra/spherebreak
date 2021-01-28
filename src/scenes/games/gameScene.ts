@@ -233,7 +233,6 @@ export class GameScene extends Phaser.Scene {
                             this.scene.bringToTop(Config.scenes.keys.gameOver)
                         },
                     })
-                    
                     break
                 case 'lost':
                     this.tweens.add({

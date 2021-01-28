@@ -147,7 +147,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: 'tutorial' as SkipScene 
+            scene: Config.debug ?  'noSkip' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -157,6 +157,7 @@ export class Config {
             boot: 'bootScene',
             entriesSelection: 'entriesSelectionScene',
             tutorial: 'tutorialScene',
+            tutorialStartEnd: 'tutorialStartEndScene',
         },
         menu: {
             logState: false,
@@ -268,5 +269,16 @@ export class Config {
                 }
             }
         },
+        tutorialStartEndScene: {
+            styles: {
+                text: {
+                    fontFamily: 'Play',
+                    fontSize: '24px',
+                    color: 'white',
+                    fontStyle: 'bold',
+                }
+            }
+        }
+
     }
 }

@@ -11,10 +11,12 @@ export class Board {
     public entriesGraphics: Array<CoinGraphics>
     public background: Phaser.GameObjects.TileSprite
     public handleClickedBorder: (index: number) => void 
-    public handleClickedEntry: (index: number) => void 
+    public handleClickedEntry: (index: number) => void
+    public isInteractive:boolean
 
-    constructor(scene: Phaser.Scene) {
+    constructor(scene: Phaser.Scene, isInteractive: boolean=true) {
         this.scene = scene
+        this.isInteractive = isInteractive
         this.handleClickedBorder = () => {}
         this.handleClickedEntry = () => {}
     }
@@ -91,13 +93,15 @@ export class Board {
                 Config.packer.coinBorder,
                 0
             ) as CoinGraphics
-            coin.background
-                .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(
-                    Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
-                    () => this.handleClickedBorder(index),
-                    this
-                )
+            if(this.isInteractive) {
+                coin.background
+                    .setInteractive({ cursor: 'pointer', pixelPerfect: true })
+                    .on(
+                        Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
+                        () => this.handleClickedBorder(index),
+                        this
+                    )                
+            }
             return coin
         })
         this.coinsContainer = this.scene.add.container(0, 0, this.bordersGraphics)
@@ -131,14 +135,15 @@ export class Board {
                 Config.packer.coinEntry,
                 0
             ) as CoinGraphics
-            coin.background
-                .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(
-                    Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
-                    () => this.handleClickedEntry(index),
-                    this
-                )
-
+            if(this.isInteractive) {
+                coin.background
+                    .setInteractive({ cursor: 'pointer', pixelPerfect: true })
+                    .on(
+                        Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
+                        () => this.handleClickedEntry(index),
+                        this
+                    )
+            }
             return coin
         })
         this.entriesContainer = this.scene.add

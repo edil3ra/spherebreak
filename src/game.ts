@@ -4,6 +4,7 @@ import { MenuScene } from '~/scenes/menus'
 import { WebFontLoaderPlugin } from 'phaser3-webfont-loader'
 import { EntriesSelectionScene } from '~/scenes/menus/entriesSelectionScene'
 import { GameOverScene } from './scenes/games/gameOverScene'
+import { TutorialStartEndScene } from './scenes/games/tutorialStartEndScene'
 
 export function initGame(): Phaser.Game {
     const config: Phaser.Types.Core.GameConfig = {
@@ -35,6 +36,7 @@ export function initGame(): Phaser.Game {
             PauseScene,
             EntriesSelectionScene,
             TutorialScene,
+            TutorialStartEndScene,
         ],
     }
     const game = new Phaser.Game(config)

@@ -1,7 +1,8 @@
 import { Config } from '~/config'
+import { TutorialState } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
-import { TutorialHelperPanel } from './panels/tutorialHelperPanel'
+import { TutorialHelperPanel } from '~/scenes/games/panels/tutorialHelperPanel'
 
 type Turn = {
     pointers: Array<{ x: number; y: number }>
@@ -21,6 +22,7 @@ type Turn = {
 }
 
 export class TutorialScene extends Phaser.Scene {
+    public tutorialState: TutorialState
     public background: Phaser.GameObjects.Image
     public pointersImage: Array<Phaser.GameObjects.Image>
     public boardPanel: BoardPanelContainer
@@ -29,6 +31,7 @@ export class TutorialScene extends Phaser.Scene {
     public turns: Array<Turn>
     public turnsTemplate: Array<Partial<Turn>>
     public currentTurn: Turn
+    public currentTurnIndex: number
     public tweenCursor: Phaser.Tweens.Tween
 
     constructor() {
@@ -43,14 +46,28 @@ export class TutorialScene extends Phaser.Scene {
                 this.background.setPosition(0, 0)
                 this.board.setPosition()
                 this.boardPanel.setPosition()
+                this.tutorialHelperPanel.setPosition()
             },
             false
         )
-        this.board = new Board(this)
+        this.tutorialState = 'start'
+        this.board = new Board(this, false)
         this.boardPanel = new BoardPanelContainer(this)
         this.tutorialHelperPanel = new TutorialHelperPanel(this)
-
         this.currentTurn = this.defaultTurn()
+        this.currentTurnIndex = 0
+        this.scene.launch(Config.scenes.keys.tutorialStartEnd)
+        this.scene.sleep(Config.scenes.keys.tutorialStartEnd)
+
+        this.startTutorial()
+
+        this.events.on('resume', () => {
+            this.tweens.add({
+                ...Config.scenes.game.tweens.camera.in,
+                targets: this.cameras.main,
+                callbackScope: this,
+            })
+        })
     }
 
     create() {
@@ -71,10 +88,14 @@ export class TutorialScene extends Phaser.Scene {
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
         this.attachTweenCursor()
-        this.nextTurn(6)
+        this.registerClickNextTurn()
+        this.nextTurn(this.currentTurnIndex)
     }
 
     attachTweenCursor() {
+        if (this.tweenCursor) {
+            this.tweenCursor.stop()
+        }
         this.tweenCursor = this.tweens.add({
             targets: this.pointersImage,
             x: '-=10',
@@ -93,14 +114,14 @@ export class TutorialScene extends Phaser.Scene {
             entries: [1, 2, 3, 4],
             borders: [8, 2, 9, 4, 7, 8, 2, 3, 1, 2, 4, 3],
             timer: 30,
-            turn: 1,
+            turn: 5,
             quota: 0,
             maxQuota: 10,
             maxTurn: 10,
-            comboCount: 0,
-            comboMultiple: 0,
-            comboCountGoal: null,
-            comboMultipleGoal: null,
+            comboCount: 3,
+            comboMultiple: 4,
+            comboCountGoal: 3,
+            comboMultipleGoal: 2,
         }
     }
 
@@ -124,11 +145,9 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.board.container.y + this.board.sphereGraphics.y,
                     },
                 ],
-                text: `The sphere that is in bright blue.
-It's positioned at the center of the board.
-This cannot be selected
-It act as the guide on the multiples
-`
+                text: `Sphere in a middle is the numbero to reach
+You can also reach a multiple of it ex 4 -> 8
+`,
             },
             {
                 pointers: entriesGraphicsPosition,
@@ -178,7 +197,7 @@ You will need to reach the quota to win the game
                 text: `Every turn, there's a time limit.
 You need to make your decision using the coin.
 If the time runs out,
-you will automatically lose the turn`
+you will automatically lose the turn`,
             },
             {
                 pointers: [
@@ -187,11 +206,10 @@ you will automatically lose the turn`
                         y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
                     },
                 ],
-                text: `Example, you have a core number 2. 2,4,6,8...
-You have a sum of 8, core break.
-Next turn, you have a core number 3. 3,6,9,12...
-You make a sum of 12, core break.
-8 and 12 is a multiple of 4
+                text: `Example, you have a core number 2. 2,4,6,8
+You have a sum of 8, combo.
+Next turn, you have a core number 3. 3,6,9,12
+You make a sum of 12, combo.
 `,
             },
             {
@@ -204,7 +222,7 @@ You make a sum of 12, core break.
                 text: `example, you used 3 coins previous turn
 if you use 3 coins, you increase your combo
 if you use 2 coins, you lose the combo
-`
+`,
             },
         ]
     }
@@ -215,11 +233,31 @@ if you use 2 coins, you lose the combo
         })
     }
 
+    registerClickNextTurn() {
+        this.input.on(
+            Phaser.Input.Events.POINTER_DOWN,
+            () => {
+                if (this.currentTurnIndex === this.turns.length - 1) {
+                    this.tutorialState = 'end'
+                    this.endTutorial()
+                } else {
+                    this.currentTurnIndex += 1
+                    this.nextTurn(this.currentTurnIndex)
+                }
+            },
+            this
+        )
+    }
+
     nextTurn(index: number) {
-        const currentTurn = Object.assign({}, this.currentTurn, this.turns[index])
+        this.pointersImage.forEach((pointerImage) => {
+            pointerImage.setVisible(false)
+        })
+        const currentTurn = Object.assign({}, this.defaultTurn(), this.turns[index])
         currentTurn.pointers.forEach((pointer: { x: number; y: number }, index: number) => {
             this.pointersImage[index].setPosition(pointer.x, pointer.y).setVisible(true)
         })
+        this.attachTweenCursor()
 
         this.board.sphereGraphics.setText(currentTurn.sphere)
         currentTurn.entries.forEach((border: number, index: number) => {
@@ -240,6 +278,30 @@ if you use 2 coins, you lose the combo
             currentTurn.comboMultipleGoal
         )
         this.tutorialHelperPanel.setText(currentTurn.text)
+    }
+
+    startTutorial() {
+        this.tweens.add({
+            ...Config.scenes.game.tweens.camera.out,
+            targets: this.cameras.main,
+            onComplete: () => {
+                this.scene.pause(Config.scenes.keys.tutorial)
+                this.scene.wake(Config.scenes.keys.tutorialStartEnd)
+                this.scene.bringToTop(Config.scenes.keys.tutorialStartEnd)
+            },
+        })
+    }
+
+    endTutorial() {
+        this.tweens.add({
+            ...Config.scenes.game.tweens.camera.out,
+            targets: this.cameras.main,
+            onComplete: () => {
+                this.scene.pause(Config.scenes.keys.tutorial)
+                this.scene.wake(Config.scenes.keys.tutorialStartEnd)
+                this.scene.bringToTop(Config.scenes.keys.tutorialStartEnd)
+            },
+        })
     }
 
     setBackground() {
