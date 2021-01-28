@@ -21,7 +21,7 @@ export class TutorialStartEndScene extends Phaser.Scene {
     create() {
         this.text = this.add.text(
             this.scale.width * 0.5,
-            this.scale.height * 0.5,
+            this.scale.height * 0.5 - 10,
             '',
             Config.scenes.tutorialStartEndScene.styles.text
         )
@@ -39,7 +39,6 @@ export class TutorialStartEndScene extends Phaser.Scene {
 
     registerClick() {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            console.log('click')
             if (this.tutorialScene.tutorialState === 'start') {
                 this.handleStartTutorial()
             } else if (this.tutorialScene.tutorialState === 'end') {

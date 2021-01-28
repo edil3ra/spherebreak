@@ -17,6 +17,7 @@ function setBoard() {
         entrySize: ENTRY_SIZE,
         entryPadding: ENTRY_PADDING,
         sphereSize: SPHERE_SIZE,
+        marginTop: 10,
     }
 }
 
@@ -50,12 +51,14 @@ function setBoardPanel() {
 function setTutorialPanel() {
     return {
         width: BOARD_SIZE,
-        height: 160,
-        paddingX: 36,
-        paddingY: 46,
+        height: 130,
+        paddingX: 28,
+        paddingY: 40,
+        marginTop: 10,
         styles: {
             text: {
-                fontSize: '13px',
+                fontSize: '11px',
+                lineSpacing: 2,
                 color: 'white',
             }
         },
@@ -147,7 +150,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'game' : 'noSkip',
+            scene: Config.debug ?  'noSkip' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -273,7 +276,7 @@ export class Config {
             styles: {
                 text: {
                     fontFamily: 'Play',
-                    fontSize: '24px',
+                    fontSize: '20px',
                     color: 'white',
                     fontStyle: 'bold',
                 }

@@ -18,9 +18,6 @@ export class TutorialHelperPanel {
     }
 
     initBackground() {
-        const width = Config.panels.tutorial.width
-        const height = Config.panels.tutorial.height
-
         this.background = this.scene.add
             .image(0, 0, Config.packer.name, Config.packer.bannerModern)
             .setOrigin(0, 0)
@@ -47,9 +44,11 @@ export class TutorialHelperPanel {
 
     setPosition() {
         this.container.setPosition(
-            this.scene.scale.width / 2 - Config.panels.board.width / 2,
-            // this.scene.scale.height / 2 - Config.panels.board.height / 2 + Config.panels.board.height,
-            this.scene.scale.height / 2 + Config.board.height / 2 + 20
+            0,
+            Config.panels.board.height +
+                Config.board.marginTop +
+                Config.board.height +
+                Config.panels.tutorial.marginTop
         )
     }
 }

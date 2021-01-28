@@ -33,6 +33,7 @@ export class TutorialScene extends Phaser.Scene {
     public currentTurn: Turn
     public currentTurnIndex: number
     public tweenCursor: Phaser.Tweens.Tween
+    public container: Phaser.GameObjects.Container
 
     constructor() {
         super({ key: Config.scenes.keys.tutorial })
@@ -83,8 +84,13 @@ export class TutorialScene extends Phaser.Scene {
         }
         this.boardPanel.boardRigthPanel.setComboCountText(0, 0)
         this.boardPanel.boardRigthPanel.setComboMultipleText(0, 0)
-        this.board.setPosition()
-        this.boardPanel.setPosition()
+        this.container = this.add.container(0, 0, [
+            this.board.container,
+            this.boardPanel.container,
+            this.tutorialHelperPanel.container,
+            ...this.pointersImage,
+        ])
+        this.setPositionContainer()
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
         this.attachTweenCursor()
@@ -145,23 +151,23 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.board.container.y + this.board.sphereGraphics.y,
                     },
                 ],
-                text: `Sphere in a middle is the numbero to reach
-You can also reach a multiple of it ex 4 -> 8
+                text: `Middle sphere is the numbero to reach
+You can also reach it with a multiple
+ex 4 -> 8
 `,
             },
             {
                 pointers: entriesGraphicsPosition,
-                text: `12 coins that are in blue-purpish in colour.
-They are all positioned at the extreme corner,
-thus the name border coins.
-They dissappear after you use it.`,
+                text: `12 coins that are in blue-purpish color
+They are all positioned at the extreme corner
+They dissappear after you use it`,
             },
             {
                 pointers: bordersGraphicsPosition,
-                text: `4 coins that are in yellowish colour.
-They are positioned within the square borders.
-These entry coins will never dissappear, but
-does not add to the quota every time you use it`,
+                text: `4 coins that are in yellowish color
+They are positioned within the square borders
+They never dissapear
+They don not increase the quota`,
             },
             {
                 pointers: [
@@ -170,8 +176,8 @@ does not add to the quota every time you use it`,
                         y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 12,
                     },
                 ],
-                text: `The game comes in turns.
-Every time you core break, the turn ends.
+                text: `The game comes in turns
+Every time you core break, the turn ends
 You will need to complete the quota
 before all the turns ends!`,
             },
@@ -182,8 +188,8 @@ before all the turns ends!`,
                         y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 32,
                     },
                 ],
-                text: `Quota is something like the score in the game.
-You get one quota for each border coin.
+                text: `Quota is something like the score in the game
+You get one quota for each border coin
 You will need to reach the quota to win the game
 `,
             },
@@ -194,9 +200,9 @@ You will need to reach the quota to win the game
                         y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 24,
                     },
                 ],
-                text: `Every turn, there's a time limit.
-You need to make your decision using the coin.
-If the time runs out,
+                text: `Every turn, there's a time limit
+You need to make your decision using the coin
+If the time runs out
 you will automatically lose the turn`,
             },
             {
@@ -207,9 +213,9 @@ you will automatically lose the turn`,
                     },
                 ],
                 text: `Example, you have a core number 2. 2,4,6,8
-You have a sum of 8, combo.
+You have a sum of 8, combo
 Next turn, you have a core number 3. 3,6,9,12
-You make a sum of 12, combo.
+You make a sum of 12, combo
 `,
             },
             {
@@ -309,5 +315,18 @@ if you use 2 coins, you lose the combo
             .image(0, 0, Config.images.background)
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height)
+    }
+
+    setPositionContainer() {
+        this.container.setPosition(
+            this.scale.width / 2 - Config.board.width / 2,
+            this.scale.height / 2 -
+                (Config.board.height +
+                    Config.panels.board.height +
+                    Config.panels.tutorial.height +
+                    Config.panels.tutorial.marginTop +
+                    Config.board.marginTop) /
+                    2
+        )
     }
 }
