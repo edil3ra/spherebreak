@@ -165,12 +165,8 @@ export class Board {
 
     setPosition() {
         this.container.setPosition(
-            this.scene.scale.width / 2 -
-                Config.board.width / 2 +
-                Config.board.borderSize / 2,
-            this.scene.scale.height / 2 -
-                Config.board.height / 2 +
-                Config.board.borderSize / 2
+            Config.board.borderSize / 2, 
+            Config.board.borderSize / 2 + Config.panels.board.height + 10,
         )
     }
 }

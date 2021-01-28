@@ -15,6 +15,7 @@ export class GameScene extends Phaser.Scene {
     public timerSyncCoin: Phaser.Time.TimerEvent
     public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
+    public container: Phaser.GameObjects.Container
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -26,8 +27,7 @@ export class GameScene extends Phaser.Scene {
             () => {
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
-                this.board.setPosition()
-                this.boardPanel.setPosition()
+                this.setPositionContainer()
             },
             false
         )
@@ -40,7 +40,7 @@ export class GameScene extends Phaser.Scene {
         this.boardPanel = new BoardPanelContainer(this)
         this.bordersStateChanged = []
         this.scene.launch(Config.scenes.keys.gameOver)
-        // this.scene.sleep(Config.scenes.keys.gameOver)
+        this.scene.sleep(Config.scenes.keys.gameOver)
 
         if(Config.debug) {
             this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
@@ -68,6 +68,8 @@ export class GameScene extends Phaser.Scene {
         this.setBackground()
         this.board.create()
         this.boardPanel.create()
+        this.container = this.add.container(0, 0, [this.board.container, this.boardPanel.container])
+        this.setPositionContainer()
         this.initData(gameConfig)
         this.initTimerSyncCoin()
         this.startTimerTurn()
@@ -295,5 +297,14 @@ export class GameScene extends Phaser.Scene {
             index === loopingIndex ? true : value
         )
         this.data.nextTurn()
+    }
+
+    setPositionContainer() {
+        this.container.setPosition(
+            this.scale.width / 2 -
+                Config.board.width / 2,
+            this.scale.height / 2 -
+                (Config.board.height + Config.panels.board.height + 10) / 2 ,
+        )
     }
 }

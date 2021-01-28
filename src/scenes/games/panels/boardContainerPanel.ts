@@ -57,12 +57,6 @@ export class BoardPanelContainer {
 
 
     setPosition() {
-        this.container.setPosition(
-            this.scene.scale.width / 2 -
-                Config.panels.board.width / 2,
-            this.scene.scale.height / 2 -
-                Config.board.height / 2 -
-                Config.panels.board.height - 20,
-        )
+        this.container.setPosition(0, 0)
     }
 }
