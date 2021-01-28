@@ -40,9 +40,8 @@ export class MenuScene extends Phaser.Scene {
         this.scale.on('resize', () => {
             this.background.setDisplaySize(window.innerWidth, window.innerHeight)
             this.background.setPosition(0, 0)
-            this.mainContainer.setPosition(this.scale.width / 2, this.scale.height / 2 - 600 / 2)
+            this.mainContainer.setPosition(this.scale.width / 2, this.scale.height / 2 - 500 / 2)
         })
-        
 
         this.currentDifficulty = (window.localStorage.getItem('difficulty') as Difficulty) || 'easy'
         this.currentEntries = [1, 2, 3, 4]
@@ -66,7 +65,7 @@ export class MenuScene extends Phaser.Scene {
         if (Config.scenes.skip.scene === 'tutorial') {
             this.stateService.send(EVENT_MENU.TUTORIAL)
         }
-        
+
         this.scene.launch(Config.scenes.keys.entriesSelection)
         this.scene.sleep(Config.scenes.keys.entriesSelection)
 
@@ -75,7 +74,9 @@ export class MenuScene extends Phaser.Scene {
                 ...Config.scenes.menu.tweens.camera.in,
                 targets: this.cameras.main,
                 callbackScope: this,
-                onComplete: () => {this.stateService.send(EVENT_MENU.WAKE)}
+                onComplete: () => {
+                    this.stateService.send(EVENT_MENU.WAKE)
+                },
             })
         })
     }
@@ -102,22 +103,25 @@ export class MenuScene extends Phaser.Scene {
                     Config.scenes.menu.difficultiesContainer.x,
                     Config.scenes.menu.difficultiesContainer.y
                 ),
-                this.buttonPlay.setPosition(0, 400),
-                this.buttonTutorial.setPosition(0, 500),
+                this.buttonPlay.setPosition(Config.scenes.menu.buttonPlay.x, Config.scenes.menu.buttonPlay.y),
+                this.buttonTutorial.setPosition(
+                    Config.scenes.menu.buttonTutorial.x,
+                    Config.scenes.menu.buttonTutorial.y
+                ),
             ])
-            .setSize(600, 600)
-            .setDisplaySize(600, 600)
-            .setPosition(this.scale.width / 2, this.scale.height / 2 - 600 / 2)
+            .setPosition(this.scale.width / 2, this.scale.height / 2 - Config.scenes.menu.background.height / 2)
 
         const difficultyIcon = this.difficultiesGraphics.find(
             (icon) => icon.name === this.currentDifficulty
         ) as DifficultyGraphics
         this.handleDifficultySelected(difficultyIcon)
-        
+
         this.background.setDisplaySize(window.innerWidth, window.innerHeight)
         this.background.setPosition(0, 0)
-        this.mainContainer.setPosition(this.scale.width / 2, this.scale.height / 2 - 600 / 2)
-        console.log(this.scale.width)
+        this.mainContainer.setPosition(
+            this.scale.width / 2,
+            this.scale.height / 2 - Config.scenes.menu.background.height / 2
+        )
     }
 
     setBackground() {
@@ -131,8 +135,8 @@ export class MenuScene extends Phaser.Scene {
         this.backgroundContainer = this.add.tileSprite(
             0,
             0,
-            600,
-            600,
+            Config.scenes.menu.background.width,
+            Config.scenes.menu.background.height,
             Config.packer.name,
             Config.packer.pattern
         )
@@ -144,7 +148,7 @@ export class MenuScene extends Phaser.Scene {
         const text = this.add
             .text(0, 2, 'Spherebreak', Config.scenes.menu.styles.coin)
             .setOrigin(0.5, 0.5)
-            .setScale(2.4, 2.4)
+            .setScale(2.0, 2.0)
 
         this.banner = this.add.container(0, 0, [imageBanner, text])
     }
@@ -262,11 +266,11 @@ export class MenuScene extends Phaser.Scene {
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
-            .setScale(2)
+            .setScale(1.8)
             .setText('Play')
             .setTextStyle(Config.scenes.menu.styles.button)
 
-        this.buttonPlay.button.setScale(1.6, 1)
+        this.buttonPlay.button.setScale(1, 1)
         this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
             this.stateService.send(EVENT_MENU.PLAY)
         })
@@ -278,10 +282,10 @@ export class MenuScene extends Phaser.Scene {
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
-            .setScale(2)
+            .setScale(1.8)
             .setText('Tutorial')
             .setTextStyle(Config.scenes.menu.styles.button)
-        this.buttonTutorial.button.setScale(1.6, 1)
+        this.buttonTutorial.button.setScale(1.1, 1)
         this.buttonTutorial.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
             this.stateService.send(EVENT_MENU.TUTORIAL)
         })
@@ -308,7 +312,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handlePlay() {
-        if(Config.ads.play) {
+        if (Config.ads.play) {
             window.gdsdk.showAd()
         }
         this.saveState()

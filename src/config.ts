@@ -164,35 +164,47 @@ export class Config {
         },
         menu: {
             logState: false,
+            background: {
+                width: 375,
+                height: 400,
+            },
             entriesContainer: {
-                x: -240,
-                y: 80,
+                x: -170,
+                y: 70,
             },
             difficultiesContainer: {
-                x: 48,
-                y: 80,
+                x: 16,
+                y: 70,
             },
             entries: {
-                width: 96,
-                height: 96,
+                width: 78,
+                height: 78,
                 textBottomPadding: 40,
-                textLeftPadding: 68,
-                xPadding: 10,
-                yPadding: 10,
+                textLeftPadding: 48,
+                xPadding: 6,
+                yPadding: 6,
             },
             helperEntries: {
-                width: 140,
-                height: 140,
+                width: 120,
+                height: 120,
                 xPadding: 16,
                 yPadding: 16,
             },
             difficulties: {
-                width: 92,
-                height: 92,
+                width: 72,
+                height: 72,
                 textBottomPadding: 40,
-                textLeftPadding: 40,
-                xPadding: 10,
-                yPadding: 10,
+                textLeftPadding: 16,
+                xPadding: 12,
+                yPadding: 12,
+            },
+            buttonPlay: {
+                x: -92,
+                y: 330,
+            },
+            buttonTutorial: {
+                x: 92,
+                y: 330,
             },
             tweens: {
                 camera: {
