@@ -11,8 +11,10 @@ export function initGame(): Phaser.Game {
         type: Phaser.AUTO,
         title: 'spherebreak',
         scale: {
-            width: window.innerWidth * window.devicePixelRatio,
-            height: window.innerHeight * window.devicePixelRatio,
+            // mode: Phaser.Scale.WIDTH_CONTROLS_HEIGHT,
+            // mode: Phaser.Scale.CENTER_BOTH,
+            width: window.innerWidth, 
+            height: window.innerHeight,
             parent: 'spherebreak',
         },
         parent: 'spherebreak',

@@ -37,15 +37,12 @@ export class MenuScene extends Phaser.Scene {
     }
 
     init() {
-        window.addEventListener(
-            'resize',
-            () => {
-                this.background.setDisplaySize(window.innerWidth, window.innerHeight)
-                this.background.setPosition(0, 0)
-                this.mainContainer.setPosition(this.scale.width / 2, this.scale.height / 2 - 600 / 2)
-            },
-            false
-        )
+        this.scale.on('resize', () => {
+            this.background.setDisplaySize(window.innerWidth, window.innerHeight)
+            this.background.setPosition(0, 0)
+            this.mainContainer.setPosition(this.scale.width / 2, this.scale.height / 2 - 600 / 2)
+        })
+        
 
         this.currentDifficulty = (window.localStorage.getItem('difficulty') as Difficulty) || 'easy'
         this.currentEntries = [1, 2, 3, 4]
@@ -116,6 +113,11 @@ export class MenuScene extends Phaser.Scene {
             (icon) => icon.name === this.currentDifficulty
         ) as DifficultyGraphics
         this.handleDifficultySelected(difficultyIcon)
+        
+        this.background.setDisplaySize(window.innerWidth, window.innerHeight)
+        this.background.setPosition(0, 0)
+        this.mainContainer.setPosition(this.scale.width / 2, this.scale.height / 2 - 600 / 2)
+        console.log(this.scale.width)
     }
 
     setBackground() {

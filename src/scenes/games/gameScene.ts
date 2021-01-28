@@ -40,7 +40,7 @@ export class GameScene extends Phaser.Scene {
         this.boardPanel = new BoardPanelContainer(this)
         this.bordersStateChanged = []
         this.scene.launch(Config.scenes.keys.gameOver)
-        this.scene.sleep(Config.scenes.keys.gameOver)
+        // this.scene.sleep(Config.scenes.keys.gameOver)
 
         if(Config.debug) {
             this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {

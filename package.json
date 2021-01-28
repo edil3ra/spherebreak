@@ -43,6 +43,9 @@
 		"webpack-hot-middleware": "^2.25.0"
 	},
 	"dependencies": {
+		"@capacitor/android": "^2.4.6",
+		"@capacitor/cli": "^2.4.6",
+		"@capacitor/core": "^2.4.6",
 		"@gamedistribution.com/html5-sdk": "0.0.2",
 		"phaser": "^3.50.0",
 		"phaser3-webfont-loader": "^1.0.0",

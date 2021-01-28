@@ -2,11 +2,11 @@ import { Difficulty, GameInfo } from './models'
 
 type SkipScene = 'noSkip' | 'game' | 'tutorial'
 
-const BORDER_PADDING = 16
-const BORDER_SIZE = 94
-const ENTRY_SIZE = 98
-const ENTRY_PADDING = 12
-const SPHERE_SIZE = 70
+const BORDER_PADDING = 4
+const BORDER_SIZE = 84
+const ENTRY_SIZE = 80
+const ENTRY_PADDING = 8
+const SPHERE_SIZE = 60
 const BOARD_SIZE = BORDER_PADDING * 3 + BORDER_SIZE * 4
 function setBoard() {
     return {
@@ -25,20 +25,20 @@ function setBoardPanel() {
         width: BOARD_SIZE,
         height: 100,
         topPadding: 32,
-        leftPadding: 32,
+        leftPadding: 28,
         offsetItem: 20,
-        middlePanelOffsetX: 148,
-        rightPanelOffsetX: 242,
+        middlePanelOffsetX: 116,
+        rightPanelOffsetX: 184,
         styles: {
             text: {
                 fontFamily: 'Play',
-                fontSize: '14px',
+                fontSize: '13px',
                 color: 'white',
                 fontStyle: 'bold', 
             },
             timer: {
                 fontFamily: 'Play',
-                fontSize: '42px',
+                fontSize: '38px',
                 color: 'white',
                 fontStyle: 'bold', 
             }
@@ -147,7 +147,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'noSkip' : 'noSkip',
+            scene: Config.debug ?  'game' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -250,15 +250,15 @@ export class Config {
         },
         gameOver: {
             button: {
-                width: 200,
+                width: 180,
                 height: 100,
                 padding: 20,
             },
             styles: {
                 button: {
                     fontFamily: 'Play',
-                    fontSize: '24px',
-                    color: 'black',
+                    fontSize: '20px',
+                    color: 'white',
                     fontStyle: 'bold',
                 },
                 text: {
