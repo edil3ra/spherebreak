@@ -26,7 +26,12 @@ export class BoardMiddlePanel {
 
 
     setTimerText(timer: number) {
-        this.timerText.setText(`${timer}`)
+        if(timer < 10) {
+            this.timerText.setText(` ${timer}`)
+                        // this.timerText.setText(`${timer}`)
+        } else {
+            this.timerText.setText(`${timer}`)
+        }
     }
 
     initContainer() {

@@ -27,7 +27,7 @@ function setBoardPanel() {
         topPadding: 32,
         leftPadding: 32,
         offsetItem: 20,
-        middlePanelOffsetX: 144,
+        middlePanelOffsetX: 148,
         rightPanelOffsetX: 242,
         styles: {
             text: {
