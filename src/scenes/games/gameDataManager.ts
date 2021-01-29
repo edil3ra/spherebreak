@@ -13,7 +13,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.turn = 0
         this.timer = 0
         this.quota = 0
-        this.gameState = 'play'
+        this.gameState = 'startGame'
         this.maxTurn = 0
         this.maxQuota = 0
         this.comboCount = 0
@@ -102,11 +102,6 @@ export class GameDataManager extends Phaser.Data.DataManager {
         for (let i = 0; i < this.bordersActive.length; i++) {
             hasNoBorders = this.bordersActive[i] || !this.bordersAlive[i]
         }
-        console.log('hasNoBorders')
-        console.log(hasNoBorders)
-        console.log('hasNoEntries')
-        console.log(hasNoEntries)
-
         return hasNoBorders && hasNoEntries
     }
 
@@ -119,17 +114,21 @@ export class GameDataManager extends Phaser.Data.DataManager {
     }
 
     nextTurn() {
+        let gameState: GameState = 'startGame'
         if (this.isTotalMultipleOfSphere()) {
             this.handleWinTurn()
+            gameState = 'winTurn'
         } else if (this.isAllSphereActive() || this.isTimerOver()) {
             this.handleLoseTurn()
+            gameState = 'loseTurn'
         }
 
         if (this.isMaxTurnReached()) {
-            this.gameState = 'lost'
+            gameState = 'loseGame'
         } else if (this.isQuotaReached()) {
-            this.gameState = 'win'
+            gameState = 'winGame'
         }
+        this.gameState = gameState
     }
 
     handleWinTurn() {
@@ -179,7 +178,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.bordersAlive = this.bordersAlive.map((borderAlive: boolean, index: number) => {
             const isClicked =
                 this.bordersActiveIndexesChanged.findIndex((indexChanged) => indexChanged === index) !== -1
-            const isRevived = this.bordersDeadCount[index] >= 3
+            const isRevived = this.bordersDeadCount[index] >= Config.scenes.game.reviveAfterTurn
             return !(isClicked || (!borderAlive && !isRevived))
         })
 
@@ -190,7 +189,6 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.bordersDeadCount = this.bordersDeadCount.map((count: number, index: number) => {
             return count >= this.reviveAfterTurn ? 0 : this.bordersAlive[index] ? count : count + 1
         })
-        this.events.emit('finishTurn')
     }
 
     pickNewRandomNumber() {

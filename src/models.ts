@@ -12,6 +12,6 @@ export type GameConfig =  {
     entries: Array<number>
 }
 
-export type GameState =  'play' | 'lost' | 'win'
+export type GameState =  'startGame' | 'winGame' | 'loseGame' | 'winTurn' | 'loseTurn' 
 export type CoinState = 'inactive' | 'active' | 'dead' 
 export type TutorialState =  'start' | 'middle' | 'end'

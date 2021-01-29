@@ -108,9 +108,11 @@ export class GameOverScene extends Phaser.Scene {
 
     showMenu() {
         const stateToText = {
-            lost: 'You Lose!',
-            win: 'You Win!',
-            play: '_',
+            loseGame: 'You Lose!',
+            winGame: 'You Win!',
+            startGame: '_',
+            winTurn: '_',
+            loseTurn: '_',
         }
         this.text.setText(stateToText[this.gameScene.data.gameState])
     }

@@ -91,6 +91,8 @@ export class Config {
         coinBorder: 'coin.gif',
         pattern: 'patternStripesMetal_large.png',
         hand: 'hand_cursor0000.png',
+        emiterBlue: 'blue.png',
+        emitterRed: 'red.png',
         difficulties: {
             easy: 'dragon.png',
             medium: 'dragon-head.png',
@@ -101,22 +103,22 @@ export class Config {
 
     public static readonly difficulties: Record<Difficulty, GameInfo> = {
         easy: {
-            quota: 50,
+            quota: 30,
             timer: 60,
             turn: 15,
         },
         medium: {
-            quota: 100,
+            quota: 80,
             timer: 45,
             turn: 20,
         },
         hard: {
-            quota: 400,
+            quota: 200,
             timer: 30,
             turn: 25,
         },
         insane: {
-            quota: 800,
+            quota: 500,
             timer: 15,
             turn: 30,
         },
@@ -139,7 +141,6 @@ export class Config {
             CHANGEDATA_ENTRIES_ACTIVE: 'changedata-entriesActive',
             CHANGEDATA_BORDERS_ALIVE: 'changedata-bordersAlive',
             CHANGEDATA_GAME_STATE: 'changedata-gameState',
-            FINISH_TURN: 'finishTurn',
         }
     }
     public static readonly board = setBoard()

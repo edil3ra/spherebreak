@@ -36,19 +36,20 @@ export class GameScene extends Phaser.Scene {
         this.board = new Board(this)
             .attachClickBorder(this.handleClickedBorder)
             .attachClickEntry(this.handleClickedEntry)
-        
+
         this.boardPanel = new BoardPanelContainer(this)
         this.bordersStateChanged = []
         this.scene.launch(Config.scenes.keys.gameOver)
         this.scene.sleep(Config.scenes.keys.gameOver)
 
-        if(Config.debug) {
+        if (Config.debug) {
             this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
+                // this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
                 this.scene.pause(Config.scenes.keys.game)
                 this.scene.wake(Config.scenes.keys.gamePause)
-            })            
+            })
         }
-        
+
         this.events.on('wake', () => {
             this.tweens.add({
                 ...Config.scenes.game.tweens.camera.in,
@@ -56,7 +57,7 @@ export class GameScene extends Phaser.Scene {
                 callbackScope: this,
             })
         })
-        
+
         this.events.on('shutdown', () => {
             for (const event of Object.values(Config.events.game)) {
                 this.events.off(event)
@@ -217,35 +218,25 @@ export class GameScene extends Phaser.Scene {
             }
         )
 
-        this.events.on(Config.events.game.FINISH_TURN, () => {
-            this.startTimerTurn()
-        })
-
         this.events.on(Config.events.game.CHANGEDATA_GAME_STATE, (_scene: GameScene, state: GameState) => {
             switch (state) {
-                case 'play':
+                case 'startGame':
                     break
-                case 'win':
-                    this.tweens.add({
-                        ...Config.scenes.game.tweens.camera.out,
-                        targets: this.cameras.main,
-                        onComplete: () => {
-                            this.scene.pause(Config.scenes.keys.game)
-                            this.scene.wake(Config.scenes.keys.gameOver)
-                            this.scene.bringToTop(Config.scenes.keys.gameOver)
-                        },
+                case 'winTurn':
+                    this.cameras.main.flash(125, 125, 125, 255, false, () => {
+                        this.startTimerTurn()
                     })
                     break
-                case 'lost':
-                    this.tweens.add({
-                        ...Config.scenes.game.tweens.camera.out,
-                        targets: this.cameras.main,
-                        onComplete: () => {
-                            this.scene.pause(Config.scenes.keys.game)
-                            this.scene.wake(Config.scenes.keys.gameOver)
-                            this.scene.bringToTop(Config.scenes.keys.gameOver)
-                        },
+                case 'loseTurn':
+                    this.cameras.main.flash(125, 255, 125, 125, false, () => {
+                        this.startTimerTurn()
                     })
+                    break
+                case 'winGame':
+                    this.handleWin()
+                    break
+                case 'loseGame':
+                    this.handleLose()
                     break
             }
         })
@@ -301,10 +292,59 @@ export class GameScene extends Phaser.Scene {
 
     setPositionContainer() {
         this.container.setPosition(
-            this.scale.width / 2 -
-                Config.board.width / 2,
-            this.scale.height / 2 -
-                (Config.board.height + Config.panels.board.height + 10) / 2 ,
+            this.scale.width / 2 - Config.board.width / 2,
+            this.scale.height / 2 - (Config.board.height + Config.panels.board.height + 10) / 2
         )
+    }
+
+    handleLose() {
+        this.handleEndGame(
+            Config.packer.name,
+            Config.packer.emitterRed,
+            new Phaser.Display.Color(255, 100, 100)
+        )
+    }
+
+    handleWin() {
+        this.handleEndGame(
+            Config.packer.name,
+            Config.packer.emiterBlue,
+            new Phaser.Display.Color(100, 100, 255)
+        )
+    }
+
+    handleEndGame(texture: string, frame: string, color: Phaser.Display.Color) {
+        const particles = this.add.particles(Config.packer.name, frame)
+        const emitter = particles.createEmitter({
+            x: this.scale.width * 0.5,
+            y: this.scale.height * 0.5 + Config.panels.board.height * 0.5,
+            speed: 200,
+            scale: 0.4,
+            lifespan: 800,
+            blendMode: Phaser.BlendModes.ADD,
+            frequency: 20,
+        })
+        this.cameras.main.shake(2000, 0.002, false, (_camera: any, duration: number) => {
+            if (duration === 1) {
+                this.cameras.main.flash(
+                    1400,
+                    color.red,
+                    color.green,
+                    color.blue,
+                    false,
+                    (_camera: any, duration: number) => {
+                        if (duration > 0.4) {
+                            emitter.killAll()
+                            emitter.stop()                            
+                        }
+                        if (duration > 0.8) {
+                            this.scene.pause(Config.scenes.keys.game)
+                            this.scene.wake(Config.scenes.keys.gameOver)
+                            this.scene.bringToTop(Config.scenes.keys.gameOver)
+                        }
+                    }
+                )
+            }
+        })
     }
 }
