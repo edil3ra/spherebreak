@@ -1,4 +1,4 @@
-import { Difficulty, GameInfo } from './models'
+import { Difficulty, GameInfo } from '~/models'
 
 type SkipScene = 'noSkip' | 'game' | 'tutorial'
 
@@ -101,22 +101,22 @@ export class Config {
 
     public static readonly difficulties: Record<Difficulty, GameInfo> = {
         easy: {
-            quota: 20,
+            quota: 50,
             timer: 60,
             turn: 15,
         },
         medium: {
-            quota: 50,
+            quota: 100,
             timer: 45,
             turn: 20,
         },
         hard: {
-            quota: 100,
+            quota: 400,
             timer: 30,
-            turn: 20,
+            turn: 25,
         },
         insane: {
-            quota: 200,
+            quota: 800,
             timer: 15,
             turn: 30,
         },
@@ -150,7 +150,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'noSkip' : 'noSkip',
+            scene: Config.debug ?  'game' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -191,12 +191,12 @@ export class Config {
                 yPadding: 16,
             },
             difficulties: {
-                width: 72,
-                height: 72,
+                width: 78,
+                height: 78,
                 textBottomPadding: 40,
                 textLeftPadding: 16,
-                xPadding: 12,
-                yPadding: 12,
+                xPadding: 6,
+                yPadding: 6,
             },
             buttonPlay: {
                 x: -92,
@@ -248,6 +248,7 @@ export class Config {
             },
         },
         game: {
+            reviveAfterTurn: 5,
             tweens: {
                 camera: {
                     in: {

@@ -167,7 +167,7 @@ They dissappear after you use it`,
                 text: `4 coins that are in yellowish color
 They are positioned within the square borders
 They never dissapear
-They don not increase the quota`,
+They don't increase the quota`,
             },
             {
                 pointers: [

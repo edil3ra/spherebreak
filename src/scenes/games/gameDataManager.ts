@@ -1,3 +1,4 @@
+import { Config } from '~/config'
 import { GameState } from '~/models'
 import { GameScene } from '~/scenes/games'
 
@@ -32,7 +33,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.bordersDeadCount = new Array(12).fill(0)
         this.bordersActiveIndexesChanged = []
         this.bordersAliveIndexesChanged = []
-        this.reviveAfterTurn = 4
+        this.reviveAfterTurn = Config.scenes.game.reviveAfterTurn
     }
 
     get total(): number {
@@ -80,11 +81,15 @@ export class GameDataManager extends Phaser.Data.DataManager {
     }
 
     get point(): number {
-        return 1 + this.comboCountPoint + this.comboMultiplePoint
+        return (
+            this.bordersActive.filter((borderAlive) => borderAlive).length +
+            this.comboCountPoint +
+            this.comboMultiplePoint
+        )
     }
 
     isTotalMultipleOfSphere() {
-        return this.total !== 0 ? this.total % this.sphere === 0: false
+        return this.total !== 0 ? this.total % this.sphere === 0 : false
     }
 
     isTimerOver() {
@@ -92,8 +97,16 @@ export class GameDataManager extends Phaser.Data.DataManager {
     }
 
     isAllSphereActive() {
-        const hasNoBorders = this.bordersActive.every((borderActive) => borderActive)
         const hasNoEntries = this.entriesActive.every((entryActive) => entryActive)
+        let hasNoBorders = false
+        for (let i = 0; i < this.bordersActive.length; i++) {
+            hasNoBorders = this.bordersActive[i] || !this.bordersAlive[i]
+        }
+        console.log('hasNoBorders')
+        console.log(hasNoBorders)
+        console.log('hasNoEntries')
+        console.log(hasNoEntries)
+
         return hasNoBorders && hasNoEntries
     }
 
@@ -108,16 +121,13 @@ export class GameDataManager extends Phaser.Data.DataManager {
     nextTurn() {
         if (this.isTotalMultipleOfSphere()) {
             this.handleWinTurn()
-        }
-        else if (this.isAllSphereActive() || this.isTimerOver()) {
+        } else if (this.isAllSphereActive() || this.isTimerOver()) {
             this.handleLoseTurn()
         }
 
-        if(this.isMaxTurnReached()) {
+        if (this.isMaxTurnReached()) {
             this.gameState = 'lost'
-        }
-
-        else if(this.isQuotaReached()) {
+        } else if (this.isQuotaReached()) {
             this.gameState = 'win'
         }
     }
@@ -166,7 +176,6 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.entriesActive = this.entriesActive.map((_) => false)
         this.bordersActive = this.bordersActive.map((_) => false)
 
-
         this.bordersAlive = this.bordersAlive.map((borderAlive: boolean, index: number) => {
             const isClicked =
                 this.bordersActiveIndexesChanged.findIndex((indexChanged) => indexChanged === index) !== -1
@@ -174,19 +183,18 @@ export class GameDataManager extends Phaser.Data.DataManager {
             return !(isClicked || (!borderAlive && !isRevived))
         })
 
-
         this.borders = this.borders.map((border: number, index: number) => {
             return this.bordersDeadCount[index] >= this.reviveAfterTurn ? this.pickNewRandomNumber() : border
         })
 
         this.bordersDeadCount = this.bordersDeadCount.map((count: number, index: number) => {
-            return count >= this.reviveAfterTurn ? 0: this.bordersAlive[index] ? count: count + 1
+            return count >= this.reviveAfterTurn ? 0 : this.bordersAlive[index] ? count : count + 1
         })
         this.events.emit('finishTurn')
     }
 
     pickNewRandomNumber() {
-        return Phaser.Math.RND.integerInRange(1, 9)
+        return Phaser.Math.RND.pick([1, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9])
     }
 
     trackIndexesChanged(previous: Array<any>, current: Array<any>) {

@@ -29,7 +29,7 @@ export class BoardPanelContainer {
         this.boardMiddlePanel.create()
         this.boardMiddlePanel.container.setPosition(
             Config.panels.board.leftPadding + Config.panels.board.middlePanelOffsetX,
-            Config.panels.board.topPadding - 4,
+            Config.panels.board.topPadding - 2,
         )
         
         this.boardRigthPanel.create()
