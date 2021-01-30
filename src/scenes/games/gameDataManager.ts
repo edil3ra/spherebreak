@@ -50,6 +50,16 @@ export class GameDataManager extends Phaser.Data.DataManager {
         )
     }
 
+    get lengthActives(): number {
+        const activeBorders = this.borders.filter(
+            (_border: number, index: number) => this.bordersActive[index]
+        )
+        const activeEntries = this.entries.filter(
+            (_entry: number, index: number) => this.entriesActive[index]
+        )
+        return activeBorders.length + activeEntries.length
+    }
+
     get comboCountCurrent(): number {
         const activeBorders = this.borders.filter(
             (_border: number, index: number) => this.bordersActive[index]

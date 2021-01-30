@@ -73,10 +73,24 @@ export class Config {
         playAgain: true
     }
 
-
     public static readonly images = {
         background: 'background',
     }
+    
+    public static readonly sounds = {
+        click: 'click1',
+        switch: 'switch1',
+        pling1: 'pling1',
+        pling2: 'pling2',
+        pling3: 'pling3',
+        pling4: 'pling4',
+        pling5: 'pling5',
+        pling6: 'pling6',
+        pling7: 'pling7',
+        pling8: 'pling8',
+        pling9: 'pling9',
+    }
+    
     public static readonly packer = {
         name: 'packer',
         background: 'background-main.jpg',
@@ -151,7 +165,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'noSkip' : 'noSkip',
+            scene: Config.debug ?  'game' : 'noSkip',
         },
         keys: {
             game: 'gameScene',

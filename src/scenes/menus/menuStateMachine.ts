@@ -9,7 +9,7 @@ export interface MenuContext {
 export const STATE = {
     BASE: 'base',
     ENTRIES_SELECTED: 'entriesSelected',
-    INACTIVE: 'inactive'
+    INACTIVE: 'inactive',
 }
 
 export const EVENT = {
@@ -19,15 +19,18 @@ export const EVENT = {
     SELECT_ENTRIES: 'SELECT_ENTRIES',
     UNSELECT_ENTRIES: 'UNSELECT_ENTRIES',
     SELECT_ENTRY: 'SELECT_ENTRY',
-    WAKE: 'WAKE'
+    WAKE: 'WAKE',
 }
 
 type EVENT_PLAY = { type: typeof EVENT.PLAY }
 type EVENT_TUTORIAL = { type: typeof EVENT.TUTORIAL }
 type EVENT_SELECT_DIFFICULTY = { type: typeof EVENT.SELECT_DIFFICULTY; value: DifficultyGraphics }
-type EVENT_SELECT_ENTRIES = { type: typeof EVENT.SELECT_ENTRIES; value: {entry: EntryGrahpics, index: number} }
+type EVENT_SELECT_ENTRIES = {
+    type: typeof EVENT.SELECT_ENTRIES
+    value: { entry: EntryGrahpics; index: number }
+}
 type EVENT_UNSELECT_ENTRIES = { type: typeof EVENT.UNSELECT_ENTRIES }
-type EVENT_SELECT_ENTRY = { type: typeof EVENT.SELECT_ENTRY, value: EntryGraphicsHelper }
+type EVENT_SELECT_ENTRY = { type: typeof EVENT.SELECT_ENTRY; value: EntryGraphicsHelper }
 
 export type MenuEvent =
     | EVENT_PLAY
@@ -47,15 +50,14 @@ export type MenuState =
           context: MenuContext
       }
 
-
 export const ACTIONS = {
     PLAY: 'play',
     TUTORIAL: 'tutorial',
     CHANGE_DIFFICULTY: 'changeDifficulty',
     SELECT_ENTRIES: 'selectEntries',
-    SELECT_ENTRY: 'selectEntry' ,
+    SELECT_ENTRY: 'selectEntry',
+    UNSELECT_ENTRY: 'unselect_entry',
 }
-
 
 const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
     {
@@ -80,7 +82,7 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
                     [EVENT.SELECT_DIFFICULTY]: {
                         target: STATE.BASE,
                         internal: true,
-                        actions: [ACTIONS.CHANGE_DIFFICULTY]
+                        actions: [ACTIONS.CHANGE_DIFFICULTY],
                     },
                 },
             },
@@ -88,6 +90,7 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
                 entry: [ACTIONS.SELECT_ENTRIES],
                 on: {
                     [EVENT.UNSELECT_ENTRIES]: {
+                        actions: [ACTIONS.UNSELECT_ENTRY],
                         target: STATE.INACTIVE,
                     },
                     [EVENT.SELECT_ENTRY]: {
@@ -99,10 +102,10 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
             [STATE.INACTIVE]: {
                 on: {
                     [EVENT.WAKE]: {
-                        target: STATE.BASE
-                    }
-                }
-            }
+                        target: STATE.BASE,
+                    },
+                },
+            },
         },
     },
     {
@@ -121,6 +124,9 @@ const menuMachine = createMachine<MenuContext, MenuEvent, MenuState>(
             },
             [ACTIONS.SELECT_ENTRY]: (context, event: EVENT_SELECT_ENTRY) => {
                 context.scene.handleEntrySelected(event.value)
+            },
+            [ACTIONS.UNSELECT_ENTRY]: (context, event: EVENT_SELECT_ENTRY) => {
+                context.scene.fromEntriesToSelectionToMenu()
             },
         },
     }

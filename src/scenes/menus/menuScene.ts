@@ -22,6 +22,7 @@ export class MenuScene extends Phaser.Scene {
     mainContainer: Phaser.GameObjects.Container
     selectedEntry: EntryGrahpics
     selectedEntryIndex: number
+    clickSound: Phaser.Sound.BaseSound
     stateService: Interpreter<
         MenuContext,
         any,
@@ -58,13 +59,6 @@ export class MenuScene extends Phaser.Scene {
                 console.log(state)
             })
         }
-        if (Config.scenes.skip.scene === 'game') {
-            this.stateService.send(EVENT_MENU.PLAY)
-        }
-
-        if (Config.scenes.skip.scene === 'tutorial') {
-            this.stateService.send(EVENT_MENU.TUTORIAL)
-        }
 
         this.scene.launch(Config.scenes.keys.entriesSelection)
         this.scene.sleep(Config.scenes.keys.entriesSelection)
@@ -90,6 +84,8 @@ export class MenuScene extends Phaser.Scene {
         this.setEntriesContainer()
         this.setButtonPlay()
         this.setButtonTutorial()
+        this.clickSound = this.sound.add(Config.sounds.click)
+
 
         this.mainContainer = this.add
             .container(0, 0, [
@@ -122,6 +118,14 @@ export class MenuScene extends Phaser.Scene {
             this.scale.width / 2,
             this.scale.height / 2 - Config.scenes.menu.background.height / 2
         )
+
+        if (Config.scenes.skip.scene === 'game') {
+            this.stateService.send(EVENT_MENU.PLAY)
+        }
+
+        if (Config.scenes.skip.scene === 'tutorial') {
+            this.stateService.send(EVENT_MENU.TUTORIAL)
+        }
     }
 
     setBackground() {
@@ -308,6 +312,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handleTutorial() {
+        this.clickSound.play()
         this.scene.start(Config.scenes.keys.tutorial)
     }
 
@@ -316,6 +321,7 @@ export class MenuScene extends Phaser.Scene {
             window.gdsdk.showAd()
         }
         this.saveState()
+        this.clickSound.play()
         this.cameras.main.fadeOut(300, 0, 0, 0, (_camera: any, percentage: number) => {
             if(percentage >= 1)  {
                 this.scene.start(Config.scenes.keys.game, {
@@ -329,17 +335,20 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {
+        this.clickSound.play()
         this.currentDifficulty = graphic.name
         graphic.selectDifficulty()
     }
 
     handleEntriesSelected(graphic: EntryGrahpics, index: number) {
+        this.clickSound.play()
         this.selectedEntry = graphic
         this.selectedEntryIndex = index
         this.fromMenuToEntriesSelection()
     }
 
     handleEntrySelected(graphic: EntryGraphicsHelper) {
+        this.clickSound.play()
         const numbersToExclude = this.entriesGraphics.map((graphic) => {
             return graphic.numero
         })

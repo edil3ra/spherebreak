@@ -11,6 +11,61 @@
                 "type": "image",
                 "key": "background",
                 "url": "assets/images/background-main.jpg"
+            },
+            {
+                "type": "audio",
+                "key": "click1",
+                "url": "assets/sounds/click1.ogg"
+            },
+            {
+                "type": "audio",
+                "key": "switch1",
+                "url": "assets/sounds/switch1.ogg"
+            },
+            {
+                "type": "audio",
+                "key": "pling1",
+                "url": "assets/sounds/pling1.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling2",
+                "url": "assets/sounds/pling2.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling3",
+                "url": "assets/sounds/pling3.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling4",
+                "url": "assets/sounds/pling4.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling5",
+                "url": "assets/sounds/pling5.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling6",
+                "url": "assets/sounds/pling6.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling7",
+                "url": "assets/sounds/pling7.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling8",
+                "url": "assets/sounds/pling8.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "pling9",
+                "url": "assets/sounds/pling9.mp3"
             }
         ]
     }

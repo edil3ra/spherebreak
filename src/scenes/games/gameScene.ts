@@ -16,6 +16,7 @@ export class GameScene extends Phaser.Scene {
     public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
     public container: Phaser.GameObjects.Container
+    public plings: Array<Phaser.Sound.BaseSound>
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -33,6 +34,8 @@ export class GameScene extends Phaser.Scene {
         )
         this.data = new GameDataManager(this)
         this.registerDataEvents()
+        this.registerSounds()
+
         this.board = new Board(this)
             .attachClickBorder(this.handleClickedBorder)
             .attachClickEntry(this.handleClickedEntry)
@@ -237,6 +240,20 @@ export class GameScene extends Phaser.Scene {
         })
     }
 
+    registerSounds() {
+        this.plings = [
+            this.sound.add(Config.sounds.pling1, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling2, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling3, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling4, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling5, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling6, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling7, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling8, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling9, { volume: 0.3 }),
+        ]
+    }
+
     initTimerSyncCoin() {
         this.timerSyncCoin = this.time.addEvent({
             delay: 400,
@@ -270,6 +287,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedBorder(index: number) {
+        this.plings[this.data.lengthActives % this.plings.length].play()
         this.borderClickedIndex = index
         this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
@@ -278,6 +296,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedEntry(index: number) {
+        this.plings[this.data.lengthActives % this.plings.length].play()
         this.entryClickedIndex = index
         this.data.entriesActive = this.data.entriesActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
@@ -330,7 +349,7 @@ export class GameScene extends Phaser.Scene {
                     (_camera: any, duration: number) => {
                         if (duration > 0.4) {
                             emitter.killAll()
-                            emitter.stop()                            
+                            emitter.stop()
                         }
                         if (duration > 0.8) {
                             this.scene.pause(Config.scenes.keys.game)
