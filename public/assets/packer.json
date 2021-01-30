@@ -52,6 +52,27 @@
 					}
 				},
 				{
+					"filename": "hand_cursor0000.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 86,
+						"y": 328,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
 					"filename": "bannerHanging.png",
 					"rotated": false,
 					"trimmed": false,
@@ -351,6 +372,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:49bfebe72da9503c19d3937bbac7d807:58dd59651504a1a32ab13d50fee62b50:01b2dbbd44720021de2f617999dc7e2f$"
+		"smartupdate": "$TexturePacker:SmartUpdate:12c4f918664a06a7ac8bd998c11c9627:74c37f9708cf565f3048019117ddc683:01b2dbbd44720021de2f617999dc7e2f$"
 	}
 }

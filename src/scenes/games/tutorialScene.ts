@@ -57,11 +57,16 @@ export class TutorialScene extends Phaser.Scene {
         this.tutorialHelperPanel = new TutorialHelperPanel(this)
         this.currentTurn = this.defaultTurn()
         this.currentTurnIndex = 0
+
+
         this.scene.launch(Config.scenes.keys.tutorialStartEnd)
         this.scene.sleep(Config.scenes.keys.tutorialStartEnd)
 
-        this.startTutorial()
-
+        this.cameras.main.fadeIn(300, 0, 0, 0, (camera: any, percentage: number) => {
+            if(percentage >= 1) {
+                this.startTutorial()            
+            }
+        })
         this.events.on('resume', () => {
             this.tweens.add({
                 ...Config.scenes.game.tweens.camera.in,

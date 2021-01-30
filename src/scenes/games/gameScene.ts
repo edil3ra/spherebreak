@@ -44,18 +44,13 @@ export class GameScene extends Phaser.Scene {
 
         if (Config.debug) {
             this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
-                // this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).on('down', () => {
                 this.scene.pause(Config.scenes.keys.game)
                 this.scene.wake(Config.scenes.keys.gamePause)
             })
         }
-
+        this.cameras.main.fadeIn(300, 0, 0, 0)
         this.events.on('wake', () => {
-            this.tweens.add({
-                ...Config.scenes.game.tweens.camera.in,
-                targets: this.cameras.main,
-                callbackScope: this,
-            })
+            this.cameras.main.fadeIn(300, 0, 0, 0)
         })
 
         this.events.on('shutdown', () => {

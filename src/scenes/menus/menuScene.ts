@@ -316,12 +316,16 @@ export class MenuScene extends Phaser.Scene {
             window.gdsdk.showAd()
         }
         this.saveState()
-        this.scene.start(Config.scenes.keys.game, {
-            difficulty: this.currentDifficulty,
-            entries: this.currentEntries,
-        })
-        this.scene.launch(Config.scenes.keys.gamePause)
-        this.scene.sleep(Config.scenes.keys.gamePause)
+        this.cameras.main.fadeOut(300, 0, 0, 0, (_camera: any, percentage: number) => {
+            if(percentage >= 1)  {
+                this.scene.start(Config.scenes.keys.game, {
+                    difficulty: this.currentDifficulty,
+                    entries: this.currentEntries,
+                })
+                this.scene.launch(Config.scenes.keys.gamePause)
+                this.scene.sleep(Config.scenes.keys.gamePause)               
+            }
+        }) 
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {

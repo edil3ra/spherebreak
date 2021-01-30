@@ -291,6 +291,21 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">images/hand_cursor0000.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,8,16,16</rect>
+                <key>scale9Paddings</key>
+                <rect>8,8,16,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">images/patternStripesMetal_large.png</key>
             <key type="filename">images/patternStripesMetal_small.png</key>
             <key type="filename">images/patternStripesShadow_small.png</key>
@@ -342,6 +357,7 @@
             <filename>images/dragon-spiral.png</filename>
             <filename>images/blue.png</filename>
             <filename>images/red.png</filename>
+            <filename>images/hand_cursor0000.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

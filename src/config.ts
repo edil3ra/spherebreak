@@ -103,7 +103,7 @@ export class Config {
 
     public static readonly difficulties: Record<Difficulty, GameInfo> = {
         easy: {
-            quota: 30,
+            quota: 50,
             timer: 60,
             turn: 15,
         },
@@ -151,7 +151,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'game' : 'noSkip',
+            scene: Config.debug ?  'noSkip' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -170,11 +170,11 @@ export class Config {
                 height: 400,
             },
             entriesContainer: {
-                x: -170,
+                x: -174,
                 y: 70,
             },
             difficultiesContainer: {
-                x: 16,
+                x: 10,
                 y: 70,
             },
             entries: {
@@ -200,7 +200,7 @@ export class Config {
                 yPadding: 6,
             },
             buttonPlay: {
-                x: -92,
+                x: -96,
                 y: 330,
             },
             buttonTutorial: {
@@ -267,20 +267,20 @@ export class Config {
         },
         gameOver: {
             button: {
-                width: 180,
+                width: 150,
                 height: 100,
                 padding: 20,
             },
             styles: {
                 button: {
                     fontFamily: 'Play',
-                    fontSize: '20px',
+                    fontSize: '18px',
                     color: 'white',
                     fontStyle: 'bold',
                 },
                 text: {
                     fontFamily: 'Play',
-                    fontSize: '60px',
+                    fontSize: '50px',
                     color: 'white',
                     fontStyle: 'bold',
                 }
@@ -296,6 +296,5 @@ export class Config {
                 }
             }
         }
-
     }
 }
