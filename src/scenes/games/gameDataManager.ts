@@ -166,8 +166,9 @@ export class GameDataManager extends Phaser.Data.DataManager {
                 this.comboCount = 1
             }
         }
-
-        this.quota = this.quota + this.point
+        if(this.point > 0) {
+            this.quota = this.quota + this.point            
+        }
         this.finishTurn()
     }
 
