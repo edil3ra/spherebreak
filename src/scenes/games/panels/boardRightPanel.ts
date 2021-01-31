@@ -83,6 +83,7 @@ export class BoardRightPanel {
                 from: 2,
                 to: 1,
             },
+            ease: 'Quad.easeIn',
             onComplete: () => {
                 this.currentComboMultipleText.setText(`${comboMultple}`)
                 this.goalComboMultipleText.setText(`${comboMultipleGoal || '-'}`)
@@ -98,6 +99,7 @@ export class BoardRightPanel {
                 from: 2,
                 to: 1,
             },
+            ease: 'Quad.easeIn',
             onComplete: () => {
                 this.currentComboCountText.setText(`${comboCount}`)
                 this.goalComboCountText.setText(`${comboCountGoal || '-'}`)

@@ -33,21 +33,19 @@ export class BoardLeftPanel {
             .setStyle(Config.panels.board.styles.text)
         
         this.currentTurnText = this.scene.add.text(0, 0, '0')
-            .setPosition(68, 8)
+            .setPosition(72, 8)
             .setOrigin(1, 0.5)
             .setStyle(Config.panels.board.styles.text)
         
         this.separatorTurnText = this.scene.add.text(0, 0, '/')
-            .setPosition(72, 8)
+            .setPosition(76, 8)
             .setOrigin(0.5, 0.5)
             .setStyle(Config.panels.board.styles.text)
 
         this.maxTurnText = this.scene.add.text(0, 0, '0')
-            .setPosition(76, 8)
+            .setPosition(80, 8)
             .setOrigin(0, 0.5)
             .setStyle(Config.panels.board.styles.text)
-        
-        // this.setTurnText(0, 0)
     }
 
     initQuotaText() {
@@ -57,21 +55,19 @@ export class BoardLeftPanel {
             .setStyle(Config.panels.board.styles.text)
 
         this.currentQuotaText = this.scene.add.text(0, 0, '0')
-            .setPosition(68, Config.panels.board.offsetItem + 8)
+            .setPosition(72, Config.panels.board.offsetItem + 8)
             .setOrigin(1, 0.5)
             .setStyle(Config.panels.board.styles.text)
         
         this.separatorQuotaText = this.scene.add.text(0, 0, '/')
-            .setPosition(72, Config.panels.board.offsetItem + 8)
+            .setPosition(76, Config.panels.board.offsetItem + 8)
             .setOrigin(0.5, 0.5)
             .setStyle(Config.panels.board.styles.text)
 
         this.maxQuotaText = this.scene.add.text(0, 0, '0')
-            .setPosition(76, Config.panels.board.offsetItem + 8)
+            .setPosition(80, Config.panels.board.offsetItem + 8)
             .setOrigin(0, 0.5)
             .setStyle(Config.panels.board.styles.text)
-
-        // this.setQuotaText(0, 0)
     }
 
 
@@ -82,9 +78,13 @@ export class BoardLeftPanel {
                 from: 2,
                 to: 1,
             },
+            ease: 'Quad.easeIn',
             onComplete: () => {
-                const padding = Math.floor(Math.log10(maxTurn)) - Math.floor(Math.log10(turn))
-                const paddingText = padding !== Infinity ? '0'.repeat(padding): '0'
+                const maxPadding = Math.floor(Math.log10(maxTurn))
+                const currentPadding = Math.floor(Math.log10(turn))
+                const padding = maxPadding - currentPadding
+                const paddingText = padding !== Infinity ? '0'.repeat(padding):
+                    '0'.repeat(maxPadding)
                 this.currentTurnText.setText(`${paddingText}${turn}`)
                 this.maxTurnText.setText(`${maxTurn}`)
             },
@@ -100,9 +100,13 @@ export class BoardLeftPanel {
                 from: 2,
                 to: 1,
             },
+            ease: 'Quad.easeIn',
             onComplete: () => {
-                const padding = Math.floor(Math.log10(maxQuota)) - Math.floor(Math.log10(quota))
-                const paddingText = padding !== Infinity ? '0'.repeat(padding): '0'
+                const maxPadding = Math.floor(Math.log10(maxQuota))
+                const currentPadding = Math.floor(Math.log10(quota))
+                const padding = maxPadding - currentPadding
+                const paddingText = padding !== Infinity ? '0'.repeat(padding):
+                    '0'.repeat(maxPadding)
                 this.currentQuotaText.setText(`${paddingText}${quota}`)
                 this.maxQuotaText.setText(`${maxQuota}`)
             },

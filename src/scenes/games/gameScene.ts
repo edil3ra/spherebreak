@@ -17,6 +17,8 @@ export class GameScene extends Phaser.Scene {
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
     public container: Phaser.GameObjects.Container
     public plings: Array<Phaser.Sound.BaseSound>
+    public gameover: Phaser.Sound.BaseSound
+    public engine: Phaser.Sound.BaseSound
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -252,6 +254,8 @@ export class GameScene extends Phaser.Scene {
             this.sound.add(Config.sounds.pling8, { volume: 0.3 }),
             this.sound.add(Config.sounds.pling9, { volume: 0.3 }),
         ]
+        this.gameover = this.sound.add(Config.sounds.gameover, { volume: 0.3 })
+        this.engine = this.sound.add(Config.sounds.engine, { volume: 0.3 })
     }
 
     initTimerSyncCoin() {
@@ -273,7 +277,7 @@ export class GameScene extends Phaser.Scene {
 
     startTimerTurn() {
         this.data.timer = this.data.maxTimer
-        if(this.timerTurn) {
+        if (this.timerTurn) {
             this.timerTurn.destroy()
         }
         this.timerTurn = this.time.addEvent({
@@ -281,7 +285,7 @@ export class GameScene extends Phaser.Scene {
             delay: Config.scenes.game.textTimer,
             callback: () => {
                 this.data.timer = this.timerTurn.repeatCount
-            }
+            },
         })
     }
 
@@ -344,20 +348,32 @@ export class GameScene extends Phaser.Scene {
             blendMode: Phaser.BlendModes.ADD,
             frequency: 20,
         })
+        let enginePlay = false
+        let gameOverPlay = false
+        
         this.cameras.main.shake(2000, 0.002, false, (_camera: any, duration: number) => {
+            if (!enginePlay) {
+                this.engine.play()
+                enginePlay = true
+            }
+            
             if (duration === 1) {
                 this.cameras.main.flash(
-                    1400,
+                    1000,
                     color.red,
                     color.green,
                     color.blue,
                     false,
                     (_camera: any, duration: number) => {
-                        if (duration > 0.4) {
+                        if (!gameOverPlay) {
+                            gameOverPlay = true
+                            this.gameover.play()
+                        }
+                        if (duration > 0.9) {
                             emitter.killAll()
                             emitter.stop()
                         }
-                        if (duration > 0.8) {
+                        if (duration >= 1) {
                             this.scene.pause(Config.scenes.keys.game)
                             this.scene.wake(Config.scenes.keys.gameOver)
                             this.scene.bringToTop(Config.scenes.keys.gameOver)

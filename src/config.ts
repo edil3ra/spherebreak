@@ -28,7 +28,7 @@ function setBoardPanel() {
         topPadding: 32,
         leftPadding: 28,
         offsetItem: 20,
-        middlePanelOffsetX: 140,
+        middlePanelOffsetX: 141,
         middlePanelOffsetY: 19,
         rightPanelOffsetX: 192,
         styles: {
@@ -74,7 +74,7 @@ export class Config {
         playAgain: true
     }
 
-    public static readonly mute = true
+    public static readonly mute = false
     
     public static readonly images = {
         background: 'background',
@@ -92,6 +92,8 @@ export class Config {
         pling7: 'pling7',
         pling8: 'pling8',
         pling9: 'pling9',
+        engine: 'engine4',
+        gameover: 'gameover2',
     }
     
     public static readonly packer = {
@@ -124,7 +126,7 @@ export class Config {
         easy: {
             quota: 50,
             timer: 60,
-            turn: 15,
+            turn: 1,
         },
         medium: {
             quota: 80,

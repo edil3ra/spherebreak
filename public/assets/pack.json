@@ -19,6 +19,16 @@
             },
             {
                 "type": "audio",
+                "key": "gameover2",
+                "url": "assets/sounds/gameover4.ogg"
+            },
+            {
+                "type": "audio",
+                "key": "engine4",
+                "url": "assets/sounds/engine1.ogg"
+            },
+            {
+                "type": "audio",
                 "key": "switch1",
                 "url": "assets/sounds/switch1.ogg"
             },

@@ -30,6 +30,7 @@ export class BoardMiddlePanel {
                 from: 1.2,
                 to: 1,
             },
+            ease: 'Quad.easeIn',
             onComplete: () => {
                 this.timerText.setText(` ${timer}`)
             },
