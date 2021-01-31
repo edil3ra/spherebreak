@@ -201,8 +201,8 @@ You will need to reach the quota to win the game
             {
                 pointers: [
                     {
-                        x: this.boardPanel.container.x + this.boardPanel.boardMiddlePanel.container.x - 12,
-                        y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 24,
+                        x: this.boardPanel.container.x + this.boardPanel.boardMiddlePanel.container.x - 24,
+                        y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 0,
                     },
                 ],
                 text: `Every turn, there's a time limit
@@ -261,6 +261,7 @@ if you use 2 coins, you lose the combo
     }
 
     nextTurn(index: number) {
+        this.cameras.main.fadeIn(200, 0, 0, 0)
         this.pointersImage.forEach((pointerImage) => {
             pointerImage.setVisible(false)
         })

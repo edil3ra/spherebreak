@@ -74,7 +74,7 @@ export class Config {
         playAgain: true
     }
 
-    public static readonly mute = false
+    public static readonly mute = true
     
     public static readonly images = {
         background: 'background',
@@ -126,7 +126,7 @@ export class Config {
         easy: {
             quota: 50,
             timer: 60,
-            turn: 1,
+            turn: 15,
         },
         medium: {
             quota: 80,
