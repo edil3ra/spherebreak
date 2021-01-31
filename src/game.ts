@@ -5,6 +5,7 @@ import { WebFontLoaderPlugin } from 'phaser3-webfont-loader'
 import { EntriesSelectionScene } from '~/scenes/menus/entriesSelectionScene'
 import { GameOverScene } from './scenes/games/gameOverScene'
 import { TutorialStartEndScene } from './scenes/games/tutorialStartEndScene'
+import { Config } from './config'
 
 export function initGame(): Phaser.Game {
     const config: Phaser.Types.Core.GameConfig = {
@@ -40,6 +41,8 @@ export function initGame(): Phaser.Game {
         ],
     }
     const game = new Phaser.Game(config)
+    game.sound.mute = Config.mute
+    // game.sound.mute = false
     window.addEventListener('resize', () => {
         game.scale.resize(window.innerWidth, window.innerHeight)
     })

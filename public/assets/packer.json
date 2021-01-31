@@ -73,6 +73,48 @@
 					}
 				},
 				{
+					"filename": "sound-off.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 122,
+						"y": 328,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sound-on.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 158,
+						"y": 328,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
 					"filename": "bannerHanging.png",
 					"rotated": false,
 					"trimmed": false,
@@ -372,6 +414,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:12c4f918664a06a7ac8bd998c11c9627:74c37f9708cf565f3048019117ddc683:01b2dbbd44720021de2f617999dc7e2f$"
+		"smartupdate": "$TexturePacker:SmartUpdate:d19bfa9f01c805e097c7dc6f935e9259:d4778263e41ca022597b57500f19c9d6:01b2dbbd44720021de2f617999dc7e2f$"
 	}
 }

@@ -73,6 +73,8 @@ export class Config {
         playAgain: true
     }
 
+    public static readonly mute = true
+    
     public static readonly images = {
         background: 'background',
     }
@@ -107,6 +109,8 @@ export class Config {
         hand: 'hand_cursor0000.png',
         emiterBlue: 'blue.png',
         emitterRed: 'red.png',
+        soundOn: 'sound-on.png',
+        soundOff: 'sound-off.png',
         difficulties: {
             easy: 'dragon.png',
             medium: 'dragon-head.png',
@@ -165,7 +169,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'game' : 'noSkip',
+            scene: Config.debug ?  'noSkip' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -181,7 +185,7 @@ export class Config {
             logState: false,
             background: {
                 width: 375,
-                height: 400,
+                height: 380,
             },
             entriesContainer: {
                 x: -174,
@@ -200,8 +204,8 @@ export class Config {
                 yPadding: 6,
             },
             helperEntries: {
-                width: 120,
-                height: 120,
+                width: 110,
+                height: 110,
                 xPadding: 16,
                 yPadding: 16,
             },
@@ -214,12 +218,16 @@ export class Config {
                 yPadding: 6,
             },
             buttonPlay: {
-                x: -96,
-                y: 330,
+                x: -110,
+                y: 324,
             },
             buttonTutorial: {
-                x: 92,
-                y: 330,
+                x: 20,
+                y: 324,
+            },
+            soundImage: {
+                x: 130,
+                y: 324,
             },
             tweens: {
                 camera: {

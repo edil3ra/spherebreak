@@ -22,6 +22,7 @@ export class MenuScene extends Phaser.Scene {
     mainContainer: Phaser.GameObjects.Container
     selectedEntry: EntryGrahpics
     selectedEntryIndex: number
+    soundImage: Phaser.GameObjects.Image
     clickSound: Phaser.Sound.BaseSound
     stateService: Interpreter<
         MenuContext,
@@ -84,40 +85,14 @@ export class MenuScene extends Phaser.Scene {
         this.setEntriesContainer()
         this.setButtonPlay()
         this.setButtonTutorial()
+        this.setSoundImage()
         this.clickSound = this.sound.add(Config.sounds.click)
-
-
-        this.mainContainer = this.add
-            .container(0, 0, [
-                this.backgroundContainer.setOrigin(0.5, 0),
-                this.banner,
-                this.entriesContainer.setPosition(
-                    Config.scenes.menu.entriesContainer.x,
-                    Config.scenes.menu.entriesContainer.y
-                ),
-                this.difficultiesContainer.setPosition(
-                    Config.scenes.menu.difficultiesContainer.x,
-                    Config.scenes.menu.difficultiesContainer.y
-                ),
-                this.buttonPlay.setPosition(Config.scenes.menu.buttonPlay.x, Config.scenes.menu.buttonPlay.y),
-                this.buttonTutorial.setPosition(
-                    Config.scenes.menu.buttonTutorial.x,
-                    Config.scenes.menu.buttonTutorial.y
-                ),
-            ])
-            .setPosition(this.scale.width / 2, this.scale.height / 2 - Config.scenes.menu.background.height / 2)
+        this.setMainContainer()
 
         const difficultyIcon = this.difficultiesGraphics.find(
             (icon) => icon.name === this.currentDifficulty
         ) as DifficultyGraphics
         this.handleDifficultySelected(difficultyIcon)
-
-        this.background.setDisplaySize(window.innerWidth, window.innerHeight)
-        this.background.setPosition(0, 0)
-        this.mainContainer.setPosition(
-            this.scale.width / 2,
-            this.scale.height / 2 - Config.scenes.menu.background.height / 2
-        )
 
         if (Config.scenes.skip.scene === 'game') {
             this.stateService.send(EVENT_MENU.PLAY)
@@ -148,12 +123,10 @@ export class MenuScene extends Phaser.Scene {
 
     setBanner() {
         const imageBanner = this.add.image(0, 0, Config.packer.name, Config.packer.bannerHanging)
-
         const text = this.add
             .text(0, 2, 'Spherebreak', Config.scenes.menu.styles.coin)
             .setOrigin(0.5, 0.5)
             .setScale(2.0, 2.0)
-
         this.banner = this.add.container(0, 0, [imageBanner, text])
     }
 
@@ -270,11 +243,11 @@ export class MenuScene extends Phaser.Scene {
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
-            .setScale(1.8)
+            .setScale(1.2)
             .setText('Play')
             .setTextStyle(Config.scenes.menu.styles.button)
 
-        this.buttonPlay.button.setScale(1, 1)
+        this.buttonPlay.button.setScale(1.2)
         this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
             this.stateService.send(EVENT_MENU.PLAY)
         })
@@ -286,13 +259,54 @@ export class MenuScene extends Phaser.Scene {
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
-            .setScale(1.8)
+            .setScale(1.2)
             .setText('Tutorial')
             .setTextStyle(Config.scenes.menu.styles.button)
-        this.buttonTutorial.button.setScale(1.1, 1)
+        this.buttonTutorial.button.setScale(1.2)
         this.buttonTutorial.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
             this.stateService.send(EVENT_MENU.TUTORIAL)
         })
+    }
+
+    setSoundImage() {
+        this.soundImage = this.add
+            .image(
+                Config.scenes.menu.soundImage.x,
+                Config.scenes.menu.soundImage.y,
+                Config.packer.name,
+                Config.packer.soundOff
+            )
+            .setInteractive({ cursor: 'pointer' })
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+                this.toggleSound()
+            })
+        this.soundImage.setScale(1.4, 1.4)
+    }
+
+    setMainContainer() {
+        this.mainContainer = this.add
+            .container(0, 0, [
+                this.backgroundContainer.setOrigin(0.5, 0),
+                this.banner,
+                this.entriesContainer.setPosition(
+                    Config.scenes.menu.entriesContainer.x,
+                    Config.scenes.menu.entriesContainer.y
+                ),
+                this.difficultiesContainer.setPosition(
+                    Config.scenes.menu.difficultiesContainer.x,
+                    Config.scenes.menu.difficultiesContainer.y
+                ),
+                this.buttonPlay.setPosition(Config.scenes.menu.buttonPlay.x, Config.scenes.menu.buttonPlay.y),
+                this.buttonTutorial.setPosition(
+                    Config.scenes.menu.buttonTutorial.x,
+                    Config.scenes.menu.buttonTutorial.y
+                ),
+                this.soundImage,
+            ])
+            .setPosition(
+                this.scale.width / 2,
+                this.scale.height / 2 - Config.scenes.menu.background.height / 2
+            )
     }
 
     fromMenuToEntriesSelection() {
@@ -311,6 +325,16 @@ export class MenuScene extends Phaser.Scene {
         this.scene.wake(Config.scenes.keys.menu)
     }
 
+    toggleSound() {
+        if (this.game.sound.mute) {
+            this.soundImage.setFrame(Config.packer.soundOn)
+            this.game.sound.mute = false
+        } else {
+            this.soundImage.setFrame(Config.packer.soundOff)
+            this.game.sound.mute = true
+        }
+    }
+
     handleTutorial() {
         this.clickSound.play()
         this.scene.start(Config.scenes.keys.tutorial)
@@ -323,15 +347,15 @@ export class MenuScene extends Phaser.Scene {
         this.saveState()
         this.clickSound.play()
         this.cameras.main.fadeOut(300, 0, 0, 0, (_camera: any, percentage: number) => {
-            if(percentage >= 1)  {
+            if (percentage >= 1) {
                 this.scene.start(Config.scenes.keys.game, {
                     difficulty: this.currentDifficulty,
                     entries: this.currentEntries,
                 })
                 this.scene.launch(Config.scenes.keys.gamePause)
-                this.scene.sleep(Config.scenes.keys.gamePause)               
+                this.scene.sleep(Config.scenes.keys.gamePause)
             }
-        }) 
+        })
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {
