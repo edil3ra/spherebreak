@@ -108,10 +108,11 @@ export class GameDataManager extends Phaser.Data.DataManager {
 
     isAllSphereActive() {
         const hasNoEntries = this.entriesActive.every((entryActive) => entryActive)
-        let hasNoBorders = false
+        let borders = []
         for (let i = 0; i < this.bordersActive.length; i++) {
-            hasNoBorders = this.bordersActive[i] || !this.bordersAlive[i]
+            borders.push(this.bordersActive[i] || !this.bordersAlive[i])
         }
+        const hasNoBorders = borders.every((border) => border)
         return hasNoBorders && hasNoEntries
     }
 

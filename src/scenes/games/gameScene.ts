@@ -176,7 +176,7 @@ export class GameScene extends Phaser.Scene {
 
         this.events.on(
             Config.events.game.CHANGEDATA_ENTRIES_ACTIVE,
-            (_scene: GameScene, _borders: Array<boolean>) => {
+            (_scene: GameScene, _entries: Array<boolean>) => {
                 const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
                     if (this.data.entriesActive[index]) {
                         return ['active', this.board.entriesGraphics[index]]
@@ -273,10 +273,10 @@ export class GameScene extends Phaser.Scene {
         this.timerTurn = this.time.addEvent({
             repeat: this.data.maxTimer - 1,
             delay: 1000,
+            callback: () => {
+                this.data.timer = this.timerTurn.repeatCount
+            }
         })
-        this.timerTurn.callback = () => {
-            this.data.timer = this.timerTurn.repeatCount
-        }
     }
 
     setBackground() {

@@ -28,7 +28,7 @@ function setBoardPanel() {
         topPadding: 32,
         leftPadding: 28,
         offsetItem: 20,
-        middlePanelOffsetX: 116,
+        middlePanelOffsetX: 120,
         rightPanelOffsetX: 184,
         styles: {
             text: {
@@ -169,7 +169,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'noSkip' : 'noSkip',
+            scene: Config.debug ?  'game' : 'noSkip',
         },
         keys: {
             game: 'gameScene',

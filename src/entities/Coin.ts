@@ -119,8 +119,9 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
     }
     
     displayInactive() {
-        this.scene.time.delayedCall(1, () => {
-            this.tweenFlipping.pause()
-        })
+        // this.scene.time.delayedCall(1, () => {
+        this.tweenFlipping.pause()
+            // this.setScale(1, 1)
+        // })
     }
 }
