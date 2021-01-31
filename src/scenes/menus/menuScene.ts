@@ -243,11 +243,11 @@ export class MenuScene extends Phaser.Scene {
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
-            .setScale(1.2)
+            .setScale(1.24)
             .setText('Play')
             .setTextStyle(Config.scenes.menu.styles.button)
 
-        this.buttonPlay.button.setScale(1.2)
+        this.buttonPlay.button.setScale(1.24)
         this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
             this.stateService.send(EVENT_MENU.PLAY)
         })
@@ -259,10 +259,10 @@ export class MenuScene extends Phaser.Scene {
             .setUpTint(0xcccccc)
             .setOverTint(0xeeeeee)
             .setDownTint(0xf8f8f8)
-            .setScale(1.2)
+            .setScale(1.24)
             .setText('Tutorial')
             .setTextStyle(Config.scenes.menu.styles.button)
-        this.buttonTutorial.button.setScale(1.2)
+        this.buttonTutorial.button.setScale(1.24)
         this.buttonTutorial.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
             this.stateService.send(EVENT_MENU.TUTORIAL)
         })

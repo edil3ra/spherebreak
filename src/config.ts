@@ -222,11 +222,11 @@ export class Config {
                 y: 324,
             },
             buttonTutorial: {
-                x: 20,
+                x: 34,
                 y: 324,
             },
             soundImage: {
-                x: 130,
+                x: 144,
                 y: 324,
             },
             tweens: {
