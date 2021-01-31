@@ -221,12 +221,12 @@ export class GameScene extends Phaser.Scene {
                 case 'startGame':
                     break
                 case 'winTurn':
-                    this.cameras.main.flash(125, 125, 125, 255, false, () => {
+                    this.cameras.main.fadeIn(Config.scenes.game.afterTurnTimer, 25, 25, 75, () => {
                         this.startTimerTurn()
                     })
                     break
                 case 'loseTurn':
-                    this.cameras.main.flash(125, 255, 125, 125, false, () => {
+                    this.cameras.main.fadeIn(Config.scenes.game.afterTurnTimer, 75, 25, 25, () => {
                         this.startTimerTurn()
                     })
                     break
@@ -255,8 +255,11 @@ export class GameScene extends Phaser.Scene {
     }
 
     initTimerSyncCoin() {
+        if (this.timerSyncCoin) {
+            this.timerSyncCoin.destroy()
+        }
         this.timerSyncCoin = this.time.addEvent({
-            delay: 400,
+            delay: Config.scenes.game.coinAnimationTimer * 2,
             callback: () => {
                 this.bordersStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
                     const [state, coinGraphics] = coinStateChanged
@@ -270,9 +273,12 @@ export class GameScene extends Phaser.Scene {
 
     startTimerTurn() {
         this.data.timer = this.data.maxTimer
+        if(this.timerTurn) {
+            this.timerTurn.destroy()
+        }
         this.timerTurn = this.time.addEvent({
             repeat: this.data.maxTimer - 1,
-            delay: 1000,
+            delay: Config.scenes.game.textTimer,
             callback: () => {
                 this.data.timer = this.timerTurn.repeatCount
             }

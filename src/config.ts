@@ -28,8 +28,9 @@ function setBoardPanel() {
         topPadding: 32,
         leftPadding: 28,
         offsetItem: 20,
-        middlePanelOffsetX: 120,
-        rightPanelOffsetX: 184,
+        middlePanelOffsetX: 140,
+        middlePanelOffsetY: 19,
+        rightPanelOffsetX: 192,
         styles: {
             text: {
                 fontFamily: 'Play',
@@ -272,6 +273,9 @@ export class Config {
         },
         game: {
             reviveAfterTurn: 5,
+            textTimer: 1000,
+            coinAnimationTimer: 160,
+            afterTurnTimer: 220,
             tweens: {
                 camera: {
                     in: {

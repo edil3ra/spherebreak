@@ -33,22 +33,21 @@ export class BoardLeftPanel {
             .setStyle(Config.panels.board.styles.text)
         
         this.currentTurnText = this.scene.add.text(0, 0, '0')
-            .setPosition(54, 8)
-            .setOrigin(0.5, 0.5)
+            .setPosition(68, 8)
+            .setOrigin(1, 0.5)
             .setStyle(Config.panels.board.styles.text)
         
         this.separatorTurnText = this.scene.add.text(0, 0, '/')
-            .setPosition(64, 8)
+            .setPosition(72, 8)
             .setOrigin(0.5, 0.5)
             .setStyle(Config.panels.board.styles.text)
 
         this.maxTurnText = this.scene.add.text(0, 0, '0')
-            .setPosition(80, 8)
-            .setOrigin(0.5, 0.5)
+            .setPosition(76, 8)
+            .setOrigin(0, 0.5)
             .setStyle(Config.panels.board.styles.text)
         
-
-        this.setTurnText(0, 0)
+        // this.setTurnText(0, 0)
     }
 
     initQuotaText() {
@@ -58,21 +57,21 @@ export class BoardLeftPanel {
             .setStyle(Config.panels.board.styles.text)
 
         this.currentQuotaText = this.scene.add.text(0, 0, '0')
-            .setPosition(54, Config.panels.board.offsetItem + 8)
-            .setOrigin(0.5, 0.5)
+            .setPosition(68, Config.panels.board.offsetItem + 8)
+            .setOrigin(1, 0.5)
             .setStyle(Config.panels.board.styles.text)
         
         this.separatorQuotaText = this.scene.add.text(0, 0, '/')
-            .setPosition(64, Config.panels.board.offsetItem + 8)
+            .setPosition(72, Config.panels.board.offsetItem + 8)
             .setOrigin(0.5, 0.5)
             .setStyle(Config.panels.board.styles.text)
 
         this.maxQuotaText = this.scene.add.text(0, 0, '0')
-            .setPosition(80, Config.panels.board.offsetItem + 8)
-            .setOrigin(0.5, 0.5)
+            .setPosition(76, Config.panels.board.offsetItem + 8)
+            .setOrigin(0, 0.5)
             .setStyle(Config.panels.board.styles.text)
 
-        this.setQuotaText(0, 0)
+        // this.setQuotaText(0, 0)
     }
 
 
@@ -84,10 +83,12 @@ export class BoardLeftPanel {
                 to: 1,
             },
             onComplete: () => {
-                this.currentTurnText.setText( `${turn}`)
-                this.maxTurnText.setText( `${maxTurn}`)
+                const padding = Math.floor(Math.log10(maxTurn)) - Math.floor(Math.log10(turn))
+                const paddingText = padding !== Infinity ? '0'.repeat(padding): '0'
+                this.currentTurnText.setText(`${paddingText}${turn}`)
+                this.maxTurnText.setText(`${maxTurn}`)
             },
-            duration: 200,
+            duration: Config.scenes.game.afterTurnTimer,
         })
     }
 
@@ -100,11 +101,12 @@ export class BoardLeftPanel {
                 to: 1,
             },
             onComplete: () => {
-                this.currentQuotaText.setText( `${quota}`)
-                this.maxQuotaText.setText( `${maxQuota}`)
+                const padding = Math.floor(Math.log10(maxQuota)) - Math.floor(Math.log10(quota))
+                const paddingText = padding !== Infinity ? '0'.repeat(padding): '0'
+                this.currentQuotaText.setText(`${paddingText}${quota}`)
+                this.maxQuotaText.setText(`${maxQuota}`)
             },
-            duration: 200,
-
+            duration: Config.scenes.game.afterTurnTimer,
         })
     }
 
@@ -120,6 +122,4 @@ export class BoardLeftPanel {
             this.maxQuotaText,
         ])
     }
-
-    
 }
