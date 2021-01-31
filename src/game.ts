@@ -42,7 +42,6 @@ export function initGame(): Phaser.Game {
     }
     const game = new Phaser.Game(config)
     game.sound.mute = Config.mute
-    // game.sound.mute = false
     window.addEventListener('resize', () => {
         game.scale.resize(window.innerWidth, window.innerHeight)
     })

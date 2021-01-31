@@ -1,5 +1,5 @@
 export type Difficulty = 'easy' | 'medium' | 'hard' | 'insane'
-
+export type CoinType = 'sphere' | 'border' | 'entry' 
 
 export type GameInfo = {
     turn: number
@@ -15,3 +15,4 @@ export type GameConfig =  {
 export type GameState =  'startGame' | 'winGame' | 'loseGame' | 'winTurn' | 'loseTurn' 
 export type CoinState = 'inactive' | 'active' | 'dead' 
 export type TutorialState =  'start' | 'middle' | 'end'
+

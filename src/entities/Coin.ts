@@ -1,9 +1,5 @@
-import { CoinState } from '~/models'
+import { CoinState, CoinType } from '~/models'
 
-interface Icon {
-    setFrame(frame: string): this
-    setText(text: number): this
-}
 
 const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
     fontFamily: 'Play',
@@ -12,13 +8,16 @@ const numeroStyle: Phaser.Types.GameObjects.Text.TextStyle = {
     fontStyle: 'bold',
 }
 
-export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
+export class CoinGraphics extends Phaser.GameObjects.Container {
     public text: Phaser.GameObjects.Text
     public background: Phaser.GameObjects.Image
     public state: CoinState
+    public type: CoinType
     public tweenFlipping: Phaser.Tweens.Tween
     public tweenRevive: Phaser.Tweens.Timeline
     public tweenKill: Phaser.Tweens.Timeline
+    public defaultWidth: number
+    public defaultHeight: number
     
     constructor(
         scene: Phaser.Scene,
@@ -26,15 +25,18 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
         y: number,
         width: number,
         height: number,
+        type: CoinType,
         texture: string,
         frame: string,
         numero: string
     ) {
         super(scene, x, y)
         this.state = 'inactive'
+        this.type = type
+        this.defaultWidth = width
+        this.defaultHeight = height
         this.background = scene.add.image(0, 0, texture, frame).setOrigin(0.5, 0.5)
         this.text = scene.add.text(0, 0, numero).setStyle(numeroStyle)
-        
         this.background.setDisplaySize(width, height)
         this.background.setSize(width, height)
         Phaser.Display.Align.In.Center(this.text, this.background)
@@ -116,12 +118,13 @@ export class CoinGraphics extends Phaser.GameObjects.Container implements Icon {
 
     displayActive() {
         this.tweenFlipping.resume()
+        this.background.setSize(this.defaultWidth, this.defaultHeight)
+        this.background.setDisplaySize(this.defaultWidth, this.defaultHeight)
     }
     
     displayInactive() {
-        // this.scene.time.delayedCall(1, () => {
-        this.tweenFlipping.pause()
-            // this.setScale(1, 1)
-        // })
+        this.scene.time.delayedCall(0, () => {
+            this.tweenFlipping.pause()
+        })            
     }
 }

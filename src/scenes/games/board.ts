@@ -51,6 +51,7 @@ export class Board {
                 6,
             Config.board.sphereSize,
             Config.board.sphereSize,
+            'sphere',
             Config.packer.name,
             Config.packer.coinSphere,
             0
@@ -89,6 +90,7 @@ export class Board {
                 newPositionY,
                 Config.board.borderSize,
                 Config.board.borderSize,
+                'border',
                 Config.packer.name,
                 Config.packer.coinBorder,
                 0
@@ -131,6 +133,7 @@ export class Board {
                 newPositionY,
                 Config.board.entrySize,
                 Config.board.entrySize,
+                'entry',
                 Config.packer.name,
                 Config.packer.coinEntry,
                 0
