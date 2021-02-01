@@ -8,6 +8,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
     public bordersDeadCount: Array<number>
     public entriesActiveIndexesChanged: Array<number>
     public reviveAfterTurn: number
+    public score: number
     constructor(scene: GameScene) {
         super(scene)
         this.turn = 0
@@ -22,6 +23,7 @@ export class GameDataManager extends Phaser.Data.DataManager {
         this.comboCountGoal = null
         this.ratioCreateBorders = 0
         this.sphere = 0
+        this.score = 0
 
         this.entries = new Array(4).fill(0)
         this.entriesActiveIndexesChanged = []
@@ -91,11 +93,12 @@ export class GameDataManager extends Phaser.Data.DataManager {
     }
 
     get point(): number {
-        return (
+        this.score = (
             this.bordersActive.filter((borderAlive) => borderAlive).length +
             this.comboCountPoint +
             this.comboMultiplePoint
         )
+        return this.score
     }
 
     isTotalMultipleOfSphere() {

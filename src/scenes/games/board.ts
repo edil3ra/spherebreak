@@ -10,11 +10,13 @@ export class Board {
     public bordersGraphics: Array<CoinGraphics>
     public entriesGraphics: Array<CoinGraphics>
     public background: Phaser.GameObjects.TileSprite
-    public handleClickedBorder: (index: number) => void 
+    public scoreTween: Phaser.Tweens.Tween
+    public scoreText: Phaser.GameObjects.Text
+    public handleClickedBorder: (index: number) => void
     public handleClickedEntry: (index: number) => void
-    public isInteractive:boolean
+    public isInteractive: boolean
 
-    constructor(scene: Phaser.Scene, isInteractive: boolean=true) {
+    constructor(scene: Phaser.Scene, isInteractive: boolean = true) {
         this.scene = scene
         this.isInteractive = isInteractive
         this.handleClickedBorder = () => {}
@@ -25,15 +27,49 @@ export class Board {
         this.setSphereGraphics()
         this.setCoinGraphicsAndContainer()
         this.setEntriesGraphicsAndContainer()
+        this.setScore()
         this.setBoardContainer()
     }
 
+    setScore() {
+        this.scoreText = this.scene.add
+            .text(
+                Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5,
+                Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5,
+                '',
+                Config.board.styles.score
+            )
+            .setOrigin(0.5, 0.5)
+    }
 
-    attachClickBorder(handleClickBorder: (index: number) => void ): this {
+    updateScore(score: number) {
+        this.scoreText.setText(`+ ${score}`)
+        this.scoreText.setAlpha(1)
+        this.scoreText.x =
+            Config.board.borderPadding +
+            Config.board.borderSize +
+            Config.board.entrySize * 0.5 +
+            Phaser.Math.Between(-20, 20)
+        this.scoreText.y = Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5
+        this.scoreTween = this.scene.tweens.add({
+            targets: [this.scoreText],
+            y: {
+                from: this.scoreText.y,
+                to: this.scoreText.y - 150,
+            },
+            ease: 'Linear',
+            duration: 600,
+            onComplete: () => {
+                this.scoreText.setAlpha(0)
+            },
+        })
+    }
+
+    attachClickBorder(handleClickBorder: (index: number) => void): this {
         this.handleClickedBorder = handleClickBorder.bind(this.scene)
         return this
     }
-    
+
     attachClickEntry(handleClickEntry: (index: number) => void): this {
         this.handleClickedEntry = handleClickEntry.bind(this.scene)
         return this
@@ -41,14 +77,8 @@ export class Board {
 
     setSphereGraphics() {
         this.sphereGraphics = this.scene.add.coin(
-            Config.board.borderPadding +
-                Config.board.borderSize +
-                Config.board.entrySize * 0.5 +
-                4,
-            Config.board.borderPadding +
-                Config.board.borderSize +
-                Config.board.entrySize * 0.5 +
-                6,
+            Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5 + 4,
+            Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5 + 6,
             Config.board.sphereSize,
             Config.board.sphereSize,
             'sphere',
@@ -79,11 +109,9 @@ export class Board {
             const [positionX, positionY] = currentPosition
             const [directionX, directionY] = directions[index]
             const newPositionX =
-                positionX +
-                directionX * (Config.board.borderSize + Config.board.borderPadding)
+                positionX + directionX * (Config.board.borderSize + Config.board.borderPadding)
             const newPositionY =
-                positionY +
-                directionY * (Config.board.borderSize + Config.board.borderPadding)
+                positionY + directionY * (Config.board.borderSize + Config.board.borderPadding)
             currentPosition = [newPositionX, newPositionY]
             const coin = this.scene.add.coin(
                 newPositionX,
@@ -95,14 +123,14 @@ export class Board {
                 Config.packer.coinBorder,
                 0
             ) as CoinGraphics
-            if(this.isInteractive) {
+            if (this.isInteractive) {
                 coin.background
                     .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                     .on(
                         Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
                         () => this.handleClickedBorder(index),
                         this
-                    )                
+                    )
             }
             return coin
         })
@@ -121,12 +149,8 @@ export class Board {
         this.entriesGraphics = [...Array(4).keys()].map((index: number) => {
             const [positionX, positionY] = currentPosition
             const [directionX, directionY] = directions[index]
-            const newPositionX =
-                positionX +
-                directionX * (Config.board.entrySize + Config.board.entryPadding)
-            const newPositionY =
-                positionY +
-                directionY * (Config.board.entrySize + Config.board.entryPadding)
+            const newPositionX = positionX + directionX * (Config.board.entrySize + Config.board.entryPadding)
+            const newPositionY = positionY + directionY * (Config.board.entrySize + Config.board.entryPadding)
             currentPosition = [newPositionX, newPositionY]
             const coin = this.scene.add.coin(
                 newPositionX,
@@ -138,7 +162,7 @@ export class Board {
                 Config.packer.coinEntry,
                 0
             ) as CoinGraphics
-            if(this.isInteractive) {
+            if (this.isInteractive) {
                 coin.background
                     .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                     .on(
@@ -162,14 +186,15 @@ export class Board {
             this.coinsContainer,
             this.entriesContainer,
             this.sphereGraphics,
+            this.scoreText,
         ])
         this.setPosition()
     }
 
     setPosition() {
         this.container.setPosition(
-            Config.board.borderSize / 2, 
-            Config.board.borderSize / 2 + Config.panels.board.height + 10,
+            Config.board.borderSize / 2,
+            Config.board.borderSize / 2 + Config.panels.board.height + 10
         )
     }
 }

@@ -118,12 +118,9 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on(Config.events.game.CHANGEDATA_TIMER, (_scene: GameScene, timer: number) => {
-
             if (timer === this.data.maxTimer) {
-                console.log('reset timer')
                 this.boardPanel.boardMiddlePanel.resetTimerText(timer)
             } else {
-                console.log('set Timer')
                 this.boardPanel.boardMiddlePanel.setTimerText(timer)
             }
             if (timer === 0) {
@@ -240,25 +237,27 @@ export class GameScene extends Phaser.Scene {
                 case 'startGame':
                     break
                 case 'winTurn':
+                    this.board.updateScore(this.data.score)
                     this.cameras.main.shake(
                         Config.scenes.game.afterTurnTimer,
                         Config.scenes.game.afterTurnShakeIntensity,
                         true,
                         (_camera: any, duration: number) => {
-                            if(duration === 1) {
-                                this.startTimerTurn()                                
+                            if (duration === 1) {
+                                this.startTimerTurn()
                             }
                         }
                     )
                     break
                 case 'loseTurn':
+                    this.board.updateScore(0)
                     this.cameras.main.shake(
-                        Config.scenes.game.afterTurnTimer,
-                        Config.scenes.game.afterTurnShakeIntensity,
+                        Config.scenes.game.afterTurnTimer * 3,
+                        Config.scenes.game.afterTurnShakeIntensity * 10,
                         true,
                         (_camera: any, duration: number) => {
-                            if(duration === 1) {
-                                this.startTimerTurn()                                
+                            if (duration === 1) {
+                                this.startTimerTurn()
                             }
                         }
                     )

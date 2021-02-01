@@ -19,6 +19,14 @@ function setBoard() {
         entryPadding: ENTRY_PADDING,
         sphereSize: SPHERE_SIZE,
         marginTop: 10,
+        styles: {
+            score: {
+                fontFamily: 'Play',
+                fontSize: '50px',
+                color: 'white',
+                fontStyle: 'bold', 
+            }
+        }
     }
 }
 
@@ -72,7 +80,7 @@ function setBoardPanel() {
                 fontSize: '38px',
                 color: 'white',
                 fontStyle: 'bold', 
-            }
+            },
         }
     }
 }
