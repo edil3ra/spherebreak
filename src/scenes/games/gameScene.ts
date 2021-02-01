@@ -7,8 +7,6 @@ import { GameDataManager } from '~/scenes/games/gameDataManager'
 
 export class GameScene extends Phaser.Scene {
     public data: GameDataManager
-    public borderClickedIndex: number
-    public entryClickedIndex: number
     public background: Phaser.GameObjects.Image
     public board: Board
     public boardPanel: BoardPanelContainer
@@ -119,7 +117,11 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on(Config.events.game.CHANGEDATA_TIMER, (_scene: GameScene, timer: number) => {
-            this.boardPanel.boardMiddlePanel.setTimerText(timer)
+            if (timer === this.data.maxTimer) {
+                this.boardPanel.boardMiddlePanel.resetTimerText(timer)
+            } else {
+                this.boardPanel.boardMiddlePanel.setTimerText(timer)
+            }
             if (timer === 0) {
                 this.data.nextTurn()
             }
@@ -168,6 +170,9 @@ export class GameScene extends Phaser.Scene {
             (_scene: GameScene, _borders: Array<boolean>) => {
                 const activeChanged = this.data.bordersActiveIndexesChanged.map((index) => {
                     if (this.data.bordersActive[index]) {
+                        this.playSoundOnCoinActive()
+                        this.playAnimationOnCoinActive()
+                        this.board.bordersGraphics[index].setState('focus')
                         return ['active', this.board.bordersGraphics[index]]
                     } else {
                         return ['inactive', this.board.bordersGraphics[index]]
@@ -185,8 +190,12 @@ export class GameScene extends Phaser.Scene {
             (_scene: GameScene, _entries: Array<boolean>) => {
                 const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
                     if (this.data.entriesActive[index]) {
+                        this.playSoundOnCoinActive()
+                        this.playAnimationOnCoinActive()
+                        this.board.entriesGraphics[index].setState('focus')
                         return ['active', this.board.entriesGraphics[index]]
                     } else {
+                        this.board.entriesGraphics[index].setState('unfocus')
                         return ['inactive', this.board.entriesGraphics[index]]
                     }
                 })
@@ -227,14 +236,24 @@ export class GameScene extends Phaser.Scene {
                 case 'startGame':
                     break
                 case 'winTurn':
-                    this.cameras.main.fadeIn(Config.scenes.game.afterTurnTimer, 25, 25, 75, () => {
-                        this.startTimerTurn()
-                    })
+                    this.cameras.main.shake(
+                        Config.scenes.game.afterTurnTimer,
+                        Config.scenes.game.afterTurnShakeIntensity,
+                        true,
+                        () => {
+                            this.startTimerTurn()
+                        }
+                    )
                     break
                 case 'loseTurn':
-                    this.cameras.main.fadeIn(Config.scenes.game.afterTurnTimer, 75, 25, 25, () => {
-                        this.startTimerTurn()
-                    })
+                    this.cameras.main.shake(
+                        Config.scenes.game.afterTurnTimer,
+                        Config.scenes.game.afterTurnShakeIntensity,
+                        true,
+                        () => {
+                            this.startTimerTurn()
+                        }
+                    )
                     break
                 case 'winGame':
                     this.handleWin()
@@ -290,7 +309,7 @@ export class GameScene extends Phaser.Scene {
             .createEmitter({
                 speed: { min: -600, max: 600 },
                 angle: { min: 0, max: 360 },
-                scale: { start:  0.5, end: 0 },
+                scale: { start: 0.5, end: 0 },
                 blendMode: 'SCREEN',
                 lifespan: 300,
                 gravityY: 100,
@@ -337,13 +356,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedBorder(index: number) {
-        this.plings[this.data.lengthActives % this.plings.length].play()
-        this.emitterExplodeBlue.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
-        this.emitterExplodeBlue.active = true
-        this.emitterExplodeRed.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
-        this.emitterExplodeRed.active = true
-
-        this.borderClickedIndex = index
         this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
         )
@@ -351,13 +363,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleClickedEntry(index: number) {
-        this.plings[this.data.lengthActives % this.plings.length].play()
-        this.emitterExplodeBlue.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
-        this.emitterExplodeBlue.active = true
-        this.emitterExplodeRed.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
-        this.emitterExplodeRed.active = true
-        
-        this.entryClickedIndex = index
         this.data.entriesActive = this.data.entriesActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
         )
@@ -369,6 +374,17 @@ export class GameScene extends Phaser.Scene {
             this.scale.width / 2 - Config.board.width / 2,
             this.scale.height / 2 - (Config.board.height + Config.panels.board.height + 10) / 2
         )
+    }
+
+    playSoundOnCoinActive() {
+        this.plings[this.data.lengthActives % this.plings.length].play()
+    }
+
+    playAnimationOnCoinActive() {
+        this.emitterExplodeBlue.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+        this.emitterExplodeBlue.active = true
+        this.emitterExplodeRed.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+        this.emitterExplodeRed.active = true
     }
 
     handleLose() {

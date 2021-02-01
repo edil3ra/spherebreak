@@ -78,33 +78,23 @@ export class BoardRightPanel {
 
     setComboMultipleText(comboMultple: number, comboMultipleGoal: number | null) {
         this.scene.tweens.add({
+            ...Config.panels.board.tweens.base,
             targets: [this.currentComboMultipleText, this.goalComboMultipleText],
-            scale: {
-                from: 2,
-                to: 1,
-            },
-            ease: 'Quad.easeIn',
             onComplete: () => {
                 this.currentComboMultipleText.setText(`${comboMultple}`)
                 this.goalComboMultipleText.setText(`${comboMultipleGoal || '-'}`)
             },
-            duration: Config.scenes.game.afterTurnTimer,
         })
     }
 
     setComboCountText(comboCount: number, comboCountGoal: number | null) {
         this.scene.tweens.add({
+            ...Config.panels.board.tweens.base,
             targets: [this.currentComboCountText, this.goalComboCountText],
-            scale: {
-                from: 2,
-                to: 1,
-            },
-            ease: 'Quad.easeIn',
             onComplete: () => {
                 this.currentComboCountText.setText(`${comboCount}`)
                 this.goalComboCountText.setText(`${comboCountGoal || '-'}`)
             },
-            duration: Config.scenes.game.afterTurnTimer,
         })
     }
 

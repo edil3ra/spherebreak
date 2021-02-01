@@ -2,6 +2,7 @@ import { Difficulty, GameInfo } from '~/models'
 
 type SkipScene = 'noSkip' | 'game' | 'tutorial'
 
+const AFTER_TURN_TIMER = 220
 const BORDER_PADDING = 4
 const BORDER_SIZE = 84
 const ENTRY_SIZE = 80
@@ -31,6 +32,34 @@ function setBoardPanel() {
         middlePanelOffsetX: 141,
         middlePanelOffsetY: 19,
         rightPanelOffsetX: 192,
+        tweens: {
+            base: {
+                scale: {
+                    from: 2,
+                    to: 1,
+                },
+                ease: 'Quad.easeIn',
+                duration: AFTER_TURN_TIMER,
+            },
+            setTimer: {
+                scale: {
+                    from: 1.2,
+                    to: 1,
+                },
+                ease: 'Quad.easeIn',
+                duration: AFTER_TURN_TIMER * 0.5,
+            },
+            resetTimer: {
+                scale: {
+                    from: 1.6,
+                    to: 1,
+                },
+                ease: 'Quad.easeIn',
+                duration: AFTER_TURN_TIMER
+            },
+            
+
+        },
         styles: {
             text: {
                 fontFamily: 'Play',
@@ -277,7 +306,8 @@ export class Config {
             reviveAfterTurn: 5,
             textTimer: 1000,
             coinAnimationTimer: 160,
-            afterTurnTimer: 220,
+            afterTurnTimer: AFTER_TURN_TIMER,
+            afterTurnShakeIntensity: 0.0025,
             tweens: {
                 camera: {
                     in: {
