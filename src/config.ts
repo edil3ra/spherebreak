@@ -74,7 +74,7 @@ export class Config {
         playAgain: true
     }
 
-    public static readonly mute = true
+    public static readonly mute = false
     
     public static readonly images = {
         background: 'background',
@@ -110,7 +110,7 @@ export class Config {
         coinBorder: 'coin.gif',
         pattern: 'patternStripesMetal_large.png',
         hand: 'hand_cursor0000.png',
-        emiterBlue: 'blue.png',
+        emitterBlue: 'blue.png',
         emitterRed: 'red.png',
         soundOn: 'sound-on.png',
         soundOff: 'sound-off.png',
@@ -172,7 +172,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'menu' : 'noSkip',
+            scene: Config.debug ?  'game' : 'noSkip',
         },
         keys: {
             game: 'gameScene',

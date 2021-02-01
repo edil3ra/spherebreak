@@ -19,6 +19,9 @@ export class GameScene extends Phaser.Scene {
     public plings: Array<Phaser.Sound.BaseSound>
     public gameover: Phaser.Sound.BaseSound
     public engine: Phaser.Sound.BaseSound
+    public emitterEndGame: Phaser.GameObjects.Particles.ParticleEmitter
+    public emitterExplodeBlue: Phaser.GameObjects.Particles.ParticleEmitter
+    public emitterExplodeRed: Phaser.GameObjects.Particles.ParticleEmitter
 
     constructor() {
         super({ key: Config.scenes.keys.game })
@@ -36,7 +39,6 @@ export class GameScene extends Phaser.Scene {
         )
         this.data = new GameDataManager(this)
         this.registerDataEvents()
-        this.registerSounds()
 
         this.board = new Board(this)
             .attachClickBorder(this.handleClickedBorder)
@@ -74,6 +76,8 @@ export class GameScene extends Phaser.Scene {
         this.initData(gameConfig)
         this.initTimerSyncCoin()
         this.startTimerTurn()
+        this.registerEmitters()
+        this.registerSounds()
     }
 
     initData(gameConfig: GameConfig) {
@@ -258,6 +262,42 @@ export class GameScene extends Phaser.Scene {
         this.engine = this.sound.add(Config.sounds.engine, { volume: 0.3 })
     }
 
+    registerEmitters() {
+        this.emitterEndGame = this.add.particles(Config.packer.name, Config.packer.emitterRed).createEmitter({
+            x: this.scale.width * 0.5,
+            y: this.scale.height * 0.5 + Config.panels.board.height * 0.5,
+            speed: 200,
+            scale: 1,
+            blendMode: Phaser.BlendModes.ADD,
+            frequency: 20,
+            active: false,
+        })
+
+        this.emitterExplodeBlue = this.add
+            .particles(Config.packer.name, Config.packer.emitterBlue)
+            .createEmitter({
+                speed: { min: -600, max: 600 },
+                angle: { min: 0, max: 360 },
+                scale: { start: 0.5, end: 0 },
+                blendMode: 'SCREEN',
+                lifespan: 300,
+                gravityY: 100,
+                active: false,
+            })
+
+        this.emitterExplodeRed = this.add
+            .particles(Config.packer.name, Config.packer.emitterRed)
+            .createEmitter({
+                speed: { min: -600, max: 600 },
+                angle: { min: 0, max: 360 },
+                scale: { start:  0.5, end: 0 },
+                blendMode: 'SCREEN',
+                lifespan: 300,
+                gravityY: 100,
+                active: false,
+            })
+    }
+
     initTimerSyncCoin() {
         if (this.timerSyncCoin) {
             this.timerSyncCoin.destroy()
@@ -298,6 +338,11 @@ export class GameScene extends Phaser.Scene {
 
     handleClickedBorder(index: number) {
         this.plings[this.data.lengthActives % this.plings.length].play()
+        this.emitterExplodeBlue.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+        this.emitterExplodeBlue.active = true
+        this.emitterExplodeRed.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+        this.emitterExplodeRed.active = true
+
         this.borderClickedIndex = index
         this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
@@ -307,6 +352,11 @@ export class GameScene extends Phaser.Scene {
 
     handleClickedEntry(index: number) {
         this.plings[this.data.lengthActives % this.plings.length].play()
+        this.emitterExplodeBlue.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+        this.emitterExplodeBlue.active = true
+        this.emitterExplodeRed.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+        this.emitterExplodeRed.active = true
+        
         this.entryClickedIndex = index
         this.data.entriesActive = this.data.entriesActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
@@ -322,41 +372,26 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleLose() {
-        this.handleEndGame(
-            Config.packer.name,
-            Config.packer.emitterRed,
-            new Phaser.Display.Color(255, 100, 100)
-        )
+        this.handleEndGame(Config.packer.emitterRed, new Phaser.Display.Color(255, 100, 100))
     }
 
     handleWin() {
-        this.handleEndGame(
-            Config.packer.name,
-            Config.packer.emiterBlue,
-            new Phaser.Display.Color(100, 100, 255)
-        )
+        this.handleEndGame(Config.packer.emitterBlue, new Phaser.Display.Color(100, 100, 255))
     }
 
-    handleEndGame(texture: string, frame: string, color: Phaser.Display.Color) {
-        const particles = this.add.particles(Config.packer.name, frame)
-        const emitter = particles.createEmitter({
-            x: this.scale.width * 0.5,
-            y: this.scale.height * 0.5 + Config.panels.board.height * 0.5,
-            speed: 200,
-            scale: 0.4,
-            lifespan: 800,
-            blendMode: Phaser.BlendModes.ADD,
-            frequency: 20,
-        })
+    handleEndGame(frame: string, color: Phaser.Display.Color) {
+        this.emitterEndGame.active = true
+        this.emitterEndGame.setFrame(frame)
+
         let enginePlay = false
         let gameOverPlay = false
-        
+
         this.cameras.main.shake(2000, 0.002, false, (_camera: any, duration: number) => {
             if (!enginePlay) {
                 this.engine.play()
                 enginePlay = true
             }
-            
+
             if (duration === 1) {
                 this.cameras.main.flash(
                     1000,
@@ -368,11 +403,19 @@ export class GameScene extends Phaser.Scene {
                         if (!gameOverPlay) {
                             gameOverPlay = true
                             this.gameover.play()
+                            this.emitterEndGame.setAngle(-90)
+                            this.emitterEndGame.setGravityY(-8000)
+                            this.emitterEndGame.stop()
                         }
-                        if (duration > 0.9) {
-                            emitter.killAll()
-                            emitter.stop()
+                        if (duration >= 0.1) {
+                            this.emitterEndGame.setGravityY(4000)
                         }
+
+                        if (duration >= 0.8) {
+                            this.emitterEndGame.active = false
+                            this.emitterEndGame.killAll()
+                        }
+
                         if (duration >= 1) {
                             this.scene.pause(Config.scenes.keys.game)
                             this.scene.wake(Config.scenes.keys.gameOver)
