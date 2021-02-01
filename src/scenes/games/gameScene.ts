@@ -81,6 +81,7 @@ export class GameScene extends Phaser.Scene {
     initData(gameConfig: GameConfig) {
         const initialGameInfo = Config.difficulties[gameConfig.difficulty]
         this.data.maxTimer = initialGameInfo.timer
+        this.data.timer = this.data.maxTimer
         this.data.maxTurn = initialGameInfo.turn
         this.data.maxQuota = initialGameInfo.quota
         this.data.entries = gameConfig.entries
@@ -117,9 +118,12 @@ export class GameScene extends Phaser.Scene {
         })
 
         this.events.on(Config.events.game.CHANGEDATA_TIMER, (_scene: GameScene, timer: number) => {
+
             if (timer === this.data.maxTimer) {
+                console.log('reset timer')
                 this.boardPanel.boardMiddlePanel.resetTimerText(timer)
             } else {
+                console.log('set Timer')
                 this.boardPanel.boardMiddlePanel.setTimerText(timer)
             }
             if (timer === 0) {
@@ -240,8 +244,10 @@ export class GameScene extends Phaser.Scene {
                         Config.scenes.game.afterTurnTimer,
                         Config.scenes.game.afterTurnShakeIntensity,
                         true,
-                        () => {
-                            this.startTimerTurn()
+                        (_camera: any, duration: number) => {
+                            if(duration === 1) {
+                                this.startTimerTurn()                                
+                            }
                         }
                     )
                     break
@@ -250,8 +256,10 @@ export class GameScene extends Phaser.Scene {
                         Config.scenes.game.afterTurnTimer,
                         Config.scenes.game.afterTurnShakeIntensity,
                         true,
-                        () => {
-                            this.startTimerTurn()
+                        (_camera: any, duration: number) => {
+                            if(duration === 1) {
+                                this.startTimerTurn()                                
+                            }
                         }
                     )
                     break
@@ -335,7 +343,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     startTimerTurn() {
-        this.data.timer = this.data.maxTimer
         if (this.timerTurn) {
             this.timerTurn.destroy()
         }

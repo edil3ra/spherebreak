@@ -35,10 +35,10 @@ function setBoardPanel() {
         tweens: {
             base: {
                 scale: {
-                    from: 2,
+                    from: 1.6,
                     to: 1,
                 },
-                ease: 'Quad.easeIn',
+                ease: 'Sine.easeInOut',
                 duration: AFTER_TURN_TIMER,
             },
             setTimer: {
@@ -46,16 +46,16 @@ function setBoardPanel() {
                     from: 1.2,
                     to: 1,
                 },
-                ease: 'Quad.easeIn',
+                ease: 'Sine.easeInOut',
                 duration: AFTER_TURN_TIMER * 0.5,
             },
             resetTimer: {
                 scale: {
-                    from: 1.6,
+                    from: 1.8,
                     to: 1,
                 },
-                ease: 'Quad.easeIn',
-                duration: AFTER_TURN_TIMER
+                ease: 'Sine.easeInOut',
+                duration: AFTER_TURN_TIMER + 100,
             },
             
 
