@@ -111,7 +111,7 @@ export class Config {
         playAgain: true
     }
 
-    public static readonly mute = false
+    public static readonly mute = Config.debug ? true : true
     
     public static readonly images = {
         background: 'background',
@@ -209,7 +209,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'game' : 'noSkip',
+            scene: Config.debug ?  'noSkip' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
