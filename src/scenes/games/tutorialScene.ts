@@ -156,21 +156,22 @@ export class TutorialScene extends Phaser.Scene {
                         y: this.board.container.y + this.board.sphereGraphics.y,
                     },
                 ],
-                text: `Middle sphere is the numbero to reach
+                text: `Core sphere is the numbero to reach
 You can also reach it with a multiple
 ex 4 -> 8
 `,
             },
             {
                 pointers: entriesGraphicsPosition,
-                text: `12 coins that are in blue-purpish color
-They are all positioned at the extreme corner
-They dissappear after you use it`,
+                text: `12 coins that are in blue color
+They are positioned in the corner
+They dissappear after you use it
+They increase the quota by one`,
             },
             {
                 pointers: bordersGraphicsPosition,
                 text: `4 coins that are in yellowish color
-They are positioned within the square borders
+They are positioned in square borders
 They never dissapear
 They don't increase the quota`,
             },
@@ -182,7 +183,7 @@ They don't increase the quota`,
                     },
                 ],
                 text: `The game comes in turns
-Every time you core break, the turn ends
+wher core break, turn ends
 You will need to complete the quota
 before all the turns ends!`,
             },
@@ -193,9 +194,8 @@ before all the turns ends!`,
                         y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 32,
                     },
                 ],
-                text: `Quota is something like the score in the game
-You get one quota for each border coin
-You will need to reach the quota to win the game
+                text: `Quota is the game game score
+Reach teh quota and win the game
 `,
             },
             {
@@ -206,7 +206,6 @@ You will need to reach the quota to win the game
                     },
                 ],
                 text: `Every turn, there's a time limit
-You need to make your decision using the coin
 If the time runs out
 you will automatically lose the turn`,
             },
@@ -217,9 +216,10 @@ you will automatically lose the turn`,
                         y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
                     },
                 ],
-                text: `Example, you have a core number 2. 2,4,6,8
-You have a sum of 8, combo
-Next turn, you have a core number 3. 3,6,9,12
+                text: `You have a core number 2. 2,4,6,8
+You make a sum of 8, combo
+Next turn
+You have a core number 3. 3,6,9,12
 You make a sum of 12, combo
 `,
             },
@@ -230,9 +230,9 @@ You make a sum of 12, combo
                         y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 32,
                     },
                 ],
-                text: `example, you used 3 coins previous turn
-if you use 3 coins, you increase your combo
-if you use 2 coins, you lose the combo
+                text: `You used 3 coins previous turn
+Next turn you use 3 coins combo
+Next turn you use 2 coins lose combo
 `,
             },
         ]

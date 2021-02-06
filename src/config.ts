@@ -89,13 +89,13 @@ function setBoardPanel() {
 function setTutorialPanel() {
     return {
         width: BOARD_SIZE,
-        height: 130,
-        paddingX: 28,
+        height: 170,
+        paddingX: 20,
         paddingY: 40,
         marginTop: 10,
         styles: {
             text: {
-                fontSize: '11px',
+                fontSize: '14px',
                 lineSpacing: 2,
                 color: 'white',
             }
