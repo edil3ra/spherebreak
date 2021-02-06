@@ -274,18 +274,18 @@ export class GameScene extends Phaser.Scene {
 
     registerSounds() {
         this.plings = [
-            this.sound.add(Config.sounds.pling1, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling2, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling3, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling4, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling5, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling6, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling7, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling8, { volume: 0.3 }),
-            this.sound.add(Config.sounds.pling9, { volume: 0.3 }),
+            this.sound.add(Config.sounds.pling1, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling2, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling3, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling4, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling5, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling6, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling7, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling8, { volume: Config.sounds.defaultVolume }),
+            this.sound.add(Config.sounds.pling9, { volume: Config.sounds.defaultVolume }),
         ]
-        this.gameover = this.sound.add(Config.sounds.gameover, { volume: 0.3 })
-        this.engine = this.sound.add(Config.sounds.engine, { volume: 0.3 })
+        this.gameover = this.sound.add(Config.sounds.gameover, { volume: Config.sounds.defaultVolume })
+        this.engine = this.sound.add(Config.sounds.engine, { volume: Config.sounds.defaultVolume })
     }
 
     registerEmitters() {
@@ -387,9 +387,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     playAnimationOnCoinActive() {
-        this.emitterExplodeBlue.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+
+        this.emitterExplodeBlue.explode(2, this.input.activePointer.x , this.input.activePointer.y)
         this.emitterExplodeBlue.active = true
-        this.emitterExplodeRed.explode(2, this.input.mousePointer.x, this.input.mousePointer.y)
+        this.emitterExplodeRed.explode(2, this.input.activePointer.x, this.input.activePointer.y)
         this.emitterExplodeRed.active = true
     }
 

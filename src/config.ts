@@ -118,6 +118,7 @@ export class Config {
     }
     
     public static readonly sounds = {
+        defaultVolume: 0.5,
         click: 'click1',
         switch: 'switch1',
         pling1: 'pling1',
