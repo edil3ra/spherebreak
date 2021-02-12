@@ -6,48 +6,74 @@ import { EntriesSelectionScene } from '~/scenes/menus/entriesSelectionScene'
 import { GameOverScene } from './scenes/games/gameOverScene'
 import { TutorialStartEndScene } from './scenes/games/tutorialStartEndScene'
 import { Config } from './config'
+import { Howl, Howler } from 'howler'
 
-export function initGame(): Phaser.Game {
-    const config: Phaser.Types.Core.GameConfig = {
-        type: Phaser.AUTO,
-        title: 'spherebreak',
-        scale: {
-            width: window.innerWidth,
-            height: window.innerHeight,
+export class MyGame extends Phaser.Game {
+    public sounds: Record<keyof typeof Config.sounds, Howl>
+    public isMute: boolean
+    constructor() {
+        super({
+            type: Phaser.AUTO,
+            title: 'spherebreak',
+            scale: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                parent: 'spherebreak',
+            },
             parent: 'spherebreak',
-        },
-        parent: 'spherebreak',
-        dom: {
-            createContainer: true,
-        },
-        plugins: {
-            global: [
-                {
-                    key: 'WebFontLoader',
-                    plugin: WebFontLoaderPlugin,
-                    start: true,
-                },
+            dom: {
+                createContainer: true,
+            },
+            plugins: {
+                global: [
+                    {
+                        key: 'WebFontLoader',
+                        plugin: WebFontLoaderPlugin,
+                        start: true,
+                    },
+                ],
+            },
+            audio: {
+                disableWebAudio: true,
+                noAudio: true,
+            },
+            scene: [
+                BootScene,
+                MenuScene,
+                GameScene,
+                GameOverScene,
+                PauseScene,
+                EntriesSelectionScene,
+                TutorialScene,
+                TutorialStartEndScene,
             ],
-        },
-        audio: {
-            disableWebAudio: true,
-            noAudio: true,
-        },
-        scene: [
-            BootScene,
-            MenuScene,
-            GameScene,
-            GameOverScene,
-            PauseScene,
-            EntriesSelectionScene,
-            TutorialScene,
-            TutorialStartEndScene,
-        ],
+        })
     }
-    const game = new Phaser.Game(config)
-    game.sound.mute = Config.mute
-    window.addEventListener('resize', () => {
-        game.scale.resize(window.innerWidth, window.innerHeight)
-    })
-    return game
+
+    registerSounds(): void {
+        this.sounds = {
+            click: new Howl({ src: [Config.sounds.click] }),
+            switch: new Howl({ src: [Config.sounds.switch] }),
+            pling1: new Howl({ src: [Config.sounds.pling1] }),
+            pling2: new Howl({ src: [Config.sounds.pling2] }),
+            pling3: new Howl({ src: [Config.sounds.pling3] }),
+            pling4: new Howl({ src: [Config.sounds.pling4] }),
+            pling5: new Howl({ src: [Config.sounds.pling5] }),
+            pling6: new Howl({ src: [Config.sounds.pling6] }),
+            pling7: new Howl({ src: [Config.sounds.pling7] }),
+            pling8: new Howl({ src: [Config.sounds.pling8] }),
+            pling9: new Howl({ src: [Config.sounds.pling9] }),
+            engine: new Howl({ src: [Config.sounds.engine] }),
+            gameover: new Howl({ src: [Config.sounds.gameover] }),
+        }
+    }
+
+    start(): void {
+        this.registerSounds()
+        this.isMute = Config.mute
+        if(this.isMute) {
+            Howler.mute(this.isMute)
+        }
+        super.start()
+    }
 }

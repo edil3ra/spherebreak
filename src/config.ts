@@ -118,20 +118,19 @@ export class Config {
     }
     
     public static readonly sounds = {
-        defaultVolume: 1,
-        click: 'click1',
-        switch: 'switch1',
-        pling1: 'pling1',
-        pling2: 'pling2',
-        pling3: 'pling3',
-        pling4: 'pling4',
-        pling5: 'pling5',
-        pling6: 'pling6',
-        pling7: 'pling7',
-        pling8: 'pling8',
-        pling9: 'pling9',
-        engine: 'engine4',
-        gameover: 'gameover2',
+        click: 'assets/sounds/click1.ogg',
+        switch: 'assets/sounds/switch1.ogg',
+        pling1: 'assets/sounds/pling1.mp3',
+        pling2: 'assets/sounds/pling2.mp3',
+        pling3: 'assets/sounds/pling3.mp3',
+        pling4: 'assets/sounds/pling4.mp3',
+        pling5: 'assets/sounds/pling5.mp3',
+        pling6: 'assets/sounds/pling6.mp3',
+        pling7: 'assets/sounds/pling7.mp3',
+        pling8: 'assets/sounds/pling8.mp3',
+        pling9: 'assets/sounds/pling9.mp3',
+        engine: 'assets/sounds/engine1.ogg',
+        gameover: 'assets/sounds/gameover4.ogg',
     }
     
     public static readonly packer = {

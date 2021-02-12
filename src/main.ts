@@ -1,14 +1,21 @@
 import * as Phaser from 'phaser'
 import { ButtonContainer } from './ui/buttonContainer'
 import { CoinGraphics } from './entities/Coin'
-import { initGame } from './game'
+import { MyGame } from './game'
 import { initGameDistribution, mockGameDistribution } from './gameDistribution'
 import { Config } from './config'
 import { CoinType } from './models'
 
 Phaser.GameObjects.GameObjectFactory.register(
     'buttonContainer',
-    function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame: string, tint: number = 0xffffff) {
+    function (
+        this: Phaser.GameObjects.GameObjectFactory,
+        x: number,
+        y: number,
+        texture: string,
+        frame: string,
+        tint: number = 0xffffff
+    ) {
         return this.displayList.add(new ButtonContainer(this.scene, x, y, texture, frame, tint))
     }
 )
@@ -32,7 +39,7 @@ Phaser.GameObjects.GameObjectFactory.register(
     }
 )
 
-window.game = initGame()
+window.game = new MyGame()
 if (Config.debug) {
     mockGameDistribution()
 } else {

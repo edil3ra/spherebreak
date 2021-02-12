@@ -47,6 +47,8 @@
 		"@capacitor/cli": "^2.4.6",
 		"@capacitor/core": "^2.4.6",
 		"@gamedistribution.com/html5-sdk": "0.0.2",
+		"@types/howler": "^2.2.1",
+		"howler": "^2.2.1",
 		"phaser": "^3.50.0",
 		"phaser3-webfont-loader": "^1.0.0",
 		"webfontloader": "^1.6.28",

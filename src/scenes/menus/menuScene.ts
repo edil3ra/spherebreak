@@ -1,11 +1,14 @@
 import { EventObject, Interpreter } from 'xstate'
+import { Howler } from 'howler'
 import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menus/menuStateMachine'
 import { Config } from '~/config'
 import { Difficulty } from '~/models'
 import { ButtonContainer } from '~/ui/buttonContainer'
 import { DifficultyGraphics, EntryGrahpics, EntryGraphicsHelper } from '~/scenes/menus/graphics'
+import { MyGame } from '~/game'
 
 export class MenuScene extends Phaser.Scene {
+    game: MyGame
     background: Phaser.GameObjects.Image
     backgroundContainer: Phaser.GameObjects.TileSprite
     banner: Phaser.GameObjects.Container
@@ -23,7 +26,6 @@ export class MenuScene extends Phaser.Scene {
     selectedEntry: EntryGrahpics
     selectedEntryIndex: number
     soundImage: Phaser.GameObjects.Image
-    clickSound: Phaser.Sound.BaseSound
     stateService: Interpreter<
         MenuContext,
         any,
@@ -86,7 +88,6 @@ export class MenuScene extends Phaser.Scene {
         this.setButtonPlay()
         this.setButtonTutorial()
         this.setSoundImage()
-        this.clickSound = this.sound.add(Config.sounds.click)
         this.setMainContainer()
 
         const difficultyIcon = this.difficultiesGraphics.find(
@@ -326,17 +327,19 @@ export class MenuScene extends Phaser.Scene {
     }
 
     toggleSound() {
-        if (this.game.sound.mute) {
+        if (this.game.isMute === true) {
             this.soundImage.setFrame(Config.packer.soundOn)
-            this.game.sound.mute = false
+            this.game.isMute = false
+
         } else {
             this.soundImage.setFrame(Config.packer.soundOff)
-            this.game.sound.mute = true
+            this.game.isMute = true
         }
+        Howler.mute(this.game.isMute)
     }
 
     handleTutorial() {
-        this.clickSound.play()
+        this.game.sounds.click.play()
         this.scene.start(Config.scenes.keys.tutorial)
     }
 
@@ -345,7 +348,7 @@ export class MenuScene extends Phaser.Scene {
             window.gdsdk.showAd()
         }
         this.saveState()
-        this.clickSound.play()
+        this.game.sounds.click.play()
         this.cameras.main.fadeOut(300, 0, 0, 0, (_camera: any, percentage: number) => {
             if (percentage >= 1) {
                 this.scene.start(Config.scenes.keys.game, {
@@ -359,20 +362,20 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {
-        this.clickSound.play()
+        this.game.sounds.click.play()
         this.currentDifficulty = graphic.name
         graphic.selectDifficulty()
     }
 
     handleEntriesSelected(graphic: EntryGrahpics, index: number) {
-        this.clickSound.play()
+        this.game.sounds.click.play()
         this.selectedEntry = graphic
         this.selectedEntryIndex = index
         this.fromMenuToEntriesSelection()
     }
 
     handleEntrySelected(graphic: EntryGraphicsHelper) {
-        this.clickSound.play()
+        this.game.sounds.click.play()
         const numbersToExclude = this.entriesGraphics.map((graphic) => {
             return graphic.numero
         })

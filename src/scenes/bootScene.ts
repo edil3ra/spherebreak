@@ -1,12 +1,13 @@
-import { Config } from "~/config"
+import { Config } from '~/config'
+import { MyGame } from '~/game'
 
 export class BootScene extends Phaser.Scene {
+    public game: MyGame
     private loadingBar: Phaser.GameObjects.Graphics
     private progressBar: Phaser.GameObjects.Graphics
     constructor() {
         super({ key: Config.scenes.keys.boot })
     }
-
 
     preload(): void {
         this.cameras.main.setBackgroundColor(0x000000)
@@ -27,14 +28,11 @@ export class BootScene extends Phaser.Scene {
             this
         )
 
-        this.load.on(
-            'complete',
-            () => {
-                this.progressBar.destroy()
-                this.loadingBar.destroy()
-                this.scene.start(Config.scenes.keys.menu)
-            },
-        )
+        this.load.on('complete', (data: any) => {
+            this.progressBar.destroy()
+            this.loadingBar.destroy()
+            this.scene.start(Config.scenes.keys.menu)
+        })
 
         this.load.pack('preload', 'assets/pack.json', 'preload')
         this.load.webfont('Open Sans', 'https://fonts.googleapis.com/css2?family=Open+Sans&display=swap')

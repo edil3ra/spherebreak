@@ -1,4 +1,5 @@
 import { Config } from '~/config'
+import { MyGame } from '~/game'
 import { TutorialState } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
@@ -22,6 +23,7 @@ type Turn = {
 }
 
 export class TutorialScene extends Phaser.Scene {
+    public game: MyGame
     public tutorialState: TutorialState
     public background: Phaser.GameObjects.Image
     public pointersImage: Array<Phaser.GameObjects.Image>
@@ -34,6 +36,7 @@ export class TutorialScene extends Phaser.Scene {
     public currentTurnIndex: number
     public tweenCursor: Phaser.Tweens.Tween
     public container: Phaser.GameObjects.Container
+
 
     constructor() {
         super({ key: Config.scenes.keys.tutorial })
@@ -262,6 +265,9 @@ Next turn you use 2 coins lose combo
 
     nextTurn(index: number) {
         this.cameras.main.fadeIn(200, 0, 0, 0)
+        if(this.currentTurnIndex > 0) {
+            this.game.sounds.switch.play()
+        }
         this.pointersImage.forEach((pointerImage) => {
             pointerImage.setVisible(false)
         })

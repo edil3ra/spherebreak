@@ -1,11 +1,15 @@
+import { Howl } from 'howler'
 import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
 import { CoinState, GameConfig, GameState } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
 import { GameDataManager } from '~/scenes/games/gameDataManager'
+import { MyGame } from '~/game'
+
 
 export class GameScene extends Phaser.Scene {
+    public game: MyGame
     public data: GameDataManager
     public background: Phaser.GameObjects.Image
     public board: Board
@@ -14,9 +18,7 @@ export class GameScene extends Phaser.Scene {
     public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
     public container: Phaser.GameObjects.Container
-    public plings: Array<Phaser.Sound.BaseSound>
-    public gameover: Phaser.Sound.BaseSound
-    public engine: Phaser.Sound.BaseSound
+    public plings: Array<Howl>
     public emitterEndGame: Phaser.GameObjects.Particles.ParticleEmitter
     public emitterExplodeBlue: Phaser.GameObjects.Particles.ParticleEmitter
     public emitterExplodeRed: Phaser.GameObjects.Particles.ParticleEmitter
@@ -274,18 +276,16 @@ export class GameScene extends Phaser.Scene {
 
     registerSounds() {
         this.plings = [
-            this.sound.add(Config.sounds.pling1, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling2, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling3, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling4, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling5, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling6, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling7, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling8, { volume: Config.sounds.defaultVolume }),
-            this.sound.add(Config.sounds.pling9, { volume: Config.sounds.defaultVolume }),
+            this.game.sounds.pling1,
+            this.game.sounds.pling2,
+            this.game.sounds.pling3,
+            this.game.sounds.pling4,
+            this.game.sounds.pling5,
+            this.game.sounds.pling6,
+            this.game.sounds.pling7,
+            this.game.sounds.pling8,
+            this.game.sounds.pling9,
         ]
-        this.gameover = this.sound.add(Config.sounds.gameover, { volume: Config.sounds.defaultVolume })
-        this.engine = this.sound.add(Config.sounds.engine, { volume: Config.sounds.defaultVolume })
     }
 
     registerEmitters() {
@@ -387,7 +387,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     playAnimationOnCoinActive() {
-
         this.emitterExplodeBlue.explode(2, this.input.activePointer.x , this.input.activePointer.y)
         this.emitterExplodeBlue.active = true
         this.emitterExplodeRed.explode(2, this.input.activePointer.x, this.input.activePointer.y)
@@ -411,7 +410,7 @@ export class GameScene extends Phaser.Scene {
 
         this.cameras.main.shake(2000, 0.002, false, (_camera: any, duration: number) => {
             if (!enginePlay) {
-                this.engine.play()
+                this.game.sounds.engine.play()
                 enginePlay = true
             }
 
@@ -425,7 +424,7 @@ export class GameScene extends Phaser.Scene {
                     (_camera: any, duration: number) => {
                         if (!gameOverPlay) {
                             gameOverPlay = true
-                            this.gameover.play()
+                            this.game.sounds.gameover.play()
                             this.emitterEndGame.setAngle(-90)
                             this.emitterEndGame.setGravityY(-8000)
                             this.emitterEndGame.stop()
