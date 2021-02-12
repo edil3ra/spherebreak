@@ -13,7 +13,7 @@ export class MyGame extends Phaser.Game {
     public isMute: boolean
     constructor() {
         super({
-            type: Phaser.AUTO,
+            type: Phaser.CANVAS,
             title: 'spherebreak',
             scale: {
                 width: window.innerWidth,
