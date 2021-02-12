@@ -1,0 +1,419 @@
+{
+	"textures": [
+		{
+			"image": "packer.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 987,
+				"h": 370
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "sphere.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 329,
+						"h": 322
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 329,
+						"h": 322
+					},
+					"frame": {
+						"x": 2,
+						"y": 2,
+						"w": 329,
+						"h": 322
+					}
+				},
+				{
+					"filename": "button_rectangleWood.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 80,
+						"h": 40
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 80,
+						"h": 40
+					},
+					"frame": {
+						"x": 2,
+						"y": 328,
+						"w": 80,
+						"h": 40
+					}
+				},
+				{
+					"filename": "hand_cursor0000.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 86,
+						"y": 328,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sound-off.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 122,
+						"y": 328,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sound-on.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 158,
+						"y": 328,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "bannerHanging.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 536,
+						"h": 118
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 536,
+						"h": 118
+					},
+					"frame": {
+						"x": 335,
+						"y": 2,
+						"w": 536,
+						"h": 118
+					}
+				},
+				{
+					"filename": "patternStripesMetal_large.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 875,
+						"y": 2,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "double-dragon.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 50,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 50,
+						"h": 50
+					},
+					"frame": {
+						"x": 935,
+						"y": 2,
+						"w": 50,
+						"h": 50
+					}
+				},
+				{
+					"filename": "dragon-head.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 50,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 50,
+						"h": 50
+					},
+					"frame": {
+						"x": 935,
+						"y": 56,
+						"w": 50,
+						"h": 50
+					}
+				},
+				{
+					"filename": "patternStripesMetal_small.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 875,
+						"y": 62,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "dragon-spiral.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 50,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 50,
+						"h": 50
+					},
+					"frame": {
+						"x": 935,
+						"y": 110,
+						"w": 50,
+						"h": 50
+					}
+				},
+				{
+					"filename": "patternStripesShadow_small.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 56,
+						"h": 56
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 56,
+						"h": 56
+					},
+					"frame": {
+						"x": 875,
+						"y": 122,
+						"w": 56,
+						"h": 56
+					}
+				},
+				{
+					"filename": "dragon.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 50,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 50,
+						"h": 50
+					},
+					"frame": {
+						"x": 935,
+						"y": 164,
+						"w": 50,
+						"h": 50
+					}
+				},
+				{
+					"filename": "bannerModern.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 528,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 528,
+						"h": 100
+					},
+					"frame": {
+						"x": 335,
+						"y": 124,
+						"w": 528,
+						"h": 100
+					}
+				},
+				{
+					"filename": "blue.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 335,
+						"y": 228,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "gameInfoPannel.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 467,
+						"y": 228,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "red.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 128,
+						"h": 128
+					},
+					"frame": {
+						"x": 599,
+						"y": 228,
+						"w": 128,
+						"h": 128
+					}
+				},
+				{
+					"filename": "coin-entry.gif",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 120,
+						"h": 120
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 120,
+						"h": 120
+					},
+					"frame": {
+						"x": 731,
+						"y": 228,
+						"w": 120,
+						"h": 120
+					}
+				},
+				{
+					"filename": "coin.gif",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 120,
+						"h": 120
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 120,
+						"h": 120
+					},
+					"frame": {
+						"x": 855,
+						"y": 228,
+						"w": 120,
+						"h": 120
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:d19bfa9f01c805e097c7dc6f935e9259:d4778263e41ca022597b57500f19c9d6:01b2dbbd44720021de2f617999dc7e2f$"
+	}
+}

@@ -71,6 +71,7 @@ export class MyGame extends Phaser.Game {
     start(): void {
         this.registerSounds()
         this.isMute = Config.mute
+        Howler.autoUnlock = false;
         if(this.isMute) {
             Howler.mute(this.isMute)
         }

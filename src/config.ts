@@ -118,19 +118,19 @@ export class Config {
     }
     
     public static readonly sounds = {
-        click: 'assets/sounds/click1.ogg',
-        switch: 'assets/sounds/switch1.ogg',
-        pling1: 'assets/sounds/pling1.mp3',
-        pling2: 'assets/sounds/pling2.mp3',
-        pling3: 'assets/sounds/pling3.mp3',
-        pling4: 'assets/sounds/pling4.mp3',
-        pling5: 'assets/sounds/pling5.mp3',
-        pling6: 'assets/sounds/pling6.mp3',
-        pling7: 'assets/sounds/pling7.mp3',
-        pling8: 'assets/sounds/pling8.mp3',
-        pling9: 'assets/sounds/pling9.mp3',
-        engine: 'assets/sounds/engine1.ogg',
-        gameover: 'assets/sounds/gameover4.ogg',
+        click: 'assets/sounds/click1.webm',
+        switch: 'assets/sounds/switch1.webm',
+        pling1: 'assets/sounds/pling1.webm',
+        pling2: 'assets/sounds/pling2.webm',
+        pling3: 'assets/sounds/pling3.webm',
+        pling4: 'assets/sounds/pling4.webm',
+        pling5: 'assets/sounds/pling5.webm',
+        pling6: 'assets/sounds/pling6.webm',
+        pling7: 'assets/sounds/pling7.webm',
+        pling8: 'assets/sounds/pling8.webm',
+        pling9: 'assets/sounds/pling9.webm',
+        engine: 'assets/sounds/engine1.webm',
+        gameover: 'assets/sounds/gameover4.webm',
     }
     
     public static readonly packer = {
