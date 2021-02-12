@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">spherebreak</string>
+    <string name="app_id">862095159303</string>
     <string name="title_activity_main">spherebreak</string>
     <string name="package_name">com.spherebreak.app</string>
     <string name="custom_url_scheme">com.spherebreak.app</string>

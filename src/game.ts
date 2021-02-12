@@ -29,6 +29,10 @@ export function initGame(): Phaser.Game {
                 },
             ],
         },
+        audio: {
+            disableWebAudio: true,
+            noAudio: true,
+        },
         scene: [
             BootScene,
             MenuScene,
