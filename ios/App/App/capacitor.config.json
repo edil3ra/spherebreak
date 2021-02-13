@@ -9,6 +9,6 @@
             "launchShowDuration": 0
         }
     },
-    "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh",
+    "linuxAndroidStudioPath": "/opt/android-studio-canary/bin/studio.sh",
     "cordova": {}
 }

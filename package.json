@@ -8,7 +8,7 @@
 		"zip": "rm -rf zzz/sphere.zip && cd public && zip -r ../zzz/sphere.zip *",
 		"start": "npm run dev",
 		"lint": "eslint src/**/**/*",
-        "resources": "cordova-res android && node scripts/resources.js"
+		"resources": "cordova-res android && node scripts/resources.js"
 	},
 	"author": "edil3ra",
 	"license": "MIT",
@@ -45,6 +45,7 @@
 		"webpack-hot-middleware": "^2.25.0"
 	},
 	"dependencies": {
+		"@capacitor-community/native-audio": "^0.1.3",
 		"@capacitor/android": "^2.4.6",
 		"@capacitor/cli": "^2.4.6",
 		"@capacitor/core": "^2.4.6",

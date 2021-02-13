@@ -362,7 +362,8 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {
-        this.game.sounds.click.play()
+        // this.game.sounds.click.play()
+        this.game.playSound('click')
         this.currentDifficulty = graphic.name
         graphic.selectDifficulty()
     }
