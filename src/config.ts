@@ -1,4 +1,4 @@
-import { Difficulty, GameInfo } from '~/models'
+import { Difficulty, GameInfo, SoundModel } from '~/models'
 
 type SkipScene = 'noSkip' | 'game' | 'tutorial'
 
@@ -24,9 +24,9 @@ function setBoard() {
                 fontFamily: 'Play',
                 fontSize: '50px',
                 color: 'white',
-                fontStyle: 'bold', 
-            }
-        }
+                fontStyle: 'bold',
+            },
+        },
     }
 }
 
@@ -65,26 +65,23 @@ function setBoardPanel() {
                 ease: 'Sine.easeInOut',
                 duration: AFTER_TURN_TIMER + 100,
             },
-            
-
         },
         styles: {
             text: {
                 fontFamily: 'Play',
                 fontSize: '13px',
                 color: 'white',
-                fontStyle: 'bold', 
+                fontStyle: 'bold',
             },
             timer: {
                 fontFamily: 'Play',
                 fontSize: '38px',
                 color: 'white',
-                fontStyle: 'bold', 
+                fontStyle: 'bold',
             },
-        }
+        },
     }
 }
-
 
 function setTutorialPanel() {
     return {
@@ -98,41 +95,52 @@ function setTutorialPanel() {
                 fontSize: '14px',
                 lineSpacing: 2,
                 color: 'white',
-            }
+            },
         },
     }
 }
-
 
 export class Config {
     public static readonly debug = process.env.DEBUG
     public static readonly ads = {
         play: false,
-        playAgain: true
+        playAgain: true,
     }
 
     public static readonly mute = Config.debug ? true : true
-    
+
     public static readonly images = {
         background: 'background',
     }
-    
+
     public static readonly sounds = {
-        click: 'assets/sounds/click1.webm',
-        switch: 'assets/sounds/switch1.webm',
-        pling1: 'assets/sounds/pling1.mp3',
-        pling2: 'assets/sounds/pling2.mp3',
-        pling3: 'assets/sounds/pling3.mp3',
-        pling4: 'assets/sounds/pling4.mp3',
-        pling5: 'assets/sounds/pling5.mp3',
-        pling6: 'assets/sounds/pling6.mp3',
-        pling7: 'assets/sounds/pling7.mp3',
-        pling8: 'assets/sounds/pling8.mp3',
-        pling9: 'assets/sounds/pling9.mp3',
-        engine: 'assets/sounds/engine1.webm',
-        gameover: 'assets/sounds/gameover4.webm',
+        click: { name: 'click', webPath: 'assets/sounds/click1.webm', androidPath: 'click1' } as SoundModel,
+        switch: {
+            name: 'switch',
+            webPath: 'assets/sounds/switch1.webm',
+            androidPath: 'switch1',
+        } as SoundModel,
+        pling1: { name: 'pling1', webPath: 'assets/sounds/pling1.mp3', androidPath: 'pling1' } as SoundModel,
+        pling2: { name: 'pling2', webPath: 'assets/sounds/pling2.mp3', androidPath: 'pling2' } as SoundModel,
+        pling3: { name: 'pling3', webPath: 'assets/sounds/pling3.mp3', androidPath: 'pling3' } as SoundModel,
+        pling4: { name: 'pling4', webPath: 'assets/sounds/pling4.mp3', androidPath: 'pling4' } as SoundModel,
+        pling5: { name: 'pling5', webPath: 'assets/sounds/pling5.mp3', androidPath: 'pling5' } as SoundModel,
+        pling6: { name: 'pling6', webPath: 'assets/sounds/pling6.mp3', androidPath: 'pling6' } as SoundModel,
+        pling7: { name: 'pling7', webPath: 'assets/sounds/pling7.mp3', androidPath: 'pling7' } as SoundModel,
+        pling8: { name: 'pling8', webPath: 'assets/sounds/pling8.mp3', androidPath: 'pling8' } as SoundModel,
+        pling9: { name: 'pling9', webPath: 'assets/sounds/pling9.mp3', androidPath: 'pling9' } as SoundModel,
+        engine: {
+            name: 'engine',
+            webPath: 'assets/sounds/engine1.webm',
+            androidPath: 'engine1',
+        } as SoundModel,
+        gameover: {
+            name: 'gameover',
+            webPath: 'assets/sounds/gameover4.webm',
+            androidPath: 'gameover4',
+        } as SoundModel,
     }
-    
+
     public static readonly packer = {
         name: 'packer',
         background: 'background-main.jpg',
@@ -182,7 +190,6 @@ export class Config {
         },
     }
 
-
     public static readonly events = {
         game: {
             CHANGEDATA_SPHERE: 'changedata-sphere',
@@ -199,7 +206,7 @@ export class Config {
             CHANGEDATA_ENTRIES_ACTIVE: 'changedata-entriesActive',
             CHANGEDATA_BORDERS_ALIVE: 'changedata-bordersAlive',
             CHANGEDATA_GAME_STATE: 'changedata-gameState',
-        }
+        },
     }
     public static readonly board = setBoard()
     public static readonly panels = {
@@ -209,7 +216,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ?  'noSkip' : 'noSkip',
+            scene: Config.debug ? 'noSkip' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -349,8 +356,8 @@ export class Config {
                     fontSize: '50px',
                     color: 'white',
                     fontStyle: 'bold',
-                }
-            }
+                },
+            },
         },
         tutorialStartEndScene: {
             styles: {
@@ -359,8 +366,8 @@ export class Config {
                     fontSize: '20px',
                     color: 'white',
                     fontStyle: 'bold',
-                }
-            }
-        }
+                },
+            },
+        },
     }
 }

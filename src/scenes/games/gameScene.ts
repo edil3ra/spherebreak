@@ -1,12 +1,11 @@
 import { Howl } from 'howler'
 import { Config } from '~/config'
 import { CoinGraphics } from '~/entities/Coin'
-import { CoinState, GameConfig, GameState } from '~/models'
+import { CoinState, GameConfig, GameState, plingKeys } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
 import { GameDataManager } from '~/scenes/games/gameDataManager'
 import { MyGame } from '~/game'
-
 
 export class GameScene extends Phaser.Scene {
     public game: MyGame
@@ -18,7 +17,7 @@ export class GameScene extends Phaser.Scene {
     public timerTurn: Phaser.Time.TimerEvent
     public bordersStateChanged: Array<[CoinState, CoinGraphics]>
     public container: Phaser.GameObjects.Container
-    public plings: Array<Howl>
+    public plings: Array<plingKeys>
     public emitterEndGame: Phaser.GameObjects.Particles.ParticleEmitter
     public emitterExplodeBlue: Phaser.GameObjects.Particles.ParticleEmitter
     public emitterExplodeRed: Phaser.GameObjects.Particles.ParticleEmitter
@@ -77,7 +76,7 @@ export class GameScene extends Phaser.Scene {
         this.initTimerSyncCoin()
         this.startTimerTurn()
         this.registerEmitters()
-        this.registerSounds()
+        this.registerPlings()
     }
 
     initData(gameConfig: GameConfig) {
@@ -274,17 +273,17 @@ export class GameScene extends Phaser.Scene {
         })
     }
 
-    registerSounds() {
+    registerPlings() {
         this.plings = [
-            this.game.sounds.pling1,
-            this.game.sounds.pling2,
-            this.game.sounds.pling3,
-            this.game.sounds.pling4,
-            this.game.sounds.pling5,
-            this.game.sounds.pling6,
-            this.game.sounds.pling7,
-            this.game.sounds.pling8,
-            this.game.sounds.pling9,
+            'pling1',
+            'pling2',
+            'pling3',
+            'pling4',
+            'pling5',
+            'pling6',
+            'pling7',
+            'pling8',
+            'pling9',
         ]
     }
 
@@ -383,11 +382,12 @@ export class GameScene extends Phaser.Scene {
     }
 
     playSoundOnCoinActive() {
-        this.plings[this.data.lengthActives % this.plings.length].play()
+        const key = this.plings[this.data.lengthActives % this.plings.length]
+        this.game.playSound(key)
     }
 
     playAnimationOnCoinActive() {
-        this.emitterExplodeBlue.explode(2, this.input.activePointer.x , this.input.activePointer.y)
+        this.emitterExplodeBlue.explode(2, this.input.activePointer.x, this.input.activePointer.y)
         this.emitterExplodeBlue.active = true
         this.emitterExplodeRed.explode(2, this.input.activePointer.x, this.input.activePointer.y)
         this.emitterExplodeRed.active = true
@@ -410,7 +410,7 @@ export class GameScene extends Phaser.Scene {
 
         this.cameras.main.shake(2000, 0.002, false, (_camera: any, duration: number) => {
             if (!enginePlay) {
-                this.game.sounds.engine.play()
+                this.game.playSound('engine')
                 enginePlay = true
             }
 
@@ -424,7 +424,7 @@ export class GameScene extends Phaser.Scene {
                     (_camera: any, duration: number) => {
                         if (!gameOverPlay) {
                             gameOverPlay = true
-                            this.game.sounds.gameover.play()
+                            this.game.playSound('gameover')
                             this.emitterEndGame.setAngle(-90)
                             this.emitterEndGame.setGravityY(-8000)
                             this.emitterEndGame.stop()

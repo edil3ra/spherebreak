@@ -1,8 +1,10 @@
 import { Config } from '~/config'
+import { MyGame } from '~/game'
 import { GameScene } from '~/scenes/games'
 import { ButtonContainer } from '~/ui/buttonContainer'
 
 export class GameOverScene extends Phaser.Scene {
+    public game: MyGame
     public gameScene: GameScene
     public container: Phaser.GameObjects.Container
     public text: Phaser.GameObjects.Text
@@ -45,6 +47,7 @@ export class GameOverScene extends Phaser.Scene {
             Config.scenes.gameOver.button.width,
             Config.scenes.gameOver.button.height
         ).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+            this.game.playSound('click')
             this.HandlePlayAgain()
         })
 
@@ -69,6 +72,7 @@ export class GameOverScene extends Phaser.Scene {
             Config.scenes.gameOver.button.width,
             Config.scenes.gameOver.button.height
         ).on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+            this.game.playSound('click')
             this.handleBackToMenu()
         })
 

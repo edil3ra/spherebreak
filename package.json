@@ -7,6 +7,7 @@
 		"build": "webpack --config webpack.prod.config.js",
 		"zip": "rm -rf zzz/sphere.zip && cd public && zip -r ../zzz/sphere.zip *",
 		"start": "npm run dev",
+		"mobile": "npm run build && npx cap sync",
 		"lint": "eslint src/**/**/*",
 		"resources": "cordova-res android && node scripts/resources.js"
 	},
@@ -50,8 +51,10 @@
 		"@capacitor/cli": "^2.4.6",
 		"@capacitor/core": "^2.4.6",
 		"@gamedistribution.com/html5-sdk": "0.0.2",
+		"@ionic-native/native-audio": "^5.31.1",
 		"@types/howler": "^2.2.1",
 		"cordova-plugin-file": "^6.0.2",
+		"cordova-plugin-nativeaudio": "^3.0.9",
 		"howler": "^2.2.1",
 		"phaser": "^3.50.0",
 		"phaser3-webfont-loader": "^1.0.0",

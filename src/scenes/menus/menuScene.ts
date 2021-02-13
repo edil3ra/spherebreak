@@ -335,11 +335,10 @@ export class MenuScene extends Phaser.Scene {
             this.soundImage.setFrame(Config.packer.soundOff)
             this.game.isMute = true
         }
-        Howler.mute(this.game.isMute)
     }
 
     handleTutorial() {
-        this.game.sounds.click.play()
+        this.game.playSound('click')
         this.scene.start(Config.scenes.keys.tutorial)
     }
 
@@ -348,7 +347,7 @@ export class MenuScene extends Phaser.Scene {
             window.gdsdk.showAd()
         }
         this.saveState()
-        this.game.sounds.click.play()
+        this.game.playSound('click')
         this.cameras.main.fadeOut(300, 0, 0, 0, (_camera: any, percentage: number) => {
             if (percentage >= 1) {
                 this.scene.start(Config.scenes.keys.game, {
@@ -362,21 +361,20 @@ export class MenuScene extends Phaser.Scene {
     }
 
     handleDifficultySelected(graphic: DifficultyGraphics) {
-        // this.game.sounds.click.play()
         this.game.playSound('click')
         this.currentDifficulty = graphic.name
         graphic.selectDifficulty()
     }
 
     handleEntriesSelected(graphic: EntryGrahpics, index: number) {
-        this.game.sounds.click.play()
+        this.game.playSound('click')
         this.selectedEntry = graphic
         this.selectedEntryIndex = index
         this.fromMenuToEntriesSelection()
     }
 
     handleEntrySelected(graphic: EntryGraphicsHelper) {
-        this.game.sounds.click.play()
+        this.game.playSound('click')
         const numbersToExclude = this.entriesGraphics.map((graphic) => {
             return graphic.numero
         })

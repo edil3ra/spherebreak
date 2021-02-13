@@ -117,6 +117,14 @@
         ]
         },
       {
+          "id": "cordova-plugin-nativeaudio.nativeaudio",
+          "file": "plugins/cordova-plugin-nativeaudio/www/nativeaudio.js",
+          "pluginId": "cordova-plugin-nativeaudio",
+        "clobbers": [
+          "window.plugins.NativeAudio"
+        ]
+        },
+      {
           "id": "cordova-plugin-file.ProgressEvent",
           "file": "plugins/cordova-plugin-file/www/ProgressEvent.js",
           "pluginId": "cordova-plugin-file",
@@ -178,7 +186,8 @@
     module.exports.metadata =
     // TOP OF METADATA
     {
-      "cordova-plugin-file": "6.0.2"
+      "cordova-plugin-file": "6.0.2",
+      "cordova-plugin-nativeaudio": "3.0.9"
     };
     // BOTTOM OF METADATA
     });

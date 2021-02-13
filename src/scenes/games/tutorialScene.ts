@@ -266,7 +266,7 @@ Next turn you use 2 coins lose combo
     nextTurn(index: number) {
         this.cameras.main.fadeIn(200, 0, 0, 0)
         if(this.currentTurnIndex > 0) {
-            this.game.sounds.switch.play()
+            this.game.playSound('switch')
         }
         this.pointersImage.forEach((pointerImage) => {
             pointerImage.setVisible(false)

@@ -7,13 +7,12 @@ import { GameOverScene } from './scenes/games/gameOverScene'
 import { TutorialStartEndScene } from './scenes/games/tutorialStartEndScene'
 import { Config } from './config'
 import { Howl, Howler } from 'howler'
-import { Capacitor, Plugins } from "@capacitor/core"
+import { Capacitor, Plugins } from '@capacitor/core'
+import { SoundKeys } from './models'
 const { NativeAudio } = Plugins
-console.log(Capacitor)
-
 
 export class MyGame extends Phaser.Game {
-    public sounds: Record<keyof typeof Config.sounds, Howl>
+    public sounds: Record<SoundKeys, Howl>
     public isMute: boolean
     constructor() {
         super({
@@ -55,46 +54,81 @@ export class MyGame extends Phaser.Game {
     }
 
     registerSounds(): void {
-        if(Capacitor.isNative) {
-            console.log('load assets')
-            NativeAudio.preloadSimple({ assetId: 'click', assetPath: 'click1.ogg'}).then(() => {
-                console.log('hello')
+        if (Capacitor.isNative) {
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.click.name,
+                assetPath: Config.sounds.click.androidPath,
             })
-            NativeAudio.preloadSimple({ assetId: 'click1', assetPath: 'click1'})
-            NativeAudio.preloadSimple({ assetId: 'switch', assetPath: 'sounds/switch1.webm'})
-            NativeAudio.preloadSimple({ assetId: 'ping2', assetPath: Config.sounds.pling2})
-            NativeAudio.preloadSimple({ assetId: 'ping3', assetPath: Config.sounds.pling3})
-            NativeAudio.preloadSimple({ assetId: 'ping4', assetPath: Config.sounds.pling4})
-            NativeAudio.preloadSimple({ assetId: 'ping5', assetPath: Config.sounds.pling5})
-            NativeAudio.preloadSimple({ assetId: 'ping6', assetPath: Config.sounds.pling6})
-            NativeAudio.preloadSimple({ assetId: 'ping7', assetPath: Config.sounds.pling7})
-            NativeAudio.preloadSimple({ assetId: 'ping8', assetPath: Config.sounds.pling8})
-            NativeAudio.preloadSimple({ assetId: 'ping9', assetPath: Config.sounds.pling9})
-            NativeAudio.preloadSimple({ assetId: 'engine', assetPath: Config.sounds.engine})
-            NativeAudio.preloadSimple({ assetId: 'gameover', assetPath: Config.sounds.gameover})
-            
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.switch.name,
+                assetPath: Config.sounds.switch.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling1.name,
+                assetPath: Config.sounds.pling2.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling2.name,
+                assetPath: Config.sounds.pling3.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling3.name,
+                assetPath: Config.sounds.pling4.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling4.name,
+                assetPath: Config.sounds.pling5.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling5.name,
+                assetPath: Config.sounds.pling6.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling6.name,
+                assetPath: Config.sounds.pling7.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling7.name,
+                assetPath: Config.sounds.pling8.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.pling8.name,
+                assetPath: Config.sounds.pling9.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.engine.name,
+                assetPath: Config.sounds.engine.androidPath,
+            })
+            NativeAudio.preloadSimple({
+                assetId: Config.sounds.gameover.name,
+                assetPath: Config.sounds.gameover.androidPath,
+            })
         } else {
             this.sounds = {
-                click: new Howl({ src: [Config.sounds.click] }),
-                switch: new Howl({ src: [Config.sounds.switch] }),
-                pling1: new Howl({ src: [Config.sounds.pling1] }),
-                pling2: new Howl({ src: [Config.sounds.pling2] }),
-                pling3: new Howl({ src: [Config.sounds.pling3] }),
-                pling4: new Howl({ src: [Config.sounds.pling4] }),
-                pling5: new Howl({ src: [Config.sounds.pling5] }),
-                pling6: new Howl({ src: [Config.sounds.pling6] }),
-                pling7: new Howl({ src: [Config.sounds.pling7] }),
-                pling8: new Howl({ src: [Config.sounds.pling8] }),
-                pling9: new Howl({ src: [Config.sounds.pling9] }),
-                engine: new Howl({ src: [Config.sounds.engine] }),
-                gameover: new Howl({ src: [Config.sounds.gameover] }),
-            }   
+                [Config.sounds.click.name]: new Howl({ src: Config.sounds.click.webPath }),
+                [Config.sounds.switch.name]: new Howl({ src: Config.sounds.switch.webPath }),
+                [Config.sounds.pling1.name]: new Howl({ src: Config.sounds.pling1.webPath }),
+                [Config.sounds.pling2.name]: new Howl({ src: Config.sounds.pling2.webPath }),
+                [Config.sounds.pling3.name]: new Howl({ src: Config.sounds.pling3.webPath }),
+                [Config.sounds.pling4.name]: new Howl({ src: Config.sounds.pling4.webPath }),
+                [Config.sounds.pling5.name]: new Howl({ src: Config.sounds.pling5.webPath }),
+                [Config.sounds.pling6.name]: new Howl({ src: Config.sounds.pling6.webPath }),
+                [Config.sounds.pling7.name]: new Howl({ src: Config.sounds.pling7.webPath }),
+                [Config.sounds.pling8.name]: new Howl({ src: Config.sounds.pling8.webPath }),
+                [Config.sounds.pling9.name]: new Howl({ src: Config.sounds.pling9.webPath }),
+                [Config.sounds.engine.name]: new Howl({ src: Config.sounds.engine.webPath }),
+                [Config.sounds.gameover.name]: new Howl({ src: Config.sounds.gameover.webPath }),
+            } as Record<SoundKeys, Howl>
         }
     }
 
-    playSound(key: keyof typeof Config.sounds) {
-        if(Capacitor.isNative) {
-            NativeAudio.play({assetId: key })
+    playSound(key: SoundKeys) {
+        if (this.isMute) {
+            return null
+        }
+        
+        if (Capacitor.isNative) {
+            NativeAudio.play({ assetId: key })
         } else {
             this.sounds[key].play()
         }
@@ -103,10 +137,7 @@ export class MyGame extends Phaser.Game {
     start(): void {
         this.registerSounds()
         this.isMute = Config.mute
-        Howler.autoUnlock = false;
-        if(this.isMute) {
-            Howler.mute(this.isMute)
-        }
+        Howler.autoUnlock = false
         super.start()
     }
 }

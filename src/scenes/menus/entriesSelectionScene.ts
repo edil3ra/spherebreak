@@ -1,13 +1,14 @@
 import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menus/menuStateMachine'
 import { Config } from '~/config'
 import { MenuScene } from '~/scenes/menus'
-import { EntryGrahpics, EntryGraphicsHelper } from './graphics'
+import { EntryGraphicsHelper } from './graphics'
+import { MyGame } from '~/game'
 
 export class EntriesSelectionScene extends Phaser.Scene {
+    game: MyGame
     menuScene: MenuScene
     entriesHelperGraphics: Array<EntryGraphicsHelper>
     entriesHelpContainer: Phaser.GameObjects.Container
-    clickSound: Phaser.Sound.BaseSound
     
     constructor() {
         super({ key: Config.scenes.keys.entriesSelection })
@@ -30,8 +31,6 @@ export class EntriesSelectionScene extends Phaser.Scene {
 
     create() {
         this.setEntriesContainer()
-        this.clickSound = this.sound.add(Config.sounds.click)
-
         this.input.on(
             Phaser.Input.Events.GAMEOBJECT_POINTER_UP,
             () => {
@@ -61,7 +60,7 @@ export class EntriesSelectionScene extends Phaser.Scene {
             entryHelper.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                 .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                    this.clickSound.play()
+                    this.game.playSound('switch')
                     this.menuScene.stateService.send(EVENT_MENU.SELECT_ENTRY, { value: entryHelper })
                 })
             entryHelper.image.setInteractive({ enabled: false })
