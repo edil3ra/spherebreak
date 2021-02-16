@@ -114,10 +114,10 @@ export class Config {
     }
 
     public static readonly sounds = {
-        click: { name: 'click', webPath: 'assets/sounds/click1.webm', androidPath: 'click1' } as SoundModel,
+        click: { name: 'click', webPath: 'assets/sounds/click1.ogg', androidPath: 'click1' } as SoundModel,
         switch: {
             name: 'switch',
-            webPath: 'assets/sounds/switch1.webm',
+            webPath: 'assets/sounds/switch1.ogg',
             androidPath: 'switch1',
         } as SoundModel,
         pling1: { name: 'pling1', webPath: 'assets/sounds/pling1.mp3', androidPath: 'pling1' } as SoundModel,
@@ -131,12 +131,12 @@ export class Config {
         pling9: { name: 'pling9', webPath: 'assets/sounds/pling9.mp3', androidPath: 'pling9' } as SoundModel,
         engine: {
             name: 'engine',
-            webPath: 'assets/sounds/engine1.webm',
+            webPath: 'assets/sounds/engine1.ogg',
             androidPath: 'engine1',
         } as SoundModel,
         gameover: {
             name: 'gameover',
-            webPath: 'assets/sounds/gameover4.webm',
+            webPath: 'assets/sounds/gameover4.ogg',
             androidPath: 'gameover4',
         } as SoundModel,
     }
@@ -216,7 +216,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ? 'noSkip' : 'noSkip',
+            scene: Config.debug ? 'tutorial' : 'noSkip',
         },
         keys: {
             game: 'gameScene',
@@ -294,7 +294,7 @@ export class Config {
                 button: {
                     fontFamily: 'Play',
                     fontSize: '18px',
-                    color: 'white',
+                    color: '#65350F',
                     fontStyle: 'bold',
                 },
                 coin: {
@@ -354,7 +354,7 @@ export class Config {
                 text: {
                     fontFamily: 'Play',
                     fontSize: '50px',
-                    color: 'white',
+                    color: '#65350F',
                     fontStyle: 'bold',
                 },
             },

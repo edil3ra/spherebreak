@@ -17,6 +17,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
     public tweenRevive: Phaser.Tweens.Timeline
     public tweenKill: Phaser.Tweens.Timeline
     public tweenFocus: Phaser.Tweens.Tween
+    public tweenLighting: Phaser.Tweens.Tween
     public defaultScale: number
 
     constructor(
@@ -71,6 +72,9 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
                 break
             case 'unfocus':
                 this.revive()
+                break
+            case 'lighting':
+                this.lighthing()
                 break
         }
         return this
@@ -152,5 +156,16 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
             this.background.scaleX = this.defaultScale
             this.tweenFlipping.pause()
         })  
+    }
+    
+    lighthing() {
+        this.tweenLighting = this.scene.tweens.add({
+            target: this,
+            ease: 'Sine.easeInOut',
+            scale: {
+                from: 1.1,
+                to: 0.9,
+            }
+        })
     }
 }

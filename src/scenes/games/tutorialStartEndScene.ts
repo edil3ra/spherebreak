@@ -1,10 +1,13 @@
 import { Config } from '~/config'
 import { TutorialScene } from './tutorialScene'
 
+export type TutorialState = 'start' | 'end'
+
 export class TutorialStartEndScene extends Phaser.Scene {
     public tutorialScene: TutorialScene
     public container: Phaser.GameObjects.Container
     public text: Phaser.GameObjects.Text
+    public state: TutorialState
 
     constructor() {
         super({ key: Config.scenes.keys.tutorialStartEnd })
@@ -12,9 +15,9 @@ export class TutorialStartEndScene extends Phaser.Scene {
 
     init() {
         this.tutorialScene = this.scene.get(Config.scenes.keys.tutorial) as TutorialScene
-        this.events.on('wake', () => {
-            this.showText()
-        })
+        // this.events.on('wake', () => {
+        //     this.showText()
+        // })
         this.registerClick()
     }
 
@@ -28,26 +31,33 @@ export class TutorialStartEndScene extends Phaser.Scene {
         this.text.setOrigin(0.5, 0.5)
     }
 
-    showText() {
-        const stateToText = {
-            start: 'Welcome, Tap to start the tutorial!',
-            middle: '_',
-            end: 'Tap to end the tutorial!',
-        }
-        this.text.setText(stateToText[this.tutorialScene.tutorialState])
+    setText(text: string) {
+        console.log(text)
+        this.text.setText(text)
     }
-
+    
+    // showText() {
+        // const stateToText = {
+        //     start: 'Welcome, Tap to start the tutorial!',
+        //     middle: '_',
+        //     end: 'Tap to end the tutorial!',
+        // }
+        // this.text.setText(stateToText[this.tutorialScene.tutorialState])
+        // this.text.setText(this.texts[this.state])
+    // }
+    
     registerClick() {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            if (this.tutorialScene.tutorialState === 'start') {
-                this.handleStartTutorial()
-            } else if (this.tutorialScene.tutorialState === 'end') {
+            if (this.state === 'end') {
                 this.handleEndTutorial()
+            }
+            else {
+                this.handleNextTutorial()
             }
         })
     }
 
-    handleStartTutorial() {
+    handleNextTutorial() {
         this.scene.resume(Config.scenes.keys.tutorial)
         this.scene.sleep(Config.scenes.keys.tutorialStartEnd)
     }

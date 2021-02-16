@@ -52,7 +52,7 @@ export class BoardLeftPanel {
 
     initQuotaText() {
         this.prefixQuotaText = this.scene.add
-            .text(0, 0, 'Quota')
+            .text(0, 0, 'Score')
             .setPosition(0, Config.panels.board.offsetItem + 8)
             .setOrigin(0, 0.5)
             .setStyle(Config.panels.board.styles.text)

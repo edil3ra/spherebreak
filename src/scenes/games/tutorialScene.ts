@@ -4,6 +4,7 @@ import { TutorialState } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
 import { TutorialHelperPanel } from '~/scenes/games/panels/tutorialHelperPanel'
+import { TutorialStartEndScene } from './tutorialStartEndScene'
 
 type Turn = {
     pointers: Array<{ x: number; y: number }>
@@ -11,10 +12,15 @@ type Turn = {
     sphere: number
     entries: Array<number>
     borders: Array<number>
+    entriesActive: Array<boolean>
+    bordersActive: Array<boolean>
+    bordersAlive: Array<boolean>
+    entriesLigthing: Array<boolean>
+    bordersLigthing: Array<boolean>
     timer: number
     turn: number
-    quota: number
-    maxQuota: number
+    score: number
+    maxScore: number
     maxTurn: number
     comboCount: number
     comboMultiple: number
@@ -25,6 +31,7 @@ type Turn = {
 export class TutorialScene extends Phaser.Scene {
     public game: MyGame
     public tutorialState: TutorialState
+    public tutorialStartEndScene: TutorialStartEndScene
     public background: Phaser.GameObjects.Image
     public pointersImage: Array<Phaser.GameObjects.Image>
     public boardPanel: BoardPanelContainer
@@ -36,7 +43,6 @@ export class TutorialScene extends Phaser.Scene {
     public currentTurnIndex: number
     public tweenCursor: Phaser.Tweens.Tween
     public container: Phaser.GameObjects.Container
-
 
     constructor() {
         super({ key: Config.scenes.keys.tutorial })
@@ -54,22 +60,17 @@ export class TutorialScene extends Phaser.Scene {
             },
             false
         )
-        this.tutorialState = 'start'
+        this.tutorialStartEndScene = this.scene.get(
+            Config.scenes.keys.tutorialStartEnd
+        ) as TutorialStartEndScene
         this.board = new Board(this, false)
         this.boardPanel = new BoardPanelContainer(this)
         this.tutorialHelperPanel = new TutorialHelperPanel(this)
         this.currentTurn = this.defaultTurn()
         this.currentTurnIndex = 0
 
-
         this.scene.launch(Config.scenes.keys.tutorialStartEnd)
         this.scene.sleep(Config.scenes.keys.tutorialStartEnd)
-
-        this.cameras.main.fadeIn(300, 0, 0, 0, (camera: any, percentage: number) => {
-            if(percentage >= 1) {
-                this.startTutorial()            
-            }
-        })
         this.events.on('resume', () => {
             this.tweens.add({
                 ...Config.scenes.game.tweens.camera.in,
@@ -83,7 +84,7 @@ export class TutorialScene extends Phaser.Scene {
         this.setBackground()
         this.board.create()
         this.boardPanel.create()
-        this.tutorialHelperPanel.create()
+        // this.tutorialHelperPanel.create()
         this.pointersImage = []
         for (let i = 0; i < 12; i++) {
             this.pointersImage.push(
@@ -95,7 +96,7 @@ export class TutorialScene extends Phaser.Scene {
         this.container = this.add.container(0, 0, [
             this.board.container,
             this.boardPanel.container,
-            this.tutorialHelperPanel.container,
+            // this.tutorialHelperPanel.container,
             ...this.pointersImage,
         ])
         this.setPositionContainer()
@@ -104,6 +105,14 @@ export class TutorialScene extends Phaser.Scene {
         this.attachTweenCursor()
         this.registerClickNextTurn()
         this.nextTurn(this.currentTurnIndex)
+
+        this.cameras.main.fadeIn(200, 0, 0, 0, (camera: any, percentage: number) => {
+            if (percentage >= 1) {
+                this.tutorialStartEndScene.state = 'start'
+                this.tutorialStartEndScene.setText('Welcome to Spherebreak') 
+                this.switchTutorial()
+            }
+        })
     }
 
     attachTweenCursor() {
@@ -127,42 +136,34 @@ export class TutorialScene extends Phaser.Scene {
             sphere: 4,
             entries: [1, 2, 3, 4],
             borders: [8, 2, 9, 4, 7, 8, 2, 3, 1, 2, 4, 3],
+            entriesActive: Array(4).fill(false),
+            bordersActive: Array(12).fill(false),
+            bordersAlive: Array(12).fill(false),
+            entriesLigthing: Array(12).fill(false),
+            bordersLigthing: Array(12).fill(false),
             timer: 30,
-            turn: 5,
-            quota: 0,
-            maxQuota: 10,
+            turn: 1,
+            score: 0,
+            maxScore: 10,
             maxTurn: 10,
-            comboCount: 3,
-            comboMultiple: 4,
-            comboCountGoal: 3,
-            comboMultipleGoal: 2,
+            comboCount: 0,
+            comboMultiple: 0,
+            comboCountGoal: 0,
+            comboMultipleGoal: 0,
         }
     }
 
     buildTurnsTemplate(): Array<Partial<Turn>> {
-        const bordersGraphicsPosition = this.board.entriesGraphics.map((entry) => {
-            return {
-                x: entry.x + this.board.container.x + Config.board.entrySize + Config.board.entryPadding - 16,
-                y: entry.y + this.board.container.y + Config.board.entrySize + Config.board.entryPadding,
-            }
-        })
 
         const entriesGraphicsPosition = this.board.bordersGraphics.map((border) => {
             return { x: border.x + this.board.container.x - 12, y: border.y + this.board.container.y }
         })
-
+        
         return [
             {
-                pointers: [
-                    {
-                        x: this.board.container.x + this.board.sphereGraphics.x - 16,
-                        y: this.board.container.y + this.board.sphereGraphics.y,
-                    },
-                ],
-                text: `Core sphere is the numbero to reach
-You can also reach it with a multiple
-ex 4 -> 8
-`,
+                entriesActive: [false, true, false, false],
+                comboMultipleGoal: 2,
+                comboMultiple: 1,
             },
             {
                 pointers: entriesGraphicsPosition,
@@ -172,71 +173,13 @@ They dissappear after you use it
 They increase the quota by one`,
             },
             {
-                pointers: bordersGraphicsPosition,
-                text: `4 coins that are in yellowish color
-They are positioned in square borders
-They never dissapear
-They don't increase the quota`,
-            },
-            {
-                pointers: [
-                    {
-                        x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
-                        y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 12,
-                    },
-                ],
-                text: `The game comes in turns
-wher core break, turn ends
-You will need to complete the quota
-before all the turns ends!`,
-            },
-            {
-                pointers: [
-                    {
-                        x: this.boardPanel.container.x + this.boardPanel.boardLeftPanel.container.x - 16,
-                        y: this.boardPanel.container.y + this.boardPanel.boardLeftPanel.container.y + 32,
-                    },
-                ],
-                text: `Quota is the game game score
-Reach teh quota and win the game
-`,
-            },
-            {
-                pointers: [
-                    {
-                        x: this.boardPanel.container.x + this.boardPanel.boardMiddlePanel.container.x - 24,
-                        y: this.boardPanel.container.y + this.boardPanel.boardMiddlePanel.container.y + 0,
-                    },
-                ],
-                text: `Every turn, there's a time limit
-If the time runs out
-you will automatically lose the turn`,
-            },
-            {
                 pointers: [
                     {
                         x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
                         y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
                     },
                 ],
-                text: `You have a core number 2. 2,4,6,8
-You make a sum of 8, combo
-Next turn
-You have a core number 3. 3,6,9,12
-You make a sum of 12, combo
-`,
-            },
-            {
-                pointers: [
-                    {
-                        x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
-                        y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 32,
-                    },
-                ],
-                text: `You used 3 coins previous turn
-Next turn you use 3 coins combo
-Next turn you use 2 coins lose combo
-`,
+                entriesActive: [false, true, false, false],
             },
         ]
     }
@@ -251,13 +194,21 @@ Next turn you use 2 coins lose combo
         this.input.on(
             Phaser.Input.Events.POINTER_DOWN,
             () => {
+                console.log(this.turns[this.currentTurnIndex].text)
+                console.log(this.turns[this.currentTurnIndex].text !== '')
                 if (this.currentTurnIndex === this.turns.length - 1) {
-                    this.tutorialState = 'end'
-                    this.endTutorial()
+                    this.tutorialStartEndScene.state = 'end'
+                    this.switchTutorial()
                 } else {
-                    this.currentTurnIndex += 1
-                    this.nextTurn(this.currentTurnIndex)
+                    if(this.turns[this.currentTurnIndex].text !== '' ) {
+                        console.log('hello')
+                        this.tutorialStartEndScene.setText(this.turns[this.currentTurnIndex].text)
+                        this.switchTutorial()
+                    } else {
+                        this.nextTurn(this.currentTurnIndex)                        
+                    }
                 }
+                this.currentTurnIndex += 1
             },
             this
         )
@@ -265,7 +216,7 @@ Next turn you use 2 coins lose combo
 
     nextTurn(index: number) {
         this.cameras.main.fadeIn(200, 0, 0, 0)
-        if(this.currentTurnIndex > 0) {
+        if (this.currentTurnIndex > 0) {
             this.game.playSound('switch')
         }
         this.pointersImage.forEach((pointerImage) => {
@@ -280,13 +231,19 @@ Next turn you use 2 coins lose combo
         this.board.sphereGraphics.setText(currentTurn.sphere)
         currentTurn.entries.forEach((border: number, index: number) => {
             this.board.entriesGraphics[index].setText(border)
+            if (currentTurn.entriesActive[index]) {
+                this.board.entriesGraphics[index].setState('active')
+            }
         })
         currentTurn.borders.forEach((border: number, index: number) => {
             this.board.bordersGraphics[index].setText(border)
+            if (currentTurn.bordersActive[index]) {
+                this.board.bordersGraphics[index].setState('active')
+            }
         })
         this.boardPanel.boardLeftPanel.setTurnText(currentTurn.turn, currentTurn.maxTurn)
         this.boardPanel.boardMiddlePanel.setTimerText(currentTurn.timer)
-        this.boardPanel.boardLeftPanel.setQuotaText(currentTurn.quota, currentTurn.maxQuota)
+        this.boardPanel.boardLeftPanel.setQuotaText(currentTurn.score, currentTurn.maxScore)
         this.boardPanel.boardRigthPanel.setComboCountText(
             currentTurn.comboCount,
             currentTurn.comboMultipleGoal
@@ -295,22 +252,9 @@ Next turn you use 2 coins lose combo
             currentTurn.comboMultiple,
             currentTurn.comboMultipleGoal
         )
-        this.tutorialHelperPanel.setText(currentTurn.text)
     }
 
-    startTutorial() {
-        this.tweens.add({
-            ...Config.scenes.game.tweens.camera.out,
-            targets: this.cameras.main,
-            onComplete: () => {
-                this.scene.pause(Config.scenes.keys.tutorial)
-                this.scene.wake(Config.scenes.keys.tutorialStartEnd)
-                this.scene.bringToTop(Config.scenes.keys.tutorialStartEnd)
-            },
-        })
-    }
-
-    endTutorial() {
+    switchTutorial() {
         this.tweens.add({
             ...Config.scenes.game.tweens.camera.out,
             targets: this.cameras.main,
@@ -332,13 +276,7 @@ Next turn you use 2 coins lose combo
     setPositionContainer() {
         this.container.setPosition(
             this.scale.width / 2 - Config.board.width / 2,
-            this.scale.height / 2 -
-                (Config.board.height +
-                    Config.panels.board.height +
-                    Config.panels.tutorial.height +
-                    Config.panels.tutorial.marginTop +
-                    Config.board.marginTop) /
-                    2
+            this.scale.height / 2 - (Config.board.height + Config.panels.board.height + 10) / 2
         )
     }
 }

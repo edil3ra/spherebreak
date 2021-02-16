@@ -13,7 +13,7 @@ export type GameConfig = {
 }
 
 export type GameState = 'startGame' | 'winGame' | 'loseGame' | 'winTurn' | 'loseTurn'
-export type CoinState = 'inactive' | 'active' | 'dead' | 'focus' | 'unfocus'
+export type CoinState = 'inactive' | 'active' | 'dead' | 'focus' | 'unfocus' | 'lighting'
 export type TutorialState = 'start' | 'middle' | 'end'
 
 export type plingKeys = 
