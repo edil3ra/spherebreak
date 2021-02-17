@@ -26,6 +26,12 @@ function setBoard() {
                 color: 'white',
                 fontStyle: 'bold',
             },
+            combo: {
+                fontFamily: 'Play',
+                fontSize: '24px',
+                color: 'gold',
+                fontStyle: 'bold',
+            },
         },
     }
 }
@@ -216,7 +222,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ? 'tutorial' : 'noSkip',
+            scene: Config.debug ? 'game' : 'noSkip',
         },
         keys: {
             game: 'gameScene',

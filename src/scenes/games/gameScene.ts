@@ -239,6 +239,8 @@ export class GameScene extends Phaser.Scene {
                     break
                 case 'winTurn':
                     this.board.updateScore(this.data.score)
+                    this.board.updateComboCount(this.data.comboCount)
+                    this.board.updateComboMultiple(this.data.comboMultiple)
                     this.cameras.main.shake(
                         Config.scenes.game.afterTurnTimer,
                         Config.scenes.game.afterTurnShakeIntensity,
@@ -252,6 +254,8 @@ export class GameScene extends Phaser.Scene {
                     break
                 case 'loseTurn':
                     this.board.updateScore(0)
+                    this.board.updateComboCount(0)
+                    this.board.updateComboMultiple(0)
                     this.cameras.main.shake(
                         Config.scenes.game.afterTurnTimer * 3,
                         Config.scenes.game.afterTurnShakeIntensity * 10,

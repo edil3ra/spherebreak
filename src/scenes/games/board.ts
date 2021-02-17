@@ -12,6 +12,11 @@ export class Board {
     public background: Phaser.GameObjects.TileSprite
     public scoreTween: Phaser.Tweens.Tween
     public scoreText: Phaser.GameObjects.Text
+    public comboCountTween: Phaser.Tweens.Tween
+    public comboCountText: Phaser.GameObjects.Text
+    public comboMultipleTween: Phaser.Tweens.Tween
+    public comboMultipleText: Phaser.GameObjects.Text
+    
     public handleClickedBorder: (index: number) => void
     public handleClickedEntry: (index: number) => void
     public isInteractive: boolean
@@ -28,6 +33,8 @@ export class Board {
         this.setCoinGraphicsAndContainer()
         this.setEntriesGraphicsAndContainer()
         this.setScore()
+        this.setComboCount()
+        this.setComboMultiple()
         this.setBoardContainer()
     }
 
@@ -42,28 +49,96 @@ export class Board {
             .setOrigin(0.5, 0.5)
     }
 
+    setComboCount() {
+        this.comboCountText = this.scene.add
+            .text(
+                Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5,
+                Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5,
+                '',
+                Config.board.styles.combo
+            )
+            .setOrigin(0.5, 0.5)
+    }
+
+    setComboMultiple() {
+        this.comboMultipleText = this.scene.add
+            .text(
+                Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5,
+                Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5,
+                '',
+                Config.board.styles.combo
+            )
+            .setOrigin(0.5, 0.5)
+    }
+    
+
     updateScore(score: number) {
         this.scoreText.setText(`+ ${score}`)
         this.scoreText.setAlpha(1)
         this.scoreText.x =
             Config.board.borderPadding +
             Config.board.borderSize +
-            Config.board.entrySize * 0.5 +
-            Phaser.Math.Between(-20, 20)
+            Config.board.entrySize * 0.5
         this.scoreText.y = Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5
         this.scoreTween = this.scene.tweens.add({
             targets: [this.scoreText],
             y: {
                 from: this.scoreText.y,
-                to: this.scoreText.y - 150,
+                to: this.scoreText.y - 120,
             },
             ease: 'Linear',
-            duration: 600,
+            duration: 800,
             onComplete: () => {
                 this.scoreText.setAlpha(0)
             },
         })
     }
+
+    updateComboCount(count: number) {
+        this.comboCountText.setText(`x ${count}`)
+        this.comboCountText.setAlpha(1)
+        this.comboCountText.x =
+            Config.board.borderPadding +
+            Config.board.borderSize +
+            Config.board.entrySize * 0.5 - 40
+        this.comboCountText.y = Config.board.borderPadding + Config.board.borderSize - 20 + Config.board.entrySize * 0.5
+        this.scoreTween = this.scene.tweens.add({
+            targets: [this.comboCountText],
+            y: {
+                from: this.comboCountText.y,
+                to: this.comboCountText.y - 150,
+            },
+            ease: 'Linear',
+            duration: 800,
+            onComplete: () => {
+                this.comboCountText.setAlpha(0)
+            },
+        })
+    }
+
+    updateComboMultiple(multiple: number) {
+        this.comboMultipleText.setText(`x ${multiple}`)
+        this.comboMultipleText.setAlpha(1)
+        this.comboMultipleText.x =
+            Config.board.borderPadding +
+            Config.board.borderSize +
+            Config.board.entrySize * 0.5 + 40
+        this.comboMultipleText.y = Config.board.borderPadding + Config.board.borderSize - 20 + Config.board.entrySize * 0.5
+        this.scoreTween = this.scene.tweens.add({
+            targets: [this.comboMultipleText],
+            y: {
+                from: this.comboMultipleText.y,
+                to: this.comboMultipleText.y - 150,
+            },
+            ease: 'Linear',
+            duration: 800,
+            onComplete: () => {
+                this.comboMultipleText.setAlpha(0)
+            },
+        })
+    }
+    
+    
 
     attachClickBorder(handleClickBorder: (index: number) => void): this {
         this.handleClickedBorder = handleClickBorder.bind(this.scene)
@@ -187,6 +262,8 @@ export class Board {
             this.entriesContainer,
             this.sphereGraphics,
             this.scoreText,
+            this.comboCountText,
+            this.comboMultipleText,
         ])
         this.setPosition()
     }
