@@ -13,10 +13,10 @@ export type GameConfig = {
 }
 
 export type GameState = 'startGame' | 'winGame' | 'loseGame' | 'winTurn' | 'loseTurn'
-export type CoinState = 'inactive' | 'active' | 'dead' | 'focus' | 'unfocus' | 'lighting'
+export type CoinState = 'inactive' | 'active' | 'dead' | 'focus' | 'unfocus' | 'lighting' | 'delight'
 export type TutorialState = 'start' | 'middle' | 'end'
 
-export type plingKeys = 
+export type plingKeys =
     | 'pling1'
     | 'pling2'
     | 'pling3'
@@ -27,12 +27,7 @@ export type plingKeys =
     | 'pling8'
     | 'pling9'
 
-export type SoundKeys =
-    | 'click'
-    | 'switch'
-    | 'engine'
-    | 'gameover'
-    | plingKeys
+export type SoundKeys = 'click' | 'switch' | 'engine' | 'gameover' | plingKeys
 
 export type SoundModel = {
     name: SoundKeys

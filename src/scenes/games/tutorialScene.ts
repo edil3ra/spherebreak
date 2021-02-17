@@ -12,11 +12,11 @@ type Turn = {
     sphere: number
     entries: Array<number>
     borders: Array<number>
-    entriesActive: Array<boolean>
-    bordersActive: Array<boolean>
-    bordersAlive: Array<boolean>
-    entriesLigthing: Array<boolean>
-    bordersLigthing: Array<boolean>
+    entriesActive: Array<number>
+    bordersActive: Array<number>
+    bordersDead: Array<number>
+    entriesLigthing: Array<number>
+    bordersLigthing: Array<number>
     timer: number
     turn: number
     score: number
@@ -76,6 +76,9 @@ export class TutorialScene extends Phaser.Scene {
                 ...Config.scenes.game.tweens.camera.in,
                 targets: this.cameras.main,
                 callbackScope: this,
+                onComplete: () => {
+                    this.nextTurnOrShowText()
+                },
             })
         })
     }
@@ -96,20 +99,22 @@ export class TutorialScene extends Phaser.Scene {
         this.container = this.add.container(0, 0, [
             this.board.container,
             this.boardPanel.container,
-            // this.tutorialHelperPanel.container,
             ...this.pointersImage,
         ])
         this.setPositionContainer()
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
-        this.attachTweenCursor()
-        this.registerClickNextTurn()
-        this.nextTurn(this.currentTurnIndex)
+        // this.attachTweenCursor()
+        // this.registerClickNextTurn()
+        // this.nextTurn(this.currentTurnIndex)
 
-        this.cameras.main.fadeIn(200, 0, 0, 0, (camera: any, percentage: number) => {
+        this.cameras.main.fadeIn(200, 0, 0, 0, (_camera: any, percentage: number) => {
             if (percentage >= 1) {
                 this.tutorialStartEndScene.state = 'start'
-                this.tutorialStartEndScene.setText('Welcome to Spherebreak') 
+                this.tutorialStartEndScene.setText(`
+Welcome to Spherebreak!
+Tap to enter tutorial
+`)
                 this.switchTutorial()
             }
         })
@@ -131,16 +136,16 @@ export class TutorialScene extends Phaser.Scene {
 
     defaultTurn(): Turn {
         return {
-            pointers: [{ x: 0, y: 0 }],
+            pointers: [],
             text: '',
             sphere: 4,
             entries: [1, 2, 3, 4],
-            borders: [8, 2, 9, 4, 7, 8, 2, 3, 1, 2, 4, 3],
-            entriesActive: Array(4).fill(false),
-            bordersActive: Array(12).fill(false),
-            bordersAlive: Array(12).fill(false),
-            entriesLigthing: Array(12).fill(false),
-            bordersLigthing: Array(12).fill(false),
+            borders: [8, 2, 9, 4, 7, 8, 2, 3, 1, 2, 4, 5],
+            entriesActive: Array(4).fill(0),
+            bordersActive: Array(12).fill(0),
+            bordersDead: Array(12).fill(0),
+            entriesLigthing: Array(12).fill(0),
+            bordersLigthing: Array(12).fill(0),
             timer: 30,
             turn: 1,
             score: 0,
@@ -154,32 +159,57 @@ export class TutorialScene extends Phaser.Scene {
     }
 
     buildTurnsTemplate(): Array<Partial<Turn>> {
-
         const entriesGraphicsPosition = this.board.bordersGraphics.map((border) => {
             return { x: border.x + this.board.container.x - 12, y: border.y + this.board.container.y }
         })
-        
+
         return [
             {
-                entriesActive: [false, true, false, false],
-                comboMultipleGoal: 2,
-                comboMultiple: 1,
+                entriesLigthing: [0, 1, 0, 0],
             },
             {
-                pointers: entriesGraphicsPosition,
-                text: `12 coins that are in blue color
-They are positioned in the corner
+                text: `
+You click on an entry coin
+Entry coin reapear after each turn
+They don't increase the score
+Used it as the main way to make combo
+`,
+            },
+            {
+                entriesActive: [0, 1, 0, 0],
+                bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                score: 0,
+            },
+            {
+                text: `
+You click on a border coin
 They dissappear after you use it
-They increase the quota by one`,
+They reapear after 4 turn
+They increase the quota by one
+Use it to make more point`,
             },
             {
-                pointers: [
-                    {
-                        x: this.boardPanel.container.x + this.boardPanel.boardRigthPanel.container.x - 16,
-                        y: this.boardPanel.container.y + this.boardPanel.boardRigthPanel.container.y + 12,
-                    },
-                ],
-                entriesActive: [false, true, false, false],
+                entriesActive:   [0, 1, 0, 0],
+                bordersActive:   [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                score: 1,
+            },
+            {
+                text: `
+When turn end your score is calculated
+You have 10 turns to win the game
+Reach the maximum score before all turn end
+`
+            },
+            {
+                bordersLigthing: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                bordersDead: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
             },
         ]
     }
@@ -190,28 +220,31 @@ They increase the quota by one`,
         })
     }
 
-    registerClickNextTurn() {
-        this.input.on(
-            Phaser.Input.Events.POINTER_DOWN,
-            () => {
-                console.log(this.turns[this.currentTurnIndex].text)
-                console.log(this.turns[this.currentTurnIndex].text !== '')
-                if (this.currentTurnIndex === this.turns.length - 1) {
-                    this.tutorialStartEndScene.state = 'end'
-                    this.switchTutorial()
-                } else {
-                    if(this.turns[this.currentTurnIndex].text !== '' ) {
-                        console.log('hello')
-                        this.tutorialStartEndScene.setText(this.turns[this.currentTurnIndex].text)
-                        this.switchTutorial()
-                    } else {
-                        this.nextTurn(this.currentTurnIndex)                        
-                    }
-                }
-                this.currentTurnIndex += 1
-            },
-            this
-        )
+    // registerClickNextTurn() {
+    //     this.input.on(
+    //         Phaser.Input.Events.POINTER_DOWN,
+    //         this.nextTurnOrShowText,
+    //         this
+    //     )
+    // }
+
+    nextTurnOrShowText() {
+        if (this.currentTurnIndex === this.turns.length) {
+            this.tutorialStartEndScene.state = 'end'
+            this.tutorialStartEndScene.setText(`Tap to end tutorial`)
+            this.switchTutorial()
+            
+            return
+        }
+        if (this.turns[this.currentTurnIndex].text === '') {
+            this.nextTurn(this.currentTurnIndex)
+            // this.currentTurnIndex += 1
+        } else {
+            this.tutorialStartEndScene.setText(this.turns[this.currentTurnIndex].text)
+            this.switchTutorial()
+        }
+        this.currentTurnIndex += 1
+
     }
 
     nextTurn(index: number) {
@@ -229,18 +262,51 @@ They increase the quota by one`,
         this.attachTweenCursor()
 
         this.board.sphereGraphics.setText(currentTurn.sphere)
-        currentTurn.entries.forEach((border: number, index: number) => {
-            this.board.entriesGraphics[index].setText(border)
+        currentTurn.entries.forEach((value: number, index: number) => {
+            this.board.entriesGraphics[index].setText(value)
+            if (currentTurn.entriesLigthing[index] === 1) {
+                this.board.entriesGraphics[index].background
+                    .setInteractive({ cursor: 'pointer', pixelPerfect: true })
+                    .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                        this.board.entriesGraphics[index].background.off(
+                            Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
+                        )
+                        this.board.entriesGraphics[index].setState('lighting')
+                        this.time.delayedCall(100, () => {
+                            this.board.entriesGraphics[index].setState('delight')
+                            this.nextTurnOrShowText()
+                        }, [], this)
+                    })
+                this.board.entriesGraphics[index].setState('lighting')
+            }
             if (currentTurn.entriesActive[index]) {
                 this.board.entriesGraphics[index].setState('active')
+            } else {
+                this.board.entriesGraphics[index].setState('inactive')
             }
         })
         currentTurn.borders.forEach((border: number, index: number) => {
             this.board.bordersGraphics[index].setText(border)
-            if (currentTurn.bordersActive[index]) {
+            if (currentTurn.bordersLigthing[index] === 1) {
+                this.board.bordersGraphics[index].setState('lighting')
+                this.board.bordersGraphics[index].background
+                    .setInteractive({ cursor: 'pointer', pixelPerfect: true })
+                    .once(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
+                        this.board.bordersGraphics[index].background.off(
+                            Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
+                        )
+                        // this.time.delayedCall(100, this.nextTurnOrShowText, [], this)
+                        this.nextTurnOrShowText()
+                    })
+            }
+            if (currentTurn.bordersActive[index] === 1) {
                 this.board.bordersGraphics[index].setState('active')
             }
+            if (currentTurn.bordersDead[index] === 1) {
+                this.board.bordersGraphics[index].setState('dead')
+            }
         })
+
         this.boardPanel.boardLeftPanel.setTurnText(currentTurn.turn, currentTurn.maxTurn)
         this.boardPanel.boardMiddlePanel.setTimerText(currentTurn.timer)
         this.boardPanel.boardLeftPanel.setQuotaText(currentTurn.score, currentTurn.maxScore)

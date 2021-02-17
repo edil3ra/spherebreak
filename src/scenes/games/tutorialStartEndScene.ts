@@ -32,7 +32,6 @@ export class TutorialStartEndScene extends Phaser.Scene {
     }
 
     setText(text: string) {
-        console.log(text)
         this.text.setText(text)
     }
     
@@ -48,6 +47,7 @@ export class TutorialStartEndScene extends Phaser.Scene {
     
     registerClick() {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
+            console.log('cliced')
             if (this.state === 'end') {
                 this.handleEndTutorial()
             }

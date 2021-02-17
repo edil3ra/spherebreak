@@ -42,6 +42,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
 
         this.add([this.background, this.text])
         this.setTweenFlipping()
+        this.setDelightFlipping()
         this.defaultScale = this.background.scaleX
     }
 
@@ -76,6 +77,10 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
             case 'lighting':
                 this.lighthing()
                 break
+            case 'delight':
+                this.delight()
+                break
+                
         }
         return this
     }
@@ -90,6 +95,21 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
             yoyo: true,
             paused: true,
         })        
+    }
+
+    setDelightFlipping() {
+        this.tweenLighting = this.scene.tweens.add({
+            targets: this,
+            ease: 'Sine.easeInOut',
+            scale: {
+                from: 1,
+                to: 1.1,
+            },
+            duration: 800,
+            yoyo: true,
+            repeat: -1,
+            paused: true,
+        })            
     }
 
     revive() {
@@ -159,13 +179,11 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
     }
     
     lighthing() {
-        this.tweenLighting = this.scene.tweens.add({
-            target: this,
-            ease: 'Sine.easeInOut',
-            scale: {
-                from: 1.1,
-                to: 0.9,
-            }
-        })
+        this.tweenLighting.resume()
+    }
+
+    delight() {
+        this.setScale(1)
+        this.tweenLighting.pause()
     }
 }
