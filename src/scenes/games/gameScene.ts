@@ -238,34 +238,10 @@ export class GameScene extends Phaser.Scene {
                 case 'startGame':
                     break
                 case 'winTurn':
-                    this.board.updateScore(this.data.score)
-                    this.board.updateComboCount(this.data.comboCount)
-                    this.board.updateComboMultiple(this.data.comboMultiple)
-                    this.cameras.main.shake(
-                        Config.scenes.game.afterTurnTimer,
-                        Config.scenes.game.afterTurnShakeIntensity,
-                        true,
-                        (_camera: any, duration: number) => {
-                            if (duration === 1) {
-                                this.startTimerTurn()
-                            }
-                        }
-                    )
+                    this.handleWinTurn()
                     break
                 case 'loseTurn':
-                    this.board.updateScore(0)
-                    this.board.updateComboCount(0)
-                    this.board.updateComboMultiple(0)
-                    this.cameras.main.shake(
-                        Config.scenes.game.afterTurnTimer * 3,
-                        Config.scenes.game.afterTurnShakeIntensity * 10,
-                        true,
-                        (_camera: any, duration: number) => {
-                            if (duration === 1) {
-                                this.startTimerTurn()
-                            }
-                        }
-                    )
+                    this.handleLoseTurn()
                     break
                 case 'winGame':
                     this.handleWin()
@@ -397,6 +373,38 @@ export class GameScene extends Phaser.Scene {
         this.emitterExplodeRed.active = true
     }
 
+    handleLoseTurn() {
+        this.board.updateScore(0)
+        this.board.updateComboCount(0)
+        this.board.updateComboMultiple(0)
+        this.cameras.main.shake(
+            Config.scenes.game.afterTurnTimer * 3,
+            Config.scenes.game.afterTurnShakeIntensity * 10,
+            true,
+            (_camera: any, duration: number) => {
+                if (duration === 1) {
+                    this.startTimerTurn()
+                }
+            }
+        )
+    }
+
+    handleWinTurn() {
+        this.board.updateScore(this.data.score)
+        this.board.updateComboCount(this.data.comboCount)
+        this.board.updateComboMultiple(this.data.comboMultiple)
+        this.cameras.main.shake(
+            Config.scenes.game.afterTurnTimer,
+            Config.scenes.game.afterTurnShakeIntensity,
+            true,
+            (_camera: any, duration: number) => {
+                if (duration === 1) {
+                    this.startTimerTurn()
+                }
+            }
+        )
+    }
+    
     handleLose() {
         this.handleEndGame(Config.packer.emitterRed, new Phaser.Display.Color(255, 100, 100))
     }

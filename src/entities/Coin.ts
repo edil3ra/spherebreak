@@ -80,7 +80,6 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
             case 'delight':
                 this.delight()
                 break
-                
         }
         return this
     }
