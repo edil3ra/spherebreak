@@ -198,7 +198,7 @@ export class GameScene extends Phaser.Scene {
                         this.board.entriesGraphics[index].setState('focus')
                         return ['active', this.board.entriesGraphics[index]]
                     } else {
-                        this.board.entriesGraphics[index].setState('unfocus')
+                        this.board.entriesGraphics[index].setState('revive')
                         return ['inactive', this.board.entriesGraphics[index]]
                     }
                 })
@@ -224,7 +224,7 @@ export class GameScene extends Phaser.Scene {
                         return this.data.bordersAlive[index]
                     })
                     .forEach((index) => {
-                        this.board.bordersGraphics[index].revive()
+                        this.board.bordersGraphics[index].setState('revive')
                     })
 
                 this.bordersStateChanged = [

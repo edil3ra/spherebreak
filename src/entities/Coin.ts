@@ -59,23 +59,23 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
     setState(state: CoinState): this {
         this.state = state
         switch (this.state) {
-            case 'inactive':
-                this.displayInactive()
-                break
-            case 'dead':
-                this.displayDead()
-                break
             case 'active':
                 this.displayActive()
+                break
+            case 'inactive':
+                this.inactive()
+                break
+            case 'dead':
+                this.dead()
                 break
             case 'focus':
                 this.focus()
                 break
-            case 'unfocus':
+            case 'revive':
                 this.revive()
                 break
-            case 'lighting':
-                this.lighthing()
+            case 'light':
+                this.light()
                 break
             case 'delight':
                 this.delight()
@@ -132,7 +132,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
         })
     }
 
-    displayDead() {
+    dead() {
         this.tweenKill = this.scene.tweens.timeline({
             targets: this,
             ease: 'Sine.easeInOut',
@@ -171,7 +171,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
         console.log('active')
     }
 
-    displayInactive() {
+    inactive() {
         console.log('inactive')
         // this.tweenFlipping.pause()
         this.scene.time.delayedCall(0, () => {
@@ -180,7 +180,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
         })  
     }
     
-    lighthing() {
+    light() {
         this.tweenLighting.resume()
     }
 

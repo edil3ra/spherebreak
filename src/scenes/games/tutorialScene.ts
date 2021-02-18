@@ -271,13 +271,13 @@ Reach the maximum score before all turn end
                         this.board.entriesGraphics[index].background.off(
                             Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
                         )
-                        this.board.entriesGraphics[index].setState('lighting')
+                        this.board.entriesGraphics[index].setState('light')
                         this.time.delayedCall(100, () => {
                             this.board.entriesGraphics[index].setState('delight')
                             this.nextTurnOrShowText()
                         }, [], this)
                     })
-                this.board.entriesGraphics[index].setState('lighting')
+                this.board.entriesGraphics[index].setState('light')
             }
             if (currentTurn.entriesActive[index]) {
                 this.board.entriesGraphics[index].setState('active')
@@ -288,7 +288,7 @@ Reach the maximum score before all turn end
         currentTurn.borders.forEach((border: number, index: number) => {
             this.board.bordersGraphics[index].setText(border)
             if (currentTurn.bordersLigthing[index] === 1) {
-                this.board.bordersGraphics[index].setState('lighting')
+                this.board.bordersGraphics[index].setState('light')
                 this.board.bordersGraphics[index].background
                     .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                     .once(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
