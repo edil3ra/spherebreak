@@ -98,14 +98,11 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
             yoyo: true,
             paused: true,
             onStop: () => {
-                console.log('stop')
                 this.background.scaleX = this.defaultScale
                 this.background.displayWidth = this.width
                 this.background.displayHeight = this.height
                 this.background.width = this.width
                 this.background.height = this.height
-                // console.log(this.width)
-                // console.log(this.height)
             }
         })        
     }

@@ -30,7 +30,6 @@ export class GameScene extends Phaser.Scene {
         window.addEventListener(
             'resize',
             () => {
-                console.log('resize')
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
                 this.setPositionContainer()
@@ -424,9 +423,10 @@ export class GameScene extends Phaser.Scene {
     }
 
     handleWinTurn() {
-        this.board.updateScore(this.data.score)
-        this.board.updateComboCount(this.data.comboCount)
-        this.board.updateComboMultiple(this.data.comboMultiple)
+        const randomNumber = Phaser.Math.Between(-20, 20)
+        this.board.updateScore(this.data.score, randomNumber)
+        this.board.updateComboCount(this.data.comboCount, randomNumber)
+        this.board.updateComboMultiple(this.data.comboMultiple, randomNumber)
         this.cameras.main.shake(
             Config.scenes.game.afterTurnTimer,
             Config.scenes.game.afterTurnShakeIntensity,

@@ -16,7 +16,7 @@ export class Board {
     public comboCountText: Phaser.GameObjects.Text
     public comboMultipleTween: Phaser.Tweens.Tween
     public comboMultipleText: Phaser.GameObjects.Text
-    
+
     public handleClickedBorder: (index: number) => void
     public handleClickedEntry: (index: number) => void
     public isInteractive: boolean
@@ -70,75 +70,100 @@ export class Board {
             )
             .setOrigin(0.5, 0.5)
     }
-    
 
-    updateScore(score: number) {
-        this.scoreText.setText(`+ ${score}`)
+    updateScore(score: number, xOffset = 0) {
+        this.scoreText.setText(`+${score}`)
         this.scoreText.setAlpha(1)
         this.scoreText.x =
+            Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5 + xOffset
+        this.scoreText.y =
             Config.board.borderPadding +
-            Config.board.borderSize +
+            Config.board.borderSize -
+            Config.board.score.offsetStartY +
             Config.board.entrySize * 0.5
-        this.scoreText.y = Config.board.borderPadding + Config.board.borderSize + Config.board.entrySize * 0.5
         this.scoreTween = this.scene.tweens.add({
             targets: [this.scoreText],
             y: {
                 from: this.scoreText.y,
-                to: this.scoreText.y - 120,
+                to: this.scoreText.y - Config.board.score.offsetY,
             },
-            ease: 'Linear',
-            duration: 800,
+            alpha: {
+                from: Config.board.score.alpha.from,
+                to: Config.board.score.alpha.to,
+            },
+            ease: Config.board.score.ease,
+            duration: Config.board.score.duration,
             onComplete: () => {
                 this.scoreText.setAlpha(0)
             },
         })
     }
 
-    updateComboCount(count: number) {
-        this.comboCountText.setText(`x ${count}`)
+    updateComboCount(count: number, xOffset = 0) {
+        this.comboCountText.setText(`x${count}`)
         this.comboCountText.setAlpha(1)
         this.comboCountText.x =
             Config.board.borderPadding +
             Config.board.borderSize +
-            Config.board.entrySize * 0.5 - 40
-        this.comboCountText.y = Config.board.borderPadding + Config.board.borderSize - 20 + Config.board.entrySize * 0.5
+            Config.board.entrySize * 0.5 -
+            Config.board.score.offsetX +
+            xOffset
+        this.comboCountText.y =
+            Config.board.borderPadding +
+            Config.board.borderSize -
+            Config.board.score.offsetComboY -
+            Config.board.score.offsetStartY +
+            Config.board.entrySize * 0.5
         this.scoreTween = this.scene.tweens.add({
             targets: [this.comboCountText],
             y: {
                 from: this.comboCountText.y,
-                to: this.comboCountText.y - 150,
+                to: this.comboCountText.y - Config.board.score.offsetY - Config.board.score.offsetComboY,
             },
-            ease: 'Linear',
-            duration: 800,
+            alpha: {
+                from: Config.board.score.alpha.from,
+                to: Config.board.score.alpha.to,
+            },
+            ease: Config.board.score.ease,
+            duration: Config.board.score.duration,
             onComplete: () => {
                 this.comboCountText.setAlpha(0)
             },
         })
     }
 
-    updateComboMultiple(multiple: number) {
-        this.comboMultipleText.setText(`x ${multiple}`)
+    updateComboMultiple(multiple: number, xOffset = 0) {
+        this.comboMultipleText.setText(`x${multiple}`)
         this.comboMultipleText.setAlpha(1)
         this.comboMultipleText.x =
             Config.board.borderPadding +
             Config.board.borderSize +
-            Config.board.entrySize * 0.5 + 40
-        this.comboMultipleText.y = Config.board.borderPadding + Config.board.borderSize - 20 + Config.board.entrySize * 0.5
+            Config.board.entrySize * 0.5 +
+            Config.board.score.offsetX +
+            xOffset
+        this.comboMultipleText.y =
+            Config.board.borderPadding +
+            Config.board.borderSize -
+            Config.board.score.offsetComboY -
+            Config.board.score.offsetStartY +
+            Config.board.entrySize * 0.5
         this.scoreTween = this.scene.tweens.add({
             targets: [this.comboMultipleText],
             y: {
                 from: this.comboMultipleText.y,
-                to: this.comboMultipleText.y - 150,
+                to: this.comboCountText.y - Config.board.score.offsetY - Config.board.score.offsetComboY,
             },
-            ease: 'Linear',
-            duration: 800,
+            alpha: {
+                from: Config.board.score.alpha.from,
+                to: Config.board.score.alpha.to,
+            },
+            ease: Config.board.score.ease,
+            duration: Config.board.score.duration,
             onComplete: () => {
                 this.comboMultipleText.setAlpha(0)
             },
         })
     }
-    
-    
 
     attachClickBorder(handleClickBorder: (index: number) => void): this {
         this.handleClickedBorder = handleClickBorder.bind(this.scene)
@@ -277,12 +302,12 @@ export class Board {
 
     resetTweening() {
         this.entriesGraphics.forEach((coin: CoinGraphics) => {
-            if(coin.tweenFlipping.isPlaying()) {
+            if (coin.tweenFlipping.isPlaying()) {
                 coin.tweenFlipping.stop(0)
             }
         })
         this.bordersGraphics.forEach((coin: CoinGraphics) => {
-            if(coin.tweenFlipping.isPlaying()) {
+            if (coin.tweenFlipping.isPlaying()) {
                 coin.tweenFlipping.stop(0)
             }
         })

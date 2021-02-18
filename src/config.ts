@@ -19,17 +19,29 @@ function setBoard() {
         entryPadding: ENTRY_PADDING,
         sphereSize: SPHERE_SIZE,
         marginTop: 10,
+        score: {
+            duration: 1200,
+            ease: 'Sine.easeIn',
+            offsetStartY: 30,
+            offsetComboY: 40,
+            offsetY: 120,
+            offsetX: 40,
+            alpha: {
+                from: 1,
+                to: 0.2,
+            }
+        },
         styles: {
             score: {
                 fontFamily: 'Play',
                 fontSize: '50px',
-                color: 'white',
+                color: '#FFFFFF',
                 fontStyle: 'bold',
             },
             combo: {
                 fontFamily: 'Play',
-                fontSize: '24px',
-                color: '#FFB404',
+                fontSize: '28px',
+                color: '#FFFFFF',
                 fontStyle: 'bold',
             },
         },
@@ -354,13 +366,13 @@ export class Config {
                 button: {
                     fontFamily: 'Play',
                     fontSize: '18px',
-                    color: 'white',
+                    color: '#65350F',
                     fontStyle: 'bold',
                 },
                 text: {
                     fontFamily: 'Play',
                     fontSize: '50px',
-                    color: '#65350F',
+                    color: '#FFFFFF',
                     fontStyle: 'bold',
                 },
             },
