@@ -168,11 +168,14 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
 
     displayActive() {
         this.tweenFlipping.resume()
+        console.log('active')
     }
 
     displayInactive() {
+        console.log('inactive')
+        // this.tweenFlipping.pause()
         this.scene.time.delayedCall(0, () => {
-            this.background.scaleX = this.defaultScale
+            // this.background.scaleX = this.defaultScale
             this.tweenFlipping.pause()
         })  
     }

@@ -139,5 +139,10 @@ export class MyGame extends Phaser.Game {
         this.isMute = Config.mute
         Howler.autoUnlock = false
         super.start()
+        window.addEventListener('resize', () => {
+            this.scale.resize(window.innerWidth, window.innerHeight)
+        })
     }
 }
+
+

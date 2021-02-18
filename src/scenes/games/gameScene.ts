@@ -30,6 +30,7 @@ export class GameScene extends Phaser.Scene {
         window.addEventListener(
             'resize',
             () => {
+                console.log('resize')
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
                 this.setPositionContainer()
@@ -355,6 +356,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     setPositionContainer() {
+        console.log('position')
         this.container.setPosition(
             this.scale.width / 2 - Config.board.width / 2,
             this.scale.height / 2 - (Config.board.height + Config.panels.board.height + 10) / 2

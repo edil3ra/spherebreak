@@ -29,7 +29,7 @@ function setBoard() {
             combo: {
                 fontFamily: 'Play',
                 fontSize: '24px',
-                color: 'gold',
+                color: '#FFB404',
                 fontStyle: 'bold',
             },
         },
