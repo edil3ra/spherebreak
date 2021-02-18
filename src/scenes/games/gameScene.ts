@@ -175,7 +175,7 @@ export class GameScene extends Phaser.Scene {
                         this.playSoundOnCoinActive()
                         this.playAnimationOnCoinActive()
                         this.board.bordersGraphics[index].setState('focus')
-                        if(this.data.isTotalMultipleOfSphere()) {
+                        if(this.data.isTotalMultipleOfSphere() || this.data.isCoinsAllActive()) {
                             return ['none', this.board.bordersGraphics[index]]
                         } else {
                             return ['active', this.board.bordersGraphics[index]]
@@ -199,7 +199,7 @@ export class GameScene extends Phaser.Scene {
                         this.playSoundOnCoinActive()
                         this.playAnimationOnCoinActive()
                         this.board.entriesGraphics[index].setState('focus')
-                        if(this.data.isTotalMultipleOfSphere()) {
+                        if(this.data.isTotalMultipleOfSphere() || this.data.isCoinsAllActive()) {
                             return ['none', this.board.entriesGraphics[index]]
                         } else {
                             return ['active', this.board.entriesGraphics[index]]

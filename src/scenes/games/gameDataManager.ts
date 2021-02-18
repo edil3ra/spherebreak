@@ -127,6 +127,11 @@ export class GameDataManager extends Phaser.Data.DataManager {
         return this.quota >= this.maxQuota
     }
 
+    isCoinsAllActive() {
+        const borders = this.bordersActive.map((active, index) => active || !this.bordersAlive[index])
+        return borders.every(border => border) && this.entriesActive.every(entry => entry)
+    }
+
     nextTurn() {
         let gameState: GameState = 'startGame'
         if (this.isTotalMultipleOfSphere()) {

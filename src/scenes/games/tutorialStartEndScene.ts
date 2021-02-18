@@ -15,16 +15,13 @@ export class TutorialStartEndScene extends Phaser.Scene {
 
     init() {
         this.tutorialScene = this.scene.get(Config.scenes.keys.tutorial) as TutorialScene
-        // this.events.on('wake', () => {
-        //     this.showText()
-        // })
         this.registerClick()
     }
 
     create() {
         this.text = this.add.text(
             this.scale.width * 0.5,
-            this.scale.height * 0.5 - 10,
+            this.scale.height * 0.5 + Config.panels.board.height * 0.5,
             '',
             Config.scenes.tutorialStartEndScene.styles.text
         )
@@ -35,19 +32,8 @@ export class TutorialStartEndScene extends Phaser.Scene {
         this.text.setText(text)
     }
     
-    // showText() {
-        // const stateToText = {
-        //     start: 'Welcome, Tap to start the tutorial!',
-        //     middle: '_',
-        //     end: 'Tap to end the tutorial!',
-        // }
-        // this.text.setText(stateToText[this.tutorialScene.tutorialState])
-        // this.text.setText(this.texts[this.state])
-    // }
-    
     registerClick() {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            console.log('cliced')
             if (this.state === 'end') {
                 this.handleEndTutorial()
             }

@@ -87,7 +87,6 @@ export class TutorialScene extends Phaser.Scene {
         this.setBackground()
         this.board.create()
         this.boardPanel.create()
-        // this.tutorialHelperPanel.create()
         this.pointersImage = []
         for (let i = 0; i < 12; i++) {
             this.pointersImage.push(
@@ -104,9 +103,6 @@ export class TutorialScene extends Phaser.Scene {
         this.setPositionContainer()
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
-        // this.attachTweenCursor()
-        // this.registerClickNextTurn()
-        // this.nextTurn(this.currentTurnIndex)
 
         this.cameras.main.fadeIn(200, 0, 0, 0, (_camera: any, percentage: number) => {
             if (percentage >= 1) {
@@ -185,7 +181,7 @@ Used it as the main way to make combo
 You click on a border coin
 They dissappear after you use it
 They reapear after 4 turn
-They increase the quota by one
+They increase the score by one
 Use it to make more point`,
             },
             {
@@ -196,9 +192,12 @@ Use it to make more point`,
             },
             {
                 text: `
-When turn end your score is calculated
+You score two point
+your count combo is 3 because you used 3 coins
+your multiple combo is 2 because you reached
+the middle sphere * 2
 You have 10 turns to win the game
-Reach the maximum score before all turn end
+Reach the max score before all turn end
 `
             },
             {
@@ -219,14 +218,6 @@ Reach the maximum score before all turn end
             return { ...this.defaultTurn(), ...turn }
         })
     }
-
-    // registerClickNextTurn() {
-    //     this.input.on(
-    //         Phaser.Input.Events.POINTER_DOWN,
-    //         this.nextTurnOrShowText,
-    //         this
-    //     )
-    // }
 
     nextTurnOrShowText() {
         if (this.currentTurnIndex === this.turns.length) {

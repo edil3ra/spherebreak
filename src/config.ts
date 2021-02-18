@@ -381,9 +381,10 @@ export class Config {
             styles: {
                 text: {
                     fontFamily: 'Play',
-                    fontSize: '20px',
+                    fontSize: '18px',
                     color: 'white',
                     fontStyle: 'bold',
+                    baselineY: 0.2,
                 },
             },
         },
