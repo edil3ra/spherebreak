@@ -274,4 +274,17 @@ export class Board {
             Config.board.borderSize / 2 + Config.panels.board.height + 10
         )
     }
+
+    resetTweening() {
+        this.entriesGraphics.forEach((coin: CoinGraphics) => {
+            if(coin.tweenFlipping.isPlaying()) {
+                coin.tweenFlipping.stop(0)
+            }
+        })
+        this.bordersGraphics.forEach((coin: CoinGraphics) => {
+            if(coin.tweenFlipping.isPlaying()) {
+                coin.tweenFlipping.stop(0)
+            }
+        })
+    }
 }

@@ -15,7 +15,7 @@ export class GameScene extends Phaser.Scene {
     public boardPanel: BoardPanelContainer
     public timerSyncCoin: Phaser.Time.TimerEvent
     public timerTurn: Phaser.Time.TimerEvent
-    public bordersStateChanged: Array<[CoinState, CoinGraphics]>
+    public coinsStateChanged: Array<[CoinState, CoinGraphics]>
     public container: Phaser.GameObjects.Container
     public plings: Array<plingKeys>
     public emitterEndGame: Phaser.GameObjects.Particles.ParticleEmitter
@@ -45,7 +45,7 @@ export class GameScene extends Phaser.Scene {
             .attachClickEntry(this.handleClickedEntry)
 
         this.boardPanel = new BoardPanelContainer(this)
-        this.bordersStateChanged = []
+        this.coinsStateChanged = []
         this.scene.launch(Config.scenes.keys.gameOver)
         this.scene.sleep(Config.scenes.keys.gameOver)
 
@@ -170,42 +170,49 @@ export class GameScene extends Phaser.Scene {
 
         this.events.on(
             Config.events.game.CHANGEDATA_BORDERS_ACTIVE,
-            (_scene: GameScene, _borders: Array<boolean>) => {
+            (_scene: GameScene, _entries: Array<boolean>) => {
                 const activeChanged = this.data.bordersActiveIndexesChanged.map((index) => {
                     if (this.data.bordersActive[index]) {
                         this.playSoundOnCoinActive()
                         this.playAnimationOnCoinActive()
                         this.board.bordersGraphics[index].setState('focus')
-                        return ['active', this.board.bordersGraphics[index]]
+                        if(this.data.isTotalMultipleOfSphere()) {
+                            return ['none', this.board.bordersGraphics[index]]
+                        } else {
+                            return ['active', this.board.bordersGraphics[index]]
+                        }
                     } else {
-                        return ['inactive', this.board.bordersGraphics[index]]
+                        return ['revive', this.board.bordersGraphics[index]]
                     }
                 })
-                this.bordersStateChanged = [
-                    ...this.bordersStateChanged,
+                this.coinsStateChanged = [
+                    ...this.coinsStateChanged,
                     ...(activeChanged as Array<[CoinState, CoinGraphics]>),
                 ]
             }
         )
-
+        
         this.events.on(
             Config.events.game.CHANGEDATA_ENTRIES_ACTIVE,
-            (_scene: GameScene, _entries: Array<boolean>) => {
+            (_scene: GameScene, _borders: Array<boolean>) => {
                 const activeChanged = this.data.entriesActiveIndexesChanged.map((index) => {
                     if (this.data.entriesActive[index]) {
                         this.playSoundOnCoinActive()
                         this.playAnimationOnCoinActive()
                         this.board.entriesGraphics[index].setState('focus')
-                        return ['active', this.board.entriesGraphics[index]]
+                        if(this.data.isTotalMultipleOfSphere()) {
+                            return ['none', this.board.entriesGraphics[index]]
+                        } else {
+                            return ['active', this.board.entriesGraphics[index]]
+                        }
                     } else {
-                        this.board.entriesGraphics[index].setState('revive')
-                        return ['inactive', this.board.entriesGraphics[index]]
+                        return ['revive', this.board.entriesGraphics[index]]
                     }
                 })
-                this.bordersStateChanged = [
-                    ...this.bordersStateChanged,
+                this.coinsStateChanged = [
+                    ...this.coinsStateChanged,
                     ...(activeChanged as Array<[CoinState, CoinGraphics]>),
-                ]
+                ]       
             }
         )
 
@@ -227,8 +234,8 @@ export class GameScene extends Phaser.Scene {
                         this.board.bordersGraphics[index].setState('revive')
                     })
 
-                this.bordersStateChanged = [
-                    ...this.bordersStateChanged,
+                this.coinsStateChanged = [
+                    ...this.coinsStateChanged,
                     ...(deadChanged as Array<[CoinState, CoinGraphics]>),
                 ]
             }
@@ -240,14 +247,18 @@ export class GameScene extends Phaser.Scene {
                     break
                 case 'winTurn':
                     this.handleWinTurn()
+                    this.initTimerSyncCoin()
                     break
                 case 'loseTurn':
                     this.handleLoseTurn()
+                    this.initTimerSyncCoin()
                     break
                 case 'winGame':
+                    this.board.resetTweening()
                     this.handleWin()
                     break
                 case 'loseGame':
+                    this.board.resetTweening()
                     this.handleLose()
                     break
             }
@@ -307,15 +318,16 @@ export class GameScene extends Phaser.Scene {
     initTimerSyncCoin() {
         if (this.timerSyncCoin) {
             this.timerSyncCoin.destroy()
+            this.board.resetTweening()
         }
         this.timerSyncCoin = this.time.addEvent({
             delay: Config.scenes.game.coinAnimationTimer * 2,
             callback: () => {
-                this.bordersStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
+                this.coinsStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
                     const [state, coinGraphics] = coinStateChanged
-                    coinGraphics.setState(state)
+                    coinGraphics.setState(state)                        
                 })
-                this.bordersStateChanged = []
+                this.coinsStateChanged = []
             },
             loop: true,
         })
@@ -341,6 +353,34 @@ export class GameScene extends Phaser.Scene {
             .setDisplaySize(this.scale.width, this.scale.height)
     }
 
+    setPositionContainer() {
+        this.container.setPosition(
+            this.scale.width / 2 - Config.board.width / 2,
+            this.scale.height / 2 - (Config.board.height + Config.panels.board.height + 10) / 2
+        )
+    }
+
+    handleCoinActive(activeIndexesChanged: Array<number>, coinGraphics: Array<CoinGraphics>) {
+        const activeChanged = activeIndexesChanged.map((index) => {
+            if (this.data.entriesActive[index]) {
+                this.playSoundOnCoinActive()
+                this.playAnimationOnCoinActive()
+                this.board.entriesGraphics[index].setState('focus')
+                if(this.data.isTotalMultipleOfSphere()) {
+                    return ['none', this.board.entriesGraphics[index]]
+                } else {
+                    return ['active', this.board.entriesGraphics[index]]
+                }
+            } else {
+                return ['revive', this.board.entriesGraphics[index]]
+            }
+        })
+        this.coinsStateChanged = [
+            ...this.coinsStateChanged,
+            ...(activeChanged as Array<[CoinState, CoinGraphics]>),
+        ]
+    }
+    
     handleClickedBorder(index: number) {
         this.data.bordersActive = this.data.bordersActive.map((value, loopingIndex) =>
             index === loopingIndex ? true : value
@@ -353,14 +393,6 @@ export class GameScene extends Phaser.Scene {
             index === loopingIndex ? true : value
         )
         this.data.nextTurn()
-    }
-
-    setPositionContainer() {
-        console.log('position')
-        this.container.setPosition(
-            this.scale.width / 2 - Config.board.width / 2,
-            this.scale.height / 2 - (Config.board.height + Config.panels.board.height + 10) / 2
-        )
     }
 
     playSoundOnCoinActive() {

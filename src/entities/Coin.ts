@@ -44,6 +44,8 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
         this.setTweenFlipping()
         this.setDelightFlipping()
         this.defaultScale = this.background.scaleX
+        this.width = width
+        this.height = height
     }
 
     setFrame(frame: string) {
@@ -59,6 +61,8 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
     setState(state: CoinState): this {
         this.state = state
         switch (this.state) {
+            case 'none':
+                break
             case 'active':
                 this.displayActive()
                 break
@@ -93,6 +97,16 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
             repeat: -1,
             yoyo: true,
             paused: true,
+            onStop: () => {
+                console.log('stop')
+                this.background.scaleX = this.defaultScale
+                this.background.displayWidth = this.width
+                this.background.displayHeight = this.height
+                this.background.width = this.width
+                this.background.height = this.height
+                // console.log(this.width)
+                // console.log(this.height)
+            }
         })        
     }
 
@@ -167,15 +181,20 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
 
 
     displayActive() {
-        this.tweenFlipping.resume()
-        console.log('active')
+        // this.tweenFlipping.restart()
+        // this.tweenFlipping.seek(10)
+        // this.tweenFlipping.resume()
+        this.scene.time.delayedCall(0, () => {
+            this.tweenFlipping.play(false)
+        })  
     }
 
     inactive() {
         console.log('inactive')
         // this.tweenFlipping.pause()
         this.scene.time.delayedCall(0, () => {
-            // this.background.scaleX = this.defaultScale
+            // this.tweenFlipping.restart()
+            this.background.scaleX = this.defaultScale
             this.tweenFlipping.pause()
         })  
     }
