@@ -1,6 +1,7 @@
 import { Config } from '~/config'
+import { CoinGraphics } from '~/entities/Coin'
 import { MyGame } from '~/game'
-import { TutorialState } from '~/models'
+import { CoinState, TutorialState } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
 import { TutorialHelperPanel } from '~/scenes/games/panels/tutorialHelperPanel'
@@ -41,6 +42,8 @@ export class TutorialScene extends Phaser.Scene {
     public turnsTemplate: Array<Partial<Turn>>
     public currentTurn: Turn
     public currentTurnIndex: number
+    public timerSyncCoin: Phaser.Time.TimerEvent
+    public coinsStateChanged: Array<[CoinState, CoinGraphics]>
     public tweenCursor: Phaser.Tweens.Tween
     public container: Phaser.GameObjects.Container
 
@@ -103,6 +106,8 @@ export class TutorialScene extends Phaser.Scene {
         this.setPositionContainer()
         this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
+        this.coinsStateChanged = []
+        this.initTimerSyncCoin()
 
         this.cameras.main.fadeIn(200, 0, 0, 0, (_camera: any, percentage: number) => {
             if (percentage >= 1) {
@@ -113,7 +118,6 @@ Tap to enter tutorial
 `)
                 // this.nextTurn(0)
                 this.switchTutorial()
-                
             }
         })
     }
@@ -284,6 +288,7 @@ You count combo is now 2
         ]
     }
 
+    
     buildTurns(): Array<Turn> {
         return this.turnsTemplate.map((turn) => {
             return { ...this.defaultTurn(), ...turn }
@@ -295,7 +300,6 @@ You count combo is now 2
             this.tutorialStartEndScene.state = 'end'
             this.tutorialStartEndScene.setText(`Tap to end tutorial`)
             this.switchTutorial()
-            
             return
         }
         if (this.turns[this.currentTurnIndex].text === '') {
@@ -323,9 +327,27 @@ You count combo is now 2
         this.attachTweenCursor()
 
         this.board.sphereGraphics.setText(currentTurn.sphere)
-        currentTurn.entries.forEach((value: number, index: number) => {
+        this.nextTurnUpdateEntries(currentTurn)
+        this.nextTurnUpdateBorders(currentTurn)
+        
+        this.boardPanel.boardLeftPanel.setTurnText(currentTurn.turn, currentTurn.maxTurn)
+        this.boardPanel.boardMiddlePanel.setTimerText(currentTurn.timer)
+        this.boardPanel.boardLeftPanel.setQuotaText(currentTurn.score, currentTurn.maxScore)
+        this.boardPanel.boardRigthPanel.setComboCountText(
+            currentTurn.comboCount,
+            currentTurn.comboMultipleGoal
+        )
+        this.boardPanel.boardRigthPanel.setComboMultipleText(
+            currentTurn.comboMultiple,
+            currentTurn.comboMultipleGoal
+        )
+    }
+
+
+    nextTurnUpdateEntries(turn: Turn) {
+        turn.entries.forEach((value: number, index: number) => {
             this.board.entriesGraphics[index].setText(value)
-            if (currentTurn.entriesLigthing[index] === 1) {
+            if (turn.entriesLigthing[index] === 1) {
                 this.board.entriesGraphics[index].background
                     .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                     .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
@@ -340,15 +362,19 @@ You count combo is now 2
                     })
                 this.board.entriesGraphics[index].setState('light')
             }
-            if (currentTurn.entriesActive[index]) {
-                this.board.entriesGraphics[index].setState('active')
+            if (turn.entriesActive[index] === 1) {
+                this.coinsStateChanged.push(['active', this.board.entriesGraphics[index]])
             } else {
-                this.board.entriesGraphics[index].setState('inactive')
+                this.coinsStateChanged.push(['inactive', this.board.entriesGraphics[index]])
             }
         })
-        currentTurn.borders.forEach((border: number, index: number) => {
+    }
+    
+    
+    nextTurnUpdateBorders(turn: Turn) {
+        turn.borders.forEach((border: number, index: number) => {
             this.board.bordersGraphics[index].setText(border)
-            if (currentTurn.bordersLigthing[index] === 1) {
+            if (turn.bordersLigthing[index] === 1) {
                 this.board.bordersGraphics[index].setState('light')
                 this.board.bordersGraphics[index].background
                     .setInteractive({ cursor: 'pointer', pixelPerfect: true })
@@ -359,26 +385,34 @@ You count combo is now 2
                         this.nextTurnOrShowText()
                     })
             }
-            if (currentTurn.bordersActive[index] === 1) {
-                this.board.bordersGraphics[index].setState('active')
-            }
-            if (currentTurn.bordersDead[index] === 1) {
+            if (turn.bordersDead[index] === 1 && this.board.bordersGraphics[index].state !== 'dead') {
                 this.board.bordersGraphics[index].setState('dead')
             }
+            
+            else if (turn.bordersActive[index] === 1) {
+                this.coinsStateChanged.push(['active', this.board.bordersGraphics[index]])
+            }
         })
-
-        this.boardPanel.boardLeftPanel.setTurnText(currentTurn.turn, currentTurn.maxTurn)
-        this.boardPanel.boardMiddlePanel.setTimerText(currentTurn.timer)
-        this.boardPanel.boardLeftPanel.setQuotaText(currentTurn.score, currentTurn.maxScore)
-        this.boardPanel.boardRigthPanel.setComboCountText(
-            currentTurn.comboCount,
-            currentTurn.comboMultipleGoal
-        )
-        this.boardPanel.boardRigthPanel.setComboMultipleText(
-            currentTurn.comboMultiple,
-            currentTurn.comboMultipleGoal
-        )
     }
+
+    initTimerSyncCoin() {
+        if (this.timerSyncCoin) {
+            this.timerSyncCoin.destroy()
+            this.board.resetTweening()
+        }
+        this.timerSyncCoin = this.time.addEvent({
+            delay: Config.scenes.game.coinAnimationTimer * 2,
+            callback: () => {
+                this.coinsStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
+                    const [state, coinGraphics] = coinStateChanged
+                    coinGraphics.setState(state)                        
+                });``
+                this.coinsStateChanged = []
+            },
+            loop: true,
+        })
+    }
+    
 
     switchTutorial() {
         this.tweens.add({

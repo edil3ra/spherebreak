@@ -211,7 +211,7 @@ export class GameScene extends Phaser.Scene {
                 this.coinsStateChanged = [
                     ...this.coinsStateChanged,
                     ...(activeChanged as Array<[CoinState, CoinGraphics]>),
-                ]       
+                ]        
             }
         )
 
@@ -325,7 +325,7 @@ export class GameScene extends Phaser.Scene {
                 this.coinsStateChanged.forEach((coinStateChanged: [CoinState, CoinGraphics]) => {
                     const [state, coinGraphics] = coinStateChanged
                     coinGraphics.setState(state)                        
-                })
+                });``
                 this.coinsStateChanged = []
             },
             loop: true,
