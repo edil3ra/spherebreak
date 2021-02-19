@@ -111,7 +111,9 @@ export class TutorialScene extends Phaser.Scene {
 Welcome to Spherebreak!
 Tap to enter tutorial
 `)
+                // this.nextTurn(0)
                 this.switchTutorial()
+                
             }
         })
     }
@@ -136,7 +138,7 @@ Tap to enter tutorial
             text: '',
             sphere: 4,
             entries: [1, 2, 3, 4],
-            borders: [8, 2, 9, 4, 7, 8, 2, 3, 1, 2, 4, 5],
+            borders: [8, 2, 9, 3, 7, 8, 2, 3, 1, 2, 4, 5],
             entriesActive: Array(4).fill(0),
             bordersActive: Array(12).fill(0),
             bordersDead: Array(12).fill(0),
@@ -165,7 +167,7 @@ Tap to enter tutorial
             },
             {
                 text: `
-You click on an entry coin
+You clicked on an entry coin
 Entry coin reapear after each turn
 They don't increase the score
 Used it as the main way to make combo
@@ -178,7 +180,7 @@ Used it as the main way to make combo
             },
             {
                 text: `
-You click on a border coin
+You clicked on a border coin
 They dissappear after you use it
 They reapear after 4 turn
 They increase the score by one
@@ -192,17 +194,16 @@ Use it to make more point`,
             },
             {
                 text: `
-You score two point
-your count combo is 3 because you used 3 coins
-your multiple combo is 2 because you reached
-the middle sphere * 2
+You score two points
+your combo count is 3
+your combo multiple is 2 
 You have 10 turns to win the game
 Reach the max score before all turn end
 `
             },
             {
-                bordersLigthing: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                bordersDead: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                bordersLigthing: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
                 score: 2,
                 turn: 2,
                 comboCount: 1,
@@ -210,6 +211,76 @@ Reach the max score before all turn end
                 comboCountGoal: 3,
                 comboMultipleGoal: 2,
             },
+            {
+                bordersLigthing: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                bordersActive:   [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
+            },
+            {
+                entriesLigthing: [0, 1, 0, 0],
+                bordersActive:   [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
+            },
+            {
+                text: `
+You make count combo by using the same 
+amount of coins than the previous turn.
+You used 3 coins this turn
+`,
+            },
+            {
+                sphere: 5,
+                bordersLigthing: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
+            },
+            {
+                sphere: 5,
+                bordersLigthing: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                bordersActive:   [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
+            },
+            {
+                sphere: 5,
+                entriesLigthing: [0, 0, 1, 0],
+                bordersActive:   [0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+                bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
+            },
+                        {
+                text: `
+You used 3 coins this turn
+You count combo is now 2
+`,
+            }
         ]
     }
 
@@ -229,7 +300,6 @@ Reach the max score before all turn end
         }
         if (this.turns[this.currentTurnIndex].text === '') {
             this.nextTurn(this.currentTurnIndex)
-            // this.currentTurnIndex += 1
         } else {
             this.tutorialStartEndScene.setText(this.turns[this.currentTurnIndex].text)
             this.switchTutorial()
@@ -286,7 +356,6 @@ Reach the max score before all turn end
                         this.board.bordersGraphics[index].background.off(
                             Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
                         )
-                        // this.time.delayedCall(100, this.nextTurnOrShowText, [], this)
                         this.nextTurnOrShowText()
                     })
             }
