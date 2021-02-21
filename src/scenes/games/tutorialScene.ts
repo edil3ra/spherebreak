@@ -27,6 +27,7 @@ type Turn = {
     comboMultiple: number
     comboCountGoal: number | null
     comboMultipleGoal: number | null
+    endTurn: boolean
 }
 
 export class TutorialScene extends Phaser.Scene {
@@ -116,7 +117,6 @@ export class TutorialScene extends Phaser.Scene {
 Welcome to Spherebreak!
 Tap to enter tutorial
 `)
-                // this.nextTurn(0)
                 this.switchTutorial()
             }
         })
@@ -157,14 +157,11 @@ Tap to enter tutorial
             comboMultiple: 0,
             comboCountGoal: 0,
             comboMultipleGoal: 0,
+            endTurn: false,
         }
     }
 
     buildTurnsTemplate(): Array<Partial<Turn>> {
-        const entriesGraphicsPosition = this.board.bordersGraphics.map((border) => {
-            return { x: border.x + this.board.container.x - 12, y: border.y + this.board.container.y }
-        })
-
         return [
             {
                 entriesLigthing: [0, 1, 0, 0],
@@ -194,6 +191,7 @@ Use it to make more point`,
                 entriesActive:   [0, 1, 0, 0],
                 bordersActive:   [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
                 bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                endTurn: true,
                 score: 1,
             },
             {
@@ -204,6 +202,12 @@ your combo multiple is 2
 You have 10 turns to win the game
 Reach the max score before all turn end
 `
+            },
+            {
+                text: `
+You make count combo by using the same 
+amount of coins than the previous turn.
+`,
             },
             {
                 bordersLigthing: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -236,12 +240,13 @@ Reach the max score before all turn end
                 comboMultiple: 1,
                 comboCountGoal: 3,
                 comboMultipleGoal: 2,
+                endTurn: true,
             },
             {
                 text: `
-You make count combo by using the same 
-amount of coins than the previous turn.
 You used 3 coins this turn
+You target count combo target is 3
+You total count combo is 1
 `,
             },
             {
@@ -278,14 +283,49 @@ You used 3 coins this turn
                 comboMultiple: 1,
                 comboCountGoal: 3,
                 comboMultipleGoal: 2,
+                endTurn: true,
             },
-                        {
+            {
                 text: `
 You used 3 coins this turn
-You count combo is now 2
+You target count combo target is 3
+You total count combo is 2
 `,
-            }
+            },
+            {
+                text: `
+You make multiple combo by using a multiple 
+of the middle sphere.
+`,
+            },
+            {
+                sphere: 3,
+                entriesLigthing: [0, 0, 0, 1],
+                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
+            },
+            {
+                sphere: 3,
+                entriesActive:   [0, 0, 0, 1],
+                bordersLigthing:  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
+                score: 2,
+                turn: 2,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 3,
+                comboMultipleGoal: 2,
+                endTurn: true,
+            },
         ]
+
+        
+        
     }
 
     
@@ -354,11 +394,23 @@ You count combo is now 2
                         this.board.entriesGraphics[index].background.off(
                             Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
                         )
-                        this.board.entriesGraphics[index].setState('light')
-                        this.time.delayedCall(100, () => {
-                            this.board.entriesGraphics[index].setState('delight')
-                            this.nextTurnOrShowText()
-                        }, [], this)
+                        // this.board.entriesGraphics[index].setState('light')
+
+                        if (turn.endTurn) {
+                            this.displayScore(turn)
+                            this.time.delayedCall(100, () => {
+                                this.board.entriesGraphics[index].setState('delight')
+                            })
+                            
+                            this.time.delayedCall(1000, () => {
+                                this.nextTurnOrShowText()
+                            })
+                        } else {
+                            this.time.delayedCall(100, () => {
+                                this.board.entriesGraphics[index].setState('delight')
+                                this.nextTurnOrShowText()                            
+                            })
+                        }
                     })
                 this.board.entriesGraphics[index].setState('light')
             }
@@ -382,7 +434,14 @@ You count combo is now 2
                         this.board.bordersGraphics[index].background.off(
                             Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
                         )
-                        this.nextTurnOrShowText()
+                        if (turn.endTurn) {
+                            this.displayScore(turn)
+                            this.time.delayedCall(1000, () => {
+                                this.nextTurnOrShowText()
+                            })
+                        } else {
+                            this.nextTurnOrShowText()                            
+                        }
                     })
             }
             if (turn.bordersDead[index] === 1 && this.board.bordersGraphics[index].state !== 'dead') {
@@ -424,6 +483,13 @@ You count combo is now 2
                 this.scene.bringToTop(Config.scenes.keys.tutorialStartEnd)
             },
         })
+    }
+
+    displayScore(turn: Turn) {
+        const randomNumber = Phaser.Math.Between(-20, 20)
+        this.board.updateScore(turn.score, randomNumber)
+        this.board.updateComboCount(turn.comboCount, randomNumber)
+        this.board.updateComboMultiple(turn.comboMultiple, randomNumber)
     }
 
     setBackground() {
