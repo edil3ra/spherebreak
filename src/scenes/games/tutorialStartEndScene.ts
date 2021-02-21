@@ -1,13 +1,13 @@
 import { Config } from '~/config'
 import { TutorialScene } from './tutorialScene'
-
-export type TutorialState = 'start' | 'end'
+export type TutorialState = 'start' | 'middle' | 'end'
 
 export class TutorialStartEndScene extends Phaser.Scene {
     public tutorialScene: TutorialScene
     public container: Phaser.GameObjects.Container
     public text: Phaser.GameObjects.Text
     public state: TutorialState
+    public clickInput: Phaser.Input.InputPlugin
 
     constructor() {
         super({ key: Config.scenes.keys.tutorialStartEnd })
@@ -16,6 +16,11 @@ export class TutorialStartEndScene extends Phaser.Scene {
     init() {
         this.tutorialScene = this.scene.get(Config.scenes.keys.tutorial) as TutorialScene
         this.registerClick()
+
+        this.events.on('shutdown', () => {
+            // this.input.removeAllListeners()
+        })
+        
     }
 
     create() {
@@ -34,6 +39,7 @@ export class TutorialStartEndScene extends Phaser.Scene {
     
     registerClick() {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
+            console.log('enter')
             if (this.state === 'end') {
                 this.handleEndTutorial()
             }
@@ -49,6 +55,7 @@ export class TutorialStartEndScene extends Phaser.Scene {
     }
 
     handleEndTutorial() {
+        this.input.removeAllListeners()
         this.scene.stop(Config.scenes.keys.tutorial)
         this.scene.stop(Config.scenes.keys.tutorialStartEnd)
         this.scene.start(Config.scenes.keys.menu)

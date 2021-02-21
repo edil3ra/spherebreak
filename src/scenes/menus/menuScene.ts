@@ -339,7 +339,13 @@ export class MenuScene extends Phaser.Scene {
 
     handleTutorial() {
         this.game.playSound('click')
-        this.scene.start(Config.scenes.keys.tutorial)
+        this.cameras.main.fadeOut(300, 0, 0, 0, (_camera: any, percentage: number) => {
+            if (percentage >=1) {
+                this.scene.start(Config.scenes.keys.tutorial)
+                this.scene.launch(Config.scenes.keys.tutorialStartEnd)
+                this.scene.sleep(Config.scenes.keys.tutorialStartEnd)
+            }
+        })
     }
 
     handlePlay() {

@@ -27,6 +27,9 @@ type Turn = {
     comboMultiple: number
     comboCountGoal: number | null
     comboMultipleGoal: number | null
+    showScore: number
+    showComboMultiple: number
+    showComboCount: number
     endTurn: boolean
 }
 
@@ -64,6 +67,14 @@ export class TutorialScene extends Phaser.Scene {
             },
             false
         )
+
+        this.events.on('shutdown', () => {
+            this.timerSyncCoin.destroy()
+            this.input.removeAllListeners()
+        })
+    }
+
+    create() {
         this.tutorialStartEndScene = this.scene.get(
             Config.scenes.keys.tutorialStartEnd
         ) as TutorialStartEndScene
@@ -71,10 +82,7 @@ export class TutorialScene extends Phaser.Scene {
         this.boardPanel = new BoardPanelContainer(this)
         this.tutorialHelperPanel = new TutorialHelperPanel(this)
         this.currentTurn = this.defaultTurn()
-        this.currentTurnIndex = 0
 
-        this.scene.launch(Config.scenes.keys.tutorialStartEnd)
-        this.scene.sleep(Config.scenes.keys.tutorialStartEnd)
         this.events.on('resume', () => {
             this.tweens.add({
                 ...Config.scenes.game.tweens.camera.in,
@@ -85,9 +93,7 @@ export class TutorialScene extends Phaser.Scene {
                 },
             })
         })
-    }
-
-    create() {
+        
         this.setBackground()
         this.board.create()
         this.boardPanel.create()
@@ -109,32 +115,24 @@ export class TutorialScene extends Phaser.Scene {
         this.turns = this.buildTurns()
         this.coinsStateChanged = []
         this.initTimerSyncCoin()
+        this.tutorialStartEndScene.state = 'start'
+        this.currentTurnIndex = 0
+        this.initTurn()
 
+        this.board.sphereGraphics.setText(this.turns[0].sphere)
+        
         this.cameras.main.fadeIn(200, 0, 0, 0, (_camera: any, percentage: number) => {
             if (percentage >= 1) {
-                this.tutorialStartEndScene.state = 'start'
                 this.tutorialStartEndScene.setText(`
 Welcome to Spherebreak!
 Tap to enter tutorial
 `)
                 this.switchTutorial()
+                this.tutorialStartEndScene.state = 'middle'
             }
         })
     }
 
-    attachTweenCursor() {
-        if (this.tweenCursor) {
-            this.tweenCursor.stop()
-        }
-        this.tweenCursor = this.tweens.add({
-            targets: this.pointersImage,
-            x: '-=10',
-            ease: 'Sine.easeInOut',
-            duration: 400,
-            repeat: -1,
-            yoyo: true,
-        })
-    }
 
     defaultTurn(): Turn {
         return {
@@ -142,7 +140,7 @@ Tap to enter tutorial
             text: '',
             sphere: 4,
             entries: [1, 2, 3, 4],
-            borders: [8, 2, 9, 3, 7, 8, 2, 3, 1, 2, 4, 5],
+            borders: [4, 2, 9, 3, 7, 4, 2, 3, 1, 2, 5, 5],
             entriesActive: Array(4).fill(0),
             bordersActive: Array(12).fill(0),
             bordersDead: Array(12).fill(0),
@@ -157,6 +155,9 @@ Tap to enter tutorial
             comboMultiple: 0,
             comboCountGoal: 0,
             comboMultipleGoal: 0,
+            showScore: 0,
+            showComboMultiple: 0,
+            showComboCount: 0,
             endTurn: false,
         }
     }
@@ -182,25 +183,31 @@ Used it as the main way to make combo
             {
                 text: `
 You clicked on a border coin
-They dissappear after you use it
+They dissappear after you used them
 They reapear after 4 turn
 They increase the score by one
-Use it to make more point`,
+Use them to increase the score`,
             },
             {
-                entriesActive:   [0, 1, 0, 0],
+                entriesLigthing: [0, 0, 0, 1],
+                entriesActive: [0, 1, 0, 0],
+                bordersActive: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                score: 0,
+            },
+            {
+                entriesActive:   [0, 1, 0, 1],
                 bordersActive:   [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
                 bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+                showScore: 2,
+                showComboCount: 1,
+                showComboMultiple: 1,
                 endTurn: true,
-                score: 1,
             },
             {
                 text: `
-You score two points
-your combo count is 3
-your combo multiple is 2 
+You score 2 points
 You have 10 turns to win the game
-Reach the max score before all turn end
+Reach the max score before the last turn
 `
             },
             {
@@ -216,36 +223,39 @@ amount of coins than the previous turn.
                 turn: 2,
                 comboCount: 1,
                 comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 2,
+                comboCountGoal: 4,
+                comboMultipleGoal: 3,
             },
             {
                 bordersLigthing: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 bordersActive:   [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
                 bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
                 turn: 2,
+                score: 2,
                 comboCount: 1,
                 comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 2,
+                comboCountGoal: 4,
+                comboMultipleGoal: 3,
             },
             {
                 entriesLigthing: [0, 1, 0, 0],
                 bordersActive:   [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
                 bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
                 turn: 2,
+                score: 2,
                 comboCount: 1,
                 comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 2,
+                comboCountGoal: 4,
+                comboMultipleGoal: 3,
+                showScore: 2,
+                showComboCount: 1,
+                showComboMultiple: 1,
                 endTurn: true,
             },
             {
                 text: `
 You used 3 coins this turn
-You target count combo target is 3
+You target count combo is 3
 You total count combo is 1
 `,
             },
@@ -253,8 +263,8 @@ You total count combo is 1
                 sphere: 5,
                 bordersLigthing: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
-                turn: 2,
+                turn: 3,
+                score: 4,
                 comboCount: 1,
                 comboMultiple: 1,
                 comboCountGoal: 3,
@@ -265,8 +275,8 @@ You total count combo is 1
                 bordersLigthing: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
                 bordersActive:   [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
                 bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
-                turn: 2,
+                turn: 3,
+                score: 4,
                 comboCount: 1,
                 comboMultiple: 1,
                 comboCountGoal: 3,
@@ -277,55 +287,122 @@ You total count combo is 1
                 entriesLigthing: [0, 0, 1, 0],
                 bordersActive:   [0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0],
                 bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
-                turn: 2,
+                turn: 3,
+                score: 4,
                 comboCount: 1,
                 comboMultiple: 1,
                 comboCountGoal: 3,
                 comboMultipleGoal: 2,
+                showScore: 4,
+                showComboCount: 2,
+                showComboMultiple: 1,
                 endTurn: true,
             },
             {
                 text: `
 You used 3 coins this turn
-You target count combo target is 3
+You target count combo is 3
 You total count combo is 2
+
+you score is 4 
+2 for the border coin
+2 for the the combo
 `,
             },
             {
                 text: `
-You make multiple combo by using a multiple 
-of the middle sphere.
+You make multiple combo
+by using a multiple of the middle sphere.
 `,
             },
             {
                 sphere: 3,
-                entriesLigthing: [0, 0, 0, 1],
+                entriesLigthing: [1, 0, 0, 0],
                 bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
-                turn: 2,
+                score: 8,
+                turn: 4,
                 comboCount: 1,
                 comboMultiple: 1,
                 comboCountGoal: 3,
-                comboMultipleGoal: 2,
+                comboMultipleGoal: 3,
             },
             {
                 sphere: 3,
-                entriesActive:   [0, 0, 0, 1],
-                bordersLigthing:  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                entriesActive:   [1, 0, 0, 0],
+                bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
                 bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
-                turn: 2,
+                score: 8,
+                turn: 4,
                 comboCount: 1,
                 comboMultiple: 1,
                 comboCountGoal: 3,
-                comboMultipleGoal: 2,
+                comboMultipleGoal: 3,
+                showScore: 1,
+                showComboCount: 1,
+                showComboMultiple: 1,
                 endTurn: true,
             },
-        ]
+            {
+                text: `
+you sphere was 3
+you made a total of 6
+You target multiple combo is 2
+You total multiple combo is 1
+`,
+            },
+            {
+                sphere: 7,
+                entriesLigthing: [0, 0, 1, 0],
+                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+                score: 9,
+                turn: 5,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 2,
+                comboMultipleGoal: 2,
+            },
+            {
+                sphere: 7,
+                entriesActive:   [0, 0, 1, 0],
+                bordersLigthing: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+                score: 9,
+                turn: 5,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 2,
+                comboMultipleGoal: 2,
+            },
+            {
+                sphere: 7,
+                entriesActive:   [0, 0, 1, 0],
+                bordersLigthing: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                bordersActive:   [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+                score: 9,
+                turn: 5,
+                comboCount: 1,
+                comboMultiple: 1,
+                comboCountGoal: 2,
+                comboMultipleGoal: 2,
+                showScore: 4,
+                showComboCount: 1,
+                showComboMultiple: 2,
+                endTurn: true,
+            },
+            {
+                text: `
+you sphere was 7
+you made a total of 14
+You target multiple combo is 2
+You total multiple combo is 2
 
-        
-        
+you score is 4 
+2 for the border coin
+2 for the the combo
+`,
+            }
+        ]
     }
 
     
@@ -338,7 +415,11 @@ of the middle sphere.
     nextTurnOrShowText() {
         if (this.currentTurnIndex === this.turns.length) {
             this.tutorialStartEndScene.state = 'end'
-            this.tutorialStartEndScene.setText(`Tap to end tutorial`)
+            this.tutorialStartEndScene.setText(`
+Now let's play!
+Tap to end tutorial
+`
+            )
             this.switchTutorial()
             return
         }
@@ -349,38 +430,33 @@ of the middle sphere.
             this.switchTutorial()
         }
         this.currentTurnIndex += 1
+    }
 
+    initTurn() {
+        const currentTurn = Object.assign({}, this.defaultTurn(), this.turns[0])
+        this.board.sphereGraphics.setText(currentTurn.sphere)
+        currentTurn.entries.forEach((value: number, index: number) => {
+            this.board.entriesGraphics[index].setText(value)
+        })
+
+        currentTurn.borders.forEach((value: number, index: number) => {
+            this.board.bordersGraphics[index].setText(value)
+        })
+        this.nextPanels(currentTurn)
     }
 
     nextTurn(index: number) {
+        console.log(index)
         this.cameras.main.fadeIn(200, 0, 0, 0)
         if (this.currentTurnIndex > 0) {
             this.game.playSound('switch')
         }
-        this.pointersImage.forEach((pointerImage) => {
-            pointerImage.setVisible(false)
-        })
-        const currentTurn = Object.assign({}, this.defaultTurn(), this.turns[index])
-        currentTurn.pointers.forEach((pointer: { x: number; y: number }, index: number) => {
-            this.pointersImage[index].setPosition(pointer.x, pointer.y).setVisible(true)
-        })
-        this.attachTweenCursor()
 
+        const currentTurn = Object.assign({}, this.defaultTurn(), this.turns[index])
         this.board.sphereGraphics.setText(currentTurn.sphere)
         this.nextTurnUpdateEntries(currentTurn)
-        this.nextTurnUpdateBorders(currentTurn)
-        
-        this.boardPanel.boardLeftPanel.setTurnText(currentTurn.turn, currentTurn.maxTurn)
-        this.boardPanel.boardMiddlePanel.setTimerText(currentTurn.timer)
-        this.boardPanel.boardLeftPanel.setQuotaText(currentTurn.score, currentTurn.maxScore)
-        this.boardPanel.boardRigthPanel.setComboCountText(
-            currentTurn.comboCount,
-            currentTurn.comboMultipleGoal
-        )
-        this.boardPanel.boardRigthPanel.setComboMultipleText(
-            currentTurn.comboMultiple,
-            currentTurn.comboMultipleGoal
-        )
+        this.nextTurnUpdateBorders(currentTurn)            
+        this.nextPanels(currentTurn)
     }
 
 
@@ -390,19 +466,13 @@ of the middle sphere.
             if (turn.entriesLigthing[index] === 1) {
                 this.board.entriesGraphics[index].background
                     .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                    .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                        this.board.entriesGraphics[index].background.off(
-                            Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
-                        )
-                        // this.board.entriesGraphics[index].setState('light')
-
+                    .once(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                         if (turn.endTurn) {
                             this.displayScore(turn)
                             this.time.delayedCall(100, () => {
                                 this.board.entriesGraphics[index].setState('delight')
                             })
-                            
-                            this.time.delayedCall(1000, () => {
+                            this.time.delayedCall(800, () => {
                                 this.nextTurnOrShowText()
                             })
                         } else {
@@ -431,12 +501,9 @@ of the middle sphere.
                 this.board.bordersGraphics[index].background
                     .setInteractive({ cursor: 'pointer', pixelPerfect: true })
                     .once(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
-                        this.board.bordersGraphics[index].background.off(
-                            Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN
-                        )
                         if (turn.endTurn) {
                             this.displayScore(turn)
-                            this.time.delayedCall(1000, () => {
+                            this.time.delayedCall(800, () => {
                                 this.nextTurnOrShowText()
                             })
                         } else {
@@ -447,13 +514,33 @@ of the middle sphere.
             if (turn.bordersDead[index] === 1 && this.board.bordersGraphics[index].state !== 'dead') {
                 this.board.bordersGraphics[index].setState('dead')
             }
+            if (turn.bordersDead[index] === 0 && this.board.bordersGraphics[index].state === 'dead') {
+                this.board.bordersGraphics[index].setState('revive')
+            }
             
-            else if (turn.bordersActive[index] === 1) {
+            if (turn.bordersActive[index] === 1) {
                 this.coinsStateChanged.push(['active', this.board.bordersGraphics[index]])
+            } else {
+                this.coinsStateChanged.push(['inactive', this.board.bordersGraphics[index]])
             }
         })
     }
 
+    nextPanels(turn: Turn) {
+        this.boardPanel.boardLeftPanel.setTurnText(turn.turn, turn.maxTurn)
+        this.boardPanel.boardMiddlePanel.setTimerText(turn.timer)
+        this.boardPanel.boardLeftPanel.setQuotaText(turn.score, turn.maxScore)
+        this.boardPanel.boardRigthPanel.setComboCountText(
+            turn.comboCount,
+            turn.comboMultipleGoal
+        )
+        this.boardPanel.boardRigthPanel.setComboMultipleText(
+            turn.comboMultiple,
+            turn.comboMultipleGoal
+        )
+    }
+    
+    
     initTimerSyncCoin() {
         if (this.timerSyncCoin) {
             this.timerSyncCoin.destroy()
@@ -471,7 +558,13 @@ of the middle sphere.
             loop: true,
         })
     }
-    
+
+    displayScore(turn: Turn) {
+        const randomNumber = Phaser.Math.Between(-20, 20)
+        this.board.updateScore(turn.showScore, randomNumber)
+        this.board.updateComboCount(turn.showComboCount, randomNumber)
+        this.board.updateComboMultiple(turn.showComboMultiple, randomNumber)
+    }
 
     switchTutorial() {
         this.tweens.add({
@@ -483,13 +576,6 @@ of the middle sphere.
                 this.scene.bringToTop(Config.scenes.keys.tutorialStartEnd)
             },
         })
-    }
-
-    displayScore(turn: Turn) {
-        const randomNumber = Phaser.Math.Between(-20, 20)
-        this.board.updateScore(turn.score, randomNumber)
-        this.board.updateComboCount(turn.comboCount, randomNumber)
-        this.board.updateComboMultiple(turn.comboMultiple, randomNumber)
     }
 
     setBackground() {
