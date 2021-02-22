@@ -14,13 +14,23 @@ export class TutorialStartEndScene extends Phaser.Scene {
     }
 
     init() {
+        window.addEventListener(
+            'resize',
+            () => {
+                this.text.setPosition(
+                    this.scale.width * 0.5,
+                    this.scale.height * 0.5 + Config.panels.board.height * 0.5
+                )
+            },
+            false
+        )
+
         this.tutorialScene = this.scene.get(Config.scenes.keys.tutorial) as TutorialScene
         this.registerClick()
 
         this.events.on('shutdown', () => {
             // this.input.removeAllListeners()
         })
-        
     }
 
     create() {
@@ -36,14 +46,12 @@ export class TutorialStartEndScene extends Phaser.Scene {
     setText(text: string) {
         this.text.setText(text)
     }
-    
+
     registerClick() {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            console.log('enter')
             if (this.state === 'end') {
                 this.handleEndTutorial()
-            }
-            else {
+            } else {
                 this.handleNextTutorial()
             }
         })

@@ -32,6 +32,8 @@ export class GameScene extends Phaser.Scene {
             () => {
                 this.background.setDisplaySize(window.innerWidth, window.innerHeight)
                 this.background.setPosition(0, 0)
+                this.board.setPosition()
+                this.boardPanel.setPosition()
                 this.setPositionContainer()
             },
             false
