@@ -495,11 +495,17 @@ Tap to end tutorial
                     .once(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                         if (turn.endTurn) {
                             this.displayScore(turn)
+                            this.time.delayedCall(100, () => {
+                                this.board.bordersGraphics[index].setState('delight')
+                            })
                             this.time.delayedCall(800, () => {
                                 this.nextTurnOrShowText()
                             })
                         } else {
-                            this.nextTurnOrShowText()
+                            this.time.delayedCall(100, () => {
+                                this.board.bordersGraphics[index].setState('delight')
+                                this.nextTurnOrShowText()
+                            })
                         }
                     })
             }
