@@ -1,5 +1,4 @@
 import { EventObject, Interpreter } from 'xstate'
-import { Howler } from 'howler'
 import { buildMenuService, MenuContext, EVENT as EVENT_MENU } from '~/scenes/menus/menuStateMachine'
 import { Config } from '~/config'
 import { Difficulty } from '~/models'
@@ -44,8 +43,29 @@ export class MenuScene extends Phaser.Scene {
         this.scale.on('resize', () => {
             this.background.setDisplaySize(window.innerWidth, window.innerHeight)
             this.background.setPosition(0, 0)
-            this.mainContainer.setPosition(this.scale.width / 2, this.scale.height / 2 - 500 / 2)
+            this.mainContainer.setPosition(
+                this.scale.width / 2,
+                this.scale.height / 2 - Config.scenes.menu.background.height / 2
+            )
         })
+
+        this.events.on('shutdown', () => {
+            this.input.removeAllListeners()
+            this.events.removeListener('wake')
+            this.scene.stop(Config.scenes.keys.entriesSelection)
+        })
+
+        this.events.on('wake', () => {
+            this.tweens.add({
+                ...Config.scenes.menu.tweens.camera.in,
+                targets: this.cameras.main,
+                callbackScope: this,
+                onComplete: () => {
+                    this.stateService.send(EVENT_MENU.WAKE)
+                },
+            })
+        })
+        
 
         this.currentDifficulty = (window.localStorage.getItem('difficulty') as Difficulty) || 'easy'
         this.currentEntries = [1, 2, 3, 4]
@@ -65,17 +85,6 @@ export class MenuScene extends Phaser.Scene {
 
         this.scene.launch(Config.scenes.keys.entriesSelection)
         this.scene.sleep(Config.scenes.keys.entriesSelection)
-
-        this.events.on('wake', () => {
-            this.tweens.add({
-                ...Config.scenes.menu.tweens.camera.in,
-                targets: this.cameras.main,
-                callbackScope: this,
-                onComplete: () => {
-                    this.stateService.send(EVENT_MENU.WAKE)
-                },
-            })
-        })
     }
 
     create() {
@@ -164,7 +173,7 @@ export class MenuScene extends Phaser.Scene {
             )
             entry.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                     this.stateService.send(EVENT_MENU.SELECT_DIFFICULTY, {
                         value: entry,
                     })
@@ -195,7 +204,7 @@ export class MenuScene extends Phaser.Scene {
                 this.currentEntries[index]
             )
             entry.image.setInteractive({ cursor: 'pointer', pixelPerfect: true }).on(
-                Phaser.Input.Events.GAMEOBJECT_POINTER_UP,
+                Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
                 () => {
                     this.stateService.send(EVENT_MENU.SELECT_ENTRIES, { value: { entry, index } })
                 },
@@ -228,7 +237,7 @@ export class MenuScene extends Phaser.Scene {
             )
             entryHelper.image
                 .setInteractive({ cursor: 'pointer', pixelPerfect: true })
-                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+                .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                     this.stateService.send(EVENT_MENU.SELECT_ENTRY, { value: entryHelper })
                 })
             entryHelper.image.setInteractive({ enabled: false })
@@ -249,7 +258,7 @@ export class MenuScene extends Phaser.Scene {
             .setTextStyle(Config.scenes.menu.styles.button)
 
         this.buttonPlay.button.setScale(1.24)
-        this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+        this.buttonPlay.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
             this.stateService.send(EVENT_MENU.PLAY)
         })
     }
@@ -264,7 +273,7 @@ export class MenuScene extends Phaser.Scene {
             .setText('Tutorial')
             .setTextStyle(Config.scenes.menu.styles.button)
         this.buttonTutorial.button.setScale(1.24)
-        this.buttonTutorial.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+        this.buttonTutorial.button.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
             this.stateService.send(EVENT_MENU.TUTORIAL)
         })
     }
@@ -278,7 +287,7 @@ export class MenuScene extends Phaser.Scene {
                 Config.packer.soundOff
             )
             .setInteractive({ cursor: 'pointer' })
-            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+            .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                 this.toggleSound()
             })
         this.soundImage.setScale(1.4, 1.4)

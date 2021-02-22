@@ -122,8 +122,4 @@ export class EntryGraphicsHelper extends Phaser.GameObjects.Container {
         this.text.setText(`${numero}`)
         return this
     }
-
-    switchNumber() {
-        console.log('switch')
-    }
 }

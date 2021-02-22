@@ -234,7 +234,7 @@ export class Config {
 
     public static readonly scenes = {
         skip: {
-            scene: Config.debug ? 'tutorial' : 'noSkip',
+            scene: Config.debug ? 'noSkip' : 'noSkip',
         },
         keys: {
             game: 'gameScene',

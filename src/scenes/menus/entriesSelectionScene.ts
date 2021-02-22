@@ -15,18 +15,20 @@ export class EntriesSelectionScene extends Phaser.Scene {
     }
 
     init() {
-        window.addEventListener(
-            'resize',
-            () => {
-                this.entriesHelpContainer.setPosition(this.scale.width / 2, this.scale.height / 2)
-            },
-            false
-        )
-        this.menuScene = this.scene.get(Config.scenes.keys.menu) as MenuScene
+        this.scale.on('resize', () => {
+            this.entriesHelpContainer.setPosition(this.scale.width / 2, this.scale.height / 2)
+        }, false)
+        
+        this.events.on('shutdown', () => {
+            this.input.removeAllListeners()
+            this.events.removeListener('wake')
+        })
 
         this.events.on('wake', () => {
             this.showEntries()
         })
+        
+        this.menuScene = this.scene.get(Config.scenes.keys.menu) as MenuScene
     }
 
     create() {
@@ -77,7 +79,6 @@ export class EntriesSelectionScene extends Phaser.Scene {
         const numbersToExclude = this.menuScene.entriesGraphics.map((graphic) => {
             return graphic.numero
         })
-        
         this.entriesHelperGraphics.forEach((entry: EntryGraphicsHelper) => {
             if (numbersToExclude.find((exclude) => exclude === entry.numero)) {
                 entry.image.setAlpha(0.4).setActive(false)
