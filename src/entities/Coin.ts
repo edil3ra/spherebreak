@@ -113,7 +113,7 @@ export class CoinGraphics extends Phaser.GameObjects.Container {
             ease: 'Sine.easeInOut',
             scale: {
                 from: 1,
-                to: 1.1,
+                to: 1.14,
             },
             duration: 800,
             yoyo: true,
