@@ -4,8 +4,248 @@ import { MyGame } from '~/game'
 import { CoinState, TutorialState } from '~/models'
 import { Board } from '~/scenes/games/board'
 import { BoardPanelContainer } from '~/scenes/games/panels/boardContainerPanel'
-import { TutorialHelperPanel } from '~/scenes/games/panels/tutorialHelperPanel'
 import { TutorialStartEndScene } from './tutorialStartEndScene'
+
+const turnsTemplate: Array<Partial<Turn>> = [
+    {
+        entriesLigthing: [0, 1, 0, 0],
+    },
+    {
+        text: `
+You clicked on an entry coin
+Entry coin reapear after each turn
+They don't increase the score
+Used it as the main way to make combo
+`,
+    },
+    {
+        entriesActive: [0, 1, 0, 0],
+        bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        score: 0,
+    },
+    {
+        text: `
+You clicked on a border coin
+They dissappear after you used them
+They reapear after 4 turn
+They increase the score by one
+Use them to increase the score`,
+    },
+    {
+        entriesLigthing: [0, 0, 0, 1],
+        entriesActive: [0, 1, 0, 0],
+        bordersActive: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        score: 0,
+    },
+    {
+        entriesActive:   [0, 1, 0, 1],
+        bordersActive:   [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        showScore: 2,
+        showComboCount: 1,
+        showComboMultiple: 1,
+        endTurn: true,
+    },
+    {
+        text: `
+You score 2 points
+You have 10 turns to win the game
+Reach the max score before the last turn
+`
+    },
+    {
+        text: `
+You make count combo by using the same 
+amount of coins than the previous turn.
+`,
+    },
+    {
+        bordersLigthing: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        score: 2,
+        turn: 2,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 4,
+        comboMultipleGoal: 3,
+    },
+    {
+        bordersLigthing: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        bordersActive:   [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        turn: 2,
+        score: 2,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 4,
+        comboMultipleGoal: 3,
+    },
+    {
+        entriesLigthing: [0, 1, 0, 0],
+        bordersActive:   [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        turn: 2,
+        score: 2,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 4,
+        comboMultipleGoal: 3,
+        showScore: 2,
+        showComboCount: 1,
+        showComboMultiple: 1,
+        endTurn: true,
+    },
+    {
+        text: `
+You used 3 coins this turn
+You target count combo is 3
+You total count combo is 1
+`,
+    },
+    {
+        sphere: 5,
+        bordersLigthing: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        turn: 3,
+        score: 4,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 3,
+        comboMultipleGoal: 2,
+    },
+    {
+        sphere: 5,
+        bordersLigthing: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        bordersActive:   [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        turn: 3,
+        score: 4,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 3,
+        comboMultipleGoal: 2,
+    },
+    {
+        sphere: 5,
+        entriesLigthing: [0, 0, 1, 0],
+        bordersActive:   [0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+        bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        turn: 3,
+        score: 4,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 3,
+        comboMultipleGoal: 2,
+        showScore: 4,
+        showComboCount: 2,
+        showComboMultiple: 1,
+        endTurn: true,
+    },
+    {
+        text: `
+You used 3 coins this turn
+You target count combo is 3
+You total count combo is 2
+
+you score is 4 
+2 for the border coin
+2 for the the combo
+`,
+    },
+    {
+        text: `
+You make multiple combo
+by using a multiple of the middle sphere.
+`,
+    },
+    {
+        sphere: 3,
+        entriesLigthing: [1, 0, 0, 0],
+        bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
+        score: 8,
+        turn: 4,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 3,
+        comboMultipleGoal: 3,
+    },
+    {
+        sphere: 3,
+        entriesActive:   [1, 0, 0, 0],
+        bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
+        score: 8,
+        turn: 4,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 3,
+        comboMultipleGoal: 3,
+        showScore: 1,
+        showComboCount: 1,
+        showComboMultiple: 1,
+        endTurn: true,
+    },
+    {
+        text: `
+you sphere was 3
+you made a total of 6
+You target multiple combo is 2
+You total multiple combo is 1
+`,
+    },
+    {
+        sphere: 7,
+        entriesLigthing: [0, 0, 1, 0],
+        bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+        score: 9,
+        turn: 5,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 2,
+        comboMultipleGoal: 2,
+    },
+    {
+        sphere: 7,
+        entriesActive:   [0, 0, 1, 0],
+        bordersLigthing: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+        score: 9,
+        turn: 5,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 2,
+        comboMultipleGoal: 2,
+    },
+    {
+        sphere: 7,
+        entriesActive:   [0, 0, 1, 0],
+        bordersLigthing: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        bordersActive:   [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+        score: 9,
+        turn: 5,
+        comboCount: 1,
+        comboMultiple: 1,
+        comboCountGoal: 2,
+        comboMultipleGoal: 2,
+        showScore: 4,
+        showComboCount: 1,
+        showComboMultiple: 2,
+        endTurn: true,
+    },
+    {
+        text: `
+you sphere was 7
+you made a total of 14
+You target multiple combo is 2
+You total multiple combo is 2
+
+you score is 4 
+2 for the border coin
+2 for the the combo
+`,
+    }
+]
 
 type Turn = {
     pointers: Array<{ x: number; y: number }>
@@ -40,10 +280,8 @@ export class TutorialScene extends Phaser.Scene {
     public background: Phaser.GameObjects.Image
     public pointersImage: Array<Phaser.GameObjects.Image>
     public boardPanel: BoardPanelContainer
-    public tutorialHelperPanel: TutorialHelperPanel
     public board: Board
     public turns: Array<Turn>
-    public turnsTemplate: Array<Partial<Turn>>
     public currentTurn: Turn
     public currentTurnIndex: number
     public timerSyncCoin: Phaser.Time.TimerEvent
@@ -63,14 +301,11 @@ export class TutorialScene extends Phaser.Scene {
                 this.background.setPosition(0, 0)
                 this.board.setPosition()
                 this.boardPanel.setPosition()
-                this.tutorialHelperPanel.setPosition()
             },
             false
         )
 
         this.events.on('shutdown', () => {
-            this.timerSyncCoin.destroy()
-            this.input.removeAllListeners()
         })
     }
 
@@ -80,7 +315,6 @@ export class TutorialScene extends Phaser.Scene {
         ) as TutorialStartEndScene
         this.board = new Board(this, false)
         this.boardPanel = new BoardPanelContainer(this)
-        this.tutorialHelperPanel = new TutorialHelperPanel(this)
         this.currentTurn = this.defaultTurn()
 
         this.events.on('resume', () => {
@@ -111,7 +345,6 @@ export class TutorialScene extends Phaser.Scene {
             ...this.pointersImage,
         ])
         this.setPositionContainer()
-        this.turnsTemplate = this.buildTurnsTemplate()
         this.turns = this.buildTurns()
         this.coinsStateChanged = []
         this.initTimerSyncCoin()
@@ -162,252 +395,8 @@ Tap to enter tutorial
         }
     }
 
-    buildTurnsTemplate(): Array<Partial<Turn>> {
-        return [
-            {
-                entriesLigthing: [0, 1, 0, 0],
-            },
-            {
-                text: `
-You clicked on an entry coin
-Entry coin reapear after each turn
-They don't increase the score
-Used it as the main way to make combo
-`,
-            },
-            {
-                entriesActive: [0, 1, 0, 0],
-                bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                score: 0,
-            },
-            {
-                text: `
-You clicked on a border coin
-They dissappear after you used them
-They reapear after 4 turn
-They increase the score by one
-Use them to increase the score`,
-            },
-            {
-                entriesLigthing: [0, 0, 0, 1],
-                entriesActive: [0, 1, 0, 0],
-                bordersActive: [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                score: 0,
-            },
-            {
-                entriesActive:   [0, 1, 0, 1],
-                bordersActive:   [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                showScore: 2,
-                showComboCount: 1,
-                showComboMultiple: 1,
-                endTurn: true,
-            },
-            {
-                text: `
-You score 2 points
-You have 10 turns to win the game
-Reach the max score before the last turn
-`
-            },
-            {
-                text: `
-You make count combo by using the same 
-amount of coins than the previous turn.
-`,
-            },
-            {
-                bordersLigthing: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 2,
-                turn: 2,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 4,
-                comboMultipleGoal: 3,
-            },
-            {
-                bordersLigthing: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                bordersActive:   [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                turn: 2,
-                score: 2,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 4,
-                comboMultipleGoal: 3,
-            },
-            {
-                entriesLigthing: [0, 1, 0, 0],
-                bordersActive:   [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                bordersDead:     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                turn: 2,
-                score: 2,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 4,
-                comboMultipleGoal: 3,
-                showScore: 2,
-                showComboCount: 1,
-                showComboMultiple: 1,
-                endTurn: true,
-            },
-            {
-                text: `
-You used 3 coins this turn
-You target count combo is 3
-You total count combo is 1
-`,
-            },
-            {
-                sphere: 5,
-                bordersLigthing: [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                turn: 3,
-                score: 4,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 2,
-            },
-            {
-                sphere: 5,
-                bordersLigthing: [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-                bordersActive:   [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                turn: 3,
-                score: 4,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 2,
-            },
-            {
-                sphere: 5,
-                entriesLigthing: [0, 0, 1, 0],
-                bordersActive:   [0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0],
-                bordersDead:     [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
-                turn: 3,
-                score: 4,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 2,
-                showScore: 4,
-                showComboCount: 2,
-                showComboMultiple: 1,
-                endTurn: true,
-            },
-            {
-                text: `
-You used 3 coins this turn
-You target count combo is 3
-You total count combo is 2
-
-you score is 4 
-2 for the border coin
-2 for the the combo
-`,
-            },
-            {
-                text: `
-You make multiple combo
-by using a multiple of the middle sphere.
-`,
-            },
-            {
-                sphere: 3,
-                entriesLigthing: [1, 0, 0, 0],
-                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 8,
-                turn: 4,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 3,
-            },
-            {
-                sphere: 3,
-                entriesActive:   [1, 0, 0, 0],
-                bordersLigthing: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1],
-                score: 8,
-                turn: 4,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 3,
-                comboMultipleGoal: 3,
-                showScore: 1,
-                showComboCount: 1,
-                showComboMultiple: 1,
-                endTurn: true,
-            },
-            {
-                text: `
-you sphere was 3
-you made a total of 6
-You target multiple combo is 2
-You total multiple combo is 1
-`,
-            },
-            {
-                sphere: 7,
-                entriesLigthing: [0, 0, 1, 0],
-                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-                score: 9,
-                turn: 5,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 2,
-                comboMultipleGoal: 2,
-            },
-            {
-                sphere: 7,
-                entriesActive:   [0, 0, 1, 0],
-                bordersLigthing: [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-                score: 9,
-                turn: 5,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 2,
-                comboMultipleGoal: 2,
-            },
-            {
-                sphere: 7,
-                entriesActive:   [0, 0, 1, 0],
-                bordersLigthing: [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-                bordersActive:   [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-                bordersDead:     [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-                score: 9,
-                turn: 5,
-                comboCount: 1,
-                comboMultiple: 1,
-                comboCountGoal: 2,
-                comboMultipleGoal: 2,
-                showScore: 4,
-                showComboCount: 1,
-                showComboMultiple: 2,
-                endTurn: true,
-            },
-            {
-                text: `
-you sphere was 7
-you made a total of 14
-You target multiple combo is 2
-You total multiple combo is 2
-
-you score is 4 
-2 for the border coin
-2 for the the combo
-`,
-            }
-        ]
-    }
-
-    
     buildTurns(): Array<Turn> {
-        return this.turnsTemplate.map((turn) => {
+        return turnsTemplate.map((turn) => {
             return { ...this.defaultTurn(), ...turn }
         })
     }
@@ -446,7 +435,6 @@ Tap to end tutorial
     }
 
     nextTurn(index: number) {
-        console.log(index)
         this.cameras.main.fadeIn(200, 0, 0, 0)
         if (this.currentTurnIndex > 0) {
             this.game.playSound('switch')
